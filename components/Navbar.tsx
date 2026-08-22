@@ -158,7 +158,7 @@ export default function Navbar() {
             {/* Weather Widget Chip */}
             <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 bg-cream border border-light-cream rounded text-xs font-normal text-muted">
               <CloudSun className="w-3.5 h-3.5 text-charcoal opacity-70" />
-              <span>Tokyo 22°C</span>
+              <span>Jaipur 26°C</span>
             </div>
 
             {/* Notifications Popover */}
