@@ -13,6 +13,10 @@ model User {
   passwordHash      String?
   name              String?
   avatarUrl         String?
+  languagePref      String             @default("en") // "en", "es", "fr", "ja", "de"
+  role              String             @default("USER") // "USER" or "ADMIN"
+  resetToken        String?
+  resetTokenExpiry  DateTime?
   createdAt         DateTime           @default(now())
   updatedAt         DateTime           @updatedAt
   trips             Trip[]
@@ -61,48 +65,70 @@ model City {
   id                String             @id @default(cuid())
   name              String
   country           String
+  region            String             @default("Global") // "East Asia", "Western Europe", "North America", etc.
   costIndex         Float              @default(1.0)
   popularity        Int                @default(80)
   imageUrl          String
   description       String?
   stops             Stop[]
+  activities        Activity[]
   savedBy           SavedDestination[]
 
   @@map("cities")
 }
 
 model Stop {
-  id            String     @id @default(cuid())
-  tripId        String
-  trip          Trip       @relation(fields: [tripId], references: [id], onDelete: Cascade)
-  cityId        String
-  city          City       @relation(fields: [cityId], references: [id], onDelete: Restrict)
-  arrivalDate   DateTime
-  departureDate DateTime
-  orderIndex    Int        @default(0)
-  createdAt     DateTime   @default(now())
-  updatedAt     DateTime   @updatedAt
-  activities    Activity[]
+  id             String         @id @default(cuid())
+  tripId         String
+  trip           Trip           @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  cityId         String
+  city           City           @relation(fields: [cityId], references: [id], onDelete: Restrict)
+  arrivalDate    DateTime
+  departureDate  DateTime
+  orderIndex     Int            @default(0)
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  activities     Activity[]     // Direct custom activities on this stop
+  stopActivities StopActivity[] // Join table for city catalog activities scheduled on this stop
 
   @@map("stops")
 }
 
 model Activity {
-  id              String    @id @default(cuid())
-  stopId          String
-  stop            Stop      @relation(fields: [stopId], references: [id], onDelete: Cascade)
+  id              String         @id @default(cuid())
+  cityId          String?        // Optional relation to City for catalog activities
+  city            City?          @relation(fields: [cityId], references: [id], onDelete: Cascade)
+  stopId          String?        // Optional for direct stop-specific activities
+  stop            Stop?          @relation(fields: [stopId], references: [id], onDelete: Cascade)
   name            String
-  type            String    @default("OTHER") // SIGHTSEEING, FOOD, ADVENTURE, RELAXATION, OTHER
-  cost            Float     @default(0.0)
-  durationMinutes Int       @default(60)
+  type            String         @default("OTHER") // SIGHTSEEING, FOOD, ADVENTURE, RELAXATION, OTHER
+  cost            Float          @default(0.0)
+  durationMinutes Int            @default(60)
   description     String?
   imageUrl        String?
   scheduledDate   DateTime?
-  scheduledTime   String?   // "09:30"
+  scheduledTime   String?        // "09:30"
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  stopActivities  StopActivity[]
+
+  @@map("activities")
+}
+
+model StopActivity {
+  id              String    @id @default(cuid())
+  stopId          String
+  stop            Stop      @relation(fields: [stopId], references: [id], onDelete: Cascade)
+  activityId      String
+  activity        Activity  @relation(fields: [activityId], references: [id], onDelete: Cascade)
+  day             Int       @default(1) // Day 1, Day 2 of stop
+  time            String?   // "10:00"
+  cost            Float     @default(0.0)
+  notes           String?
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
 
-  @@map("activities")
+  @@map("stop_activities")
 }
 
 model SavedDestination {

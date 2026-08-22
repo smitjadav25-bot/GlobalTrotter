@@ -44,12 +44,13 @@ export async function PUT(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { name, avatarUrl, email } = body;
+    const { name, avatarUrl, email, languagePref } = body;
 
     const data: any = {};
     if (name !== undefined) data.name = name;
     if (avatarUrl !== undefined) data.avatarUrl = avatarUrl;
-    if (email !== undefined && email.includes('@')) data.email = email;
+    if (languagePref !== undefined) data.languagePref = languagePref;
+    if (email !== undefined && email.includes('@')) data.email = email.toLowerCase().trim();
 
     const updated = await prisma.user.update({
       where: { id: user.id },
@@ -60,5 +61,24 @@ export async function PUT(request: NextRequest) {
   } catch (error) {
     console.error('Error updating profile:', error);
     return NextResponse.json({ error: 'Failed to update profile' }, { status: 500 });
+  }
+}
+
+export async function DELETE() {
+  try {
+    const user = await getCurrentUser();
+    if (!user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    // Cascade delete user data
+    await prisma.user.delete({
+      where: { id: user.id },
+    });
+
+    return NextResponse.json({ message: 'User account deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting user account:', error);
+    return NextResponse.json({ error: 'Failed to delete account' }, { status: 500 });
   }
 }
