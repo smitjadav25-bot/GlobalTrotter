@@ -4,7 +4,7 @@ GlobeTrotter is a full-stack personalized multi-city travel planning web applica
 
 ---
 
-## 🛠 Tech Stack
+## 🛠 Tech Stack...
 
 - **Frontend**: Next.js 14 (App Router) + React 18 + TypeScript
 - **Styling**: Tailwind CSS (Travel coral `#ff5a5f` & teal theme, responsive, soft shadows, glassmorphism)
@@ -17,7 +17,7 @@ GlobeTrotter is a full-stack personalized multi-city travel planning web applica
 
 ---
 
-## 🚀 Quickstart & Setup Instructions
+## 🚀 Quickstart & Setup Instructions...
 
 Running the entire application locally takes under 1 minute with zero cloud configuration:
 
@@ -106,7 +106,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
-## 📊 Key Features & Screens
+## 📊 Key Features & Screens...
 
 1. **Dashboard & Destination Explorer (`/`)**:
    - Curated destinations with popularity scores and cost index ratings.
