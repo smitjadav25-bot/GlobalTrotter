@@ -1,0 +1,99 @@
+@import 'react-big-calendar/lib/css/react-big-calendar.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 210 40% 98%;
+    --foreground: 222 47% 11%;
+  }
+
+  body {
+    @apply bg-slate-50 text-slate-900 antialiased selection:bg-coral-100 selection:text-coral-900 min-h-screen flex flex-col font-sans;
+  }
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* React Big Calendar Modern overrides */
+.rbc-calendar {
+  border-radius: 1rem;
+  font-family: inherit;
+  background: white;
+  padding: 1rem;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 20px -4px rgba(0, 0, 0, 0.05);
+}
+
+.rbc-header {
+  padding: 0.75rem 0.5rem;
+  font-weight: 600;
+  color: #475569;
+  border-bottom: 1px solid #e2e8f0;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.rbc-event {
+  background-color: #ff5a5f !important;
+  border-radius: 0.5rem !important;
+  padding: 4px 8px !important;
+  font-size: 0.8125rem !important;
+  font-weight: 500 !important;
+  border: none !important;
+  box-shadow: 0 2px 4px rgba(255, 90, 95, 0.2) !important;
+  transition: transform 0.15s ease;
+}
+
+.rbc-event:hover {
+  transform: translateY(-1px);
+}
+
+.rbc-today {
+  background-color: #fff1f2 !important;
+}
+
+.rbc-off-range-bg {
+  background-color: #f8fafc !important;
+}
+
+.rbc-toolbar button {
+  color: #334155 !important;
+  border: 1px solid #e2e8f0 !important;
+  padding: 0.5rem 1rem !important;
+  border-radius: 0.5rem !important;
+  font-weight: 500 !important;
+  font-size: 0.875rem !important;
+  transition: all 0.15s ease !important;
+}
+
+.rbc-toolbar button:hover {
+  background-color: #f1f5f9 !important;
+  border-color: #cbd5e1 !important;
+}
+
+.rbc-toolbar button.rbc-active {
+  background-color: #ff5a5f !important;
+  color: white !important;
+  border-color: #ff5a5f !important;
+}
