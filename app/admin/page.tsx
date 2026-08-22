@@ -10,13 +10,8 @@ import {
   Compass,
   DollarSign,
   Sparkles,
-  TrendingUp,
   Building2,
-  Lock,
-  Globe,
   Loader2,
-  ArrowRight,
-  CheckCircle2,
 } from 'lucide-react';
 
 export default function AdminDashboardPage() {
@@ -33,7 +28,7 @@ export default function AdminDashboardPage() {
         setLoading(true);
         const res = await fetch('/api/admin/stats');
         if (!res.ok) {
-          throw new Error('Failed to load administrator statistics. Access may be restricted.');
+          throw new Error('Failed to load administrator statistics.');
         }
         const data = await res.json();
         setStats(data.stats);
@@ -51,9 +46,9 @@ export default function AdminDashboardPage() {
 
   if (status === 'loading' || loading) {
     return (
-      <div className="min-h-[60vh] flex flex-col items-center justify-center gap-3">
-        <Loader2 className="w-8 h-8 animate-spin text-coral" />
-        <p className="text-xs font-semibold text-slate-500">Loading Administrator Console...</p>
+      <div className="min-h-[60vh] flex flex-col items-center justify-center gap-2">
+        <Loader2 className="w-6 h-6 animate-spin text-charcoal" />
+        <p className="text-xs font-normal text-muted">Loading Administrator Console...</p>
       </div>
     );
   }
@@ -61,18 +56,18 @@ export default function AdminDashboardPage() {
   if (userRole !== 'ADMIN' || error) {
     return (
       <div className="max-w-md mx-auto px-4 py-20 text-center space-y-4">
-        <div className="w-16 h-16 rounded-3xl bg-rose-100 text-rose-600 flex items-center justify-center mx-auto">
-          <ShieldAlert className="w-8 h-8" />
+        <div className="w-12 h-12 rounded bg-charcoal text-off-white flex items-center justify-center mx-auto shadow-inset-btn">
+          <ShieldAlert className="w-6 h-6" />
         </div>
         <div className="space-y-1">
-          <h2 className="text-xl font-black text-slate-900">Admin Access Restricted</h2>
-          <p className="text-xs text-slate-500">
+          <h2 className="text-lg font-semibold text-charcoal">Admin Access Restricted</h2>
+          <p className="text-xs text-muted font-normal">
             You must be logged in as an administrator to view this platform analytics dashboard.
           </p>
         </div>
         <Link
           href="/dashboard"
-          className="inline-flex items-center gap-2 px-5 py-2.5 bg-coral text-white rounded-xl text-xs font-bold shadow-xs"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-charcoal text-off-white rounded shadow-inset-btn text-xs font-normal"
         >
           Return to Dashboard
         </Link>
@@ -81,110 +76,92 @@ export default function AdminDashboardPage() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900 text-white text-[11px] font-bold uppercase tracking-wider mb-2">
-            <ShieldAlert className="w-3.5 h-3.5 text-coral" /> Admin Operations Console
-          </div>
-          <h1 className="text-3xl font-black text-slate-900 tracking-tight">Platform Analytics & Metrics</h1>
-          <p className="text-sm text-slate-500 mt-1">
-            System-wide usage telemetry, destination popularity, and traveler activities.
-          </p>
+      <div>
+        <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded bg-charcoal text-off-white text-[10px] font-normal uppercase tracking-wider mb-2 shadow-inset-btn">
+          <ShieldAlert className="w-3 h-3" /> Admin Operations Console
         </div>
+        <h1 className="text-2xl sm:text-3xl font-semibold text-charcoal tracking-[-0.9px]">Platform Analytics & Metrics</h1>
+        <p className="text-xs text-muted font-normal mt-1">
+          System-wide usage telemetry, destination popularity, and traveler activities.
+        </p>
       </div>
 
       {/* KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-soft space-y-2">
+        <div className="bg-cream p-5 rounded-card border border-light-cream space-y-1">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Total Users</span>
-            <div className="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
-              <Users className="w-5 h-5" />
-            </div>
+            <span className="text-[11px] font-normal uppercase tracking-wider text-muted">Total Users</span>
+            <Users className="w-4 h-4 text-muted" />
           </div>
-          <div className="text-3xl font-black text-slate-900">{stats?.totalUsers || 0}</div>
-          <p className="text-[11px] text-slate-400">Registered travelers and admins</p>
+          <div className="text-2xl font-semibold text-charcoal">{stats?.totalUsers || 0}</div>
+          <p className="text-[11px] text-muted">Registered travelers and admins</p>
         </div>
 
-        <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-soft space-y-2">
+        <div className="bg-cream p-5 rounded-card border border-light-cream space-y-1">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Total Trips</span>
-            <div className="w-9 h-9 rounded-xl bg-coral-50 text-coral flex items-center justify-center">
-              <Compass className="w-5 h-5" />
-            </div>
+            <span className="text-[11px] font-normal uppercase tracking-wider text-muted">Total Trips</span>
+            <Compass className="w-4 h-4 text-muted" />
           </div>
-          <div className="text-3xl font-black text-slate-900">{stats?.totalTrips || 0}</div>
-          <p className="text-[11px] text-slate-400">
+          <div className="text-2xl font-semibold text-charcoal">{stats?.totalTrips || 0}</div>
+          <p className="text-[11px] text-muted">
             {stats?.publicTrips || 0} Public • {stats?.privateTrips || 0} Private
           </p>
         </div>
 
-        <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-soft space-y-2">
+        <div className="bg-cream p-5 rounded-card border border-light-cream space-y-1">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">City Stops</span>
-            <div className="w-9 h-9 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center">
-              <MapPin className="w-5 h-5" />
-            </div>
+            <span className="text-[11px] font-normal uppercase tracking-wider text-muted">City Stops</span>
+            <MapPin className="w-4 h-4 text-muted" />
           </div>
-          <div className="text-3xl font-black text-slate-900">{stats?.totalStops || 0}</div>
-          <p className="text-[11px] text-slate-400">Scheduled destination stops</p>
+          <div className="text-2xl font-semibold text-charcoal">{stats?.totalStops || 0}</div>
+          <p className="text-[11px] text-muted">Scheduled destination stops</p>
         </div>
 
-        <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-soft space-y-2">
+        <div className="bg-cream p-5 rounded-card border border-light-cream space-y-1">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Budget Volume</span>
-            <div className="w-9 h-9 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
-              <DollarSign className="w-5 h-5" />
-            </div>
+            <span className="text-[11px] font-normal uppercase tracking-wider text-muted">Budget Volume</span>
+            <DollarSign className="w-4 h-4 text-muted" />
           </div>
-          <div className="text-3xl font-black text-slate-900">
+          <div className="text-2xl font-semibold text-charcoal">
             ${(stats?.totalBudgetVolume || 0).toLocaleString()}
           </div>
-          <p className="text-[11px] text-slate-400">Total planned travel budgets</p>
+          <p className="text-[11px] text-muted">Total planned travel budgets</p>
         </div>
       </div>
 
       {/* Analytics Tables Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Top Cities */}
-        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-soft space-y-6">
-          <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center">
-                <Building2 className="w-5 h-5" />
-              </div>
-              <h2 className="text-base font-bold text-slate-900">Top Popular Destinations</h2>
+        <div className="bg-cream rounded-card p-6 border border-light-cream space-y-4">
+          <div className="flex items-center justify-between pb-2 border-b border-light-cream">
+            <div className="flex items-center gap-2">
+              <Building2 className="w-4 h-4 text-muted" />
+              <h2 className="text-sm font-semibold text-charcoal">Top Popular Destinations</h2>
             </div>
-            <Link href="/cities" className="text-xs font-bold text-coral hover:underline">
+            <Link href="/cities" className="text-xs font-normal text-charcoal underline">
               View All
             </Link>
           </div>
 
-          <div className="space-y-3">
+          <div className="space-y-2">
             {stats?.topCities?.map((city: any, index: number) => (
               <div
                 key={city.id}
-                className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center justify-between gap-4"
+                className="p-3 rounded bg-charcoal-3 flex items-center justify-between gap-3 text-xs"
               >
-                <div className="flex items-center gap-3">
-                  <div className="w-7 h-7 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-xs font-black text-slate-700">
-                    #{index + 1}
-                  </div>
+                <div className="flex items-center gap-2.5">
+                  <span className="font-semibold text-charcoal">#{index + 1}</span>
                   <div>
-                    <div className="text-sm font-bold text-slate-900">{city.name}</div>
-                    <div className="text-[11px] text-slate-500">{city.country}</div>
+                    <div className="font-semibold text-charcoal">{city.name}</div>
+                    <div className="text-[11px] text-muted">{city.country}</div>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-4 text-xs">
-                  <span className="font-semibold text-slate-600">
-                    ★ {city.popularity} popularity
-                  </span>
-                  <span className="px-2.5 py-1 bg-white rounded-lg border border-slate-200 text-teal-700 font-bold">
-                    {city.stopsCount} stops
-                  </span>
+                <div className="flex items-center gap-3 text-xs text-muted">
+                  <span>★ {city.popularity}</span>
+                  <span className="font-semibold text-charcoal">{city.stopsCount} stops</span>
                 </div>
               </div>
             ))}
@@ -192,38 +169,34 @@ export default function AdminDashboardPage() {
         </div>
 
         {/* Top Scheduled Experiences */}
-        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-soft space-y-6">
-          <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-coral/10 text-coral flex items-center justify-center">
-                <Sparkles className="w-5 h-5" />
-              </div>
-              <h2 className="text-base font-bold text-slate-900">Featured Experiences</h2>
+        <div className="bg-cream rounded-card p-6 border border-light-cream space-y-4">
+          <div className="flex items-center justify-between pb-2 border-b border-light-cream">
+            <div className="flex items-center gap-2">
+              <Sparkles className="w-4 h-4 text-muted" />
+              <h2 className="text-sm font-semibold text-charcoal">Featured Experiences</h2>
             </div>
-            <Link href="/activities" className="text-xs font-bold text-coral hover:underline">
+            <Link href="/activities" className="text-xs font-normal text-charcoal underline">
               View Catalog
             </Link>
           </div>
 
-          <div className="space-y-3">
+          <div className="space-y-2">
             {stats?.topActivities?.map((act: any, index: number) => (
               <div
                 key={act.id}
-                className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center justify-between gap-4"
+                className="p-3 rounded bg-charcoal-3 flex items-center justify-between gap-3 text-xs"
               >
-                <div className="flex items-center gap-3">
-                  <div className="w-7 h-7 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-xs font-black text-coral">
-                    #{index + 1}
-                  </div>
+                <div className="flex items-center gap-2.5">
+                  <span className="font-semibold text-charcoal">#{index + 1}</span>
                   <div>
-                    <div className="text-sm font-bold text-slate-900 truncate max-w-xs">{act.name}</div>
-                    <div className="text-[11px] text-slate-500">
+                    <div className="font-semibold text-charcoal truncate max-w-xs">{act.name}</div>
+                    <div className="text-[11px] text-muted">
                       {act.cityName} • {act.type}
                     </div>
                   </div>
                 </div>
 
-                <span className="px-2.5 py-1 bg-white rounded-lg border border-slate-200 text-slate-900 font-black text-xs">
+                <span className="font-semibold text-charcoal">
                   {act.cost === 0 ? 'FREE' : `$${act.cost}`}
                 </span>
               </div>
@@ -233,48 +206,33 @@ export default function AdminDashboardPage() {
       </div>
 
       {/* Recent User Registrations */}
-      <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-soft space-y-6">
-        <div className="flex items-center gap-3 pb-3 border-b border-slate-100">
-          <div className="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
-            <Users className="w-5 h-5" />
-          </div>
-          <div>
-            <h2 className="text-base font-bold text-slate-900">Recent User Registrations</h2>
-            <p className="text-xs text-slate-500">Latest platform accounts</p>
-          </div>
+      <div className="bg-cream rounded-card p-6 border border-light-cream space-y-4">
+        <div className="flex items-center gap-2 pb-2 border-b border-light-cream">
+          <Users className="w-4 h-4 text-muted" />
+          <h2 className="text-sm font-semibold text-charcoal">Recent User Registrations</h2>
         </div>
 
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
             <thead>
-              <tr className="border-b border-slate-100 text-slate-400 font-bold uppercase tracking-wider">
-                <th className="pb-3">User</th>
-                <th className="pb-3">Email</th>
-                <th className="pb-3">Role</th>
-                <th className="pb-3">Trips Count</th>
-                <th className="pb-3">Language</th>
-                <th className="pb-3">Registered</th>
+              <tr className="border-b border-light-cream text-[11px] font-normal text-muted uppercase tracking-wider">
+                <th className="pb-2">User</th>
+                <th className="pb-2">Email</th>
+                <th className="pb-2">Role</th>
+                <th className="pb-2">Trips</th>
+                <th className="pb-2">Registered</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 font-medium text-slate-700">
+            <tbody className="divide-y divide-light-cream text-muted font-normal">
               {stats?.recentUsers?.map((u: any) => (
-                <tr key={u.id} className="hover:bg-slate-50/50">
-                  <td className="py-3 font-bold text-slate-900">{u.name || 'Anonymous'}</td>
-                  <td className="py-3 text-slate-600">{u.email}</td>
-                  <td className="py-3">
-                    <span
-                      className={`px-2 py-0.5 rounded-md font-bold text-[10px] ${
-                        u.role === 'ADMIN'
-                          ? 'bg-rose-50 text-rose-700 border border-rose-200'
-                          : 'bg-slate-100 text-slate-600'
-                      }`}
-                    >
-                      {u.role}
-                    </span>
+                <tr key={u.id} className="hover:bg-charcoal-3">
+                  <td className="py-2 font-semibold text-charcoal">{u.name || 'Anonymous'}</td>
+                  <td className="py-2">{u.email}</td>
+                  <td className="py-2">
+                    <span className="uppercase text-[10px] text-charcoal font-semibold">{u.role}</span>
                   </td>
-                  <td className="py-3 font-bold">{u._count?.trips || 0}</td>
-                  <td className="py-3 uppercase text-[11px]">{u.languagePref}</td>
-                  <td className="py-3 text-slate-400">
+                  <td className="py-2 font-semibold text-charcoal">{u._count?.trips || 0}</td>
+                  <td className="py-2 text-[11px]">
                     {new Date(u.createdAt).toLocaleDateString()}
                   </td>
                 </tr>

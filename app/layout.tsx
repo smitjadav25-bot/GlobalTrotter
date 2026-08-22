@@ -4,11 +4,10 @@ import './globals.css';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import AuthProvider from '@/components/AuthProvider';
-import { ThemeProvider } from '@/components/ThemeProvider';
 import AskGlobeAiModal from '@/components/AskGlobeAiModal';
 import MobileBottomNav from '@/components/MobileBottomNav';
 
-const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
+const inter = Inter({ subsets: ['latin'], variable: '--font-sans', weight: ['400', '600'] });
 
 export const metadata: Metadata = {
   title: 'GlobeTrotter — Personalized Multi-City Travel Planning',
@@ -23,16 +22,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={inter.variable} suppressHydrationWarning>
-      <body className="min-h-screen flex flex-col bg-surface-light dark:bg-surface-dark text-slate-900 dark:text-slate-100 font-sans pb-16 md:pb-0 transition-colors duration-200">
+    <html lang="en" className={inter.variable}>
+      <body className="min-h-screen flex flex-col bg-cream text-charcoal font-sans pb-16 md:pb-0">
         <AuthProvider>
-          <ThemeProvider>
-            <Navbar />
-            <main className="flex-1 w-full">{children}</main>
-            <Footer />
-            <AskGlobeAiModal />
-            <MobileBottomNav />
-          </ThemeProvider>
+          <Navbar />
+          <main className="flex-1 w-full">{children}</main>
+          <Footer />
+          <AskGlobeAiModal />
+          <MobileBottomNav />
         </AuthProvider>
       </body>
     </html>

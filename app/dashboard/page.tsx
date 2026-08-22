@@ -8,14 +8,10 @@ import {
   Sparkles,
   MapPin,
   Star,
-  DollarSign,
   ArrowRight,
   Compass,
   Heart,
-  Loader2,
-  Building2,
   Zap,
-  TrendingUp,
 } from 'lucide-react';
 import { City } from '@/lib/types';
 
@@ -95,7 +91,7 @@ const TRENDING_ACTIVITIES = [
   },
   {
     id: 'act-2',
-    name: 'Sunset Catamaran Cruise on the Seine',
+    name: 'Sunset Cruise on the Seine',
     city: 'Paris, France',
     type: 'Sightseeing',
     avgPrice: '$38',
@@ -115,7 +111,7 @@ const TRENDING_ACTIVITIES = [
   },
   {
     id: 'act-4',
-    name: 'Colosseum & Roman Forum VIP Guided Trek',
+    name: 'Colosseum & Roman Forum Guided Trek',
     city: 'Rome, Italy',
     type: 'Sightseeing',
     avgPrice: '$55',
@@ -187,73 +183,63 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
-      {/* Hero Section per specification */}
-      <div className="relative rounded-card overflow-hidden bg-slate-900 text-white min-h-[420px] flex items-center shadow-xl">
-        {/* Large Travel Photography Background */}
-        <img
-          src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1800&q=80"
-          alt="World Travel Adventure"
-          className="absolute inset-0 w-full h-full object-cover opacity-45 scale-105 transition-transform duration-1000"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/60 to-transparent" />
-
-        <div className="relative z-10 p-6 sm:p-12 lg:p-16 max-w-3xl space-y-6">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-teal-500/20 backdrop-blur-md border border-teal-400/30 text-teal-300 text-xs font-extrabold tracking-wide">
-            <Sparkles className="w-3.5 h-3.5" /> Next-Generation AI Travel Co-Pilot
-          </div>
-
-          <div className="space-y-2">
-            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-none">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-12 sm:space-y-16">
+      {/* Dashboard Hero: Cream background, display typography with negative tracking, atmospheric wash */}
+      <div className="relative rounded-card p-8 sm:p-14 lg:p-16 border border-light-cream overflow-hidden bg-gradient-to-b from-charcoal-3 to-transparent">
+        <div className="relative z-10 max-w-2xl space-y-6">
+          <div className="space-y-3">
+            <h1 className="text-4xl sm:text-5xl lg:text-[56px] font-semibold text-charcoal tracking-[-1.5px] leading-[1.08]">
               Where will you go next?
             </h1>
-            <p className="text-sm sm:text-lg text-slate-200 font-medium max-w-xl leading-relaxed">
+            <p className="text-base sm:text-lg text-muted font-normal leading-relaxed">
               Let AI plan the journey while you enjoy the experience.
             </p>
           </div>
 
-          {/* Large AI Search Input & CTA Button */}
-          <form
-            onSubmit={handleAiPlanSubmit}
-            className="flex flex-col sm:flex-row items-center gap-2 p-2 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md rounded-2xl sm:rounded-full border border-white/20 shadow-2xl"
-          >
-            <div className="relative flex-1 w-full flex items-center pl-3">
-              <Sparkles className="w-4 h-4 text-sunset-500 shrink-0" />
+          {/* AI Search & Dual Action Buttons */}
+          <form onSubmit={handleAiPlanSubmit} className="space-y-3 pt-2">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
               <input
                 type="text"
                 placeholder="Tell Globe AI where you want to travel..."
                 value={aiPrompt}
                 onChange={(e) => setAiPrompt(e.target.value)}
-                className="w-full px-3 py-2.5 bg-transparent text-slate-900 dark:text-white text-xs sm:text-sm font-semibold placeholder:text-slate-400 focus:outline-none"
+                className="flex-1 px-4 py-2.5 bg-cream text-charcoal border border-light-cream rounded text-sm placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-ring-blue"
               />
+              <button
+                type="submit"
+                className="px-5 py-2.5 bg-charcoal text-off-white rounded shadow-inset-btn text-sm font-normal active:opacity-80 focus:shadow-focus-soft transition-opacity flex items-center justify-center gap-2 shrink-0"
+              >
+                <Sparkles className="w-4 h-4" />
+                <span>✨ Plan with AI</span>
+              </button>
+              <Link
+                href="/trips/new"
+                className="px-4 py-2.5 bg-transparent text-charcoal border border-charcoal-40 rounded text-sm font-normal active:opacity-80 transition-opacity flex items-center justify-center gap-1.5 shrink-0 hover:bg-charcoal-4"
+              >
+                <span>Plan New Trip</span>
+              </Link>
             </div>
-            <button
-              type="submit"
-              className="w-full sm:w-auto px-6 py-3 bg-gradient-to-r from-sunset-500 to-teal-500 hover:from-sunset-600 hover:to-teal-600 text-white rounded-xl sm:rounded-full text-xs font-black shadow-md shadow-sunset-500/25 hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2 shrink-0"
-            >
-              <Sparkles className="w-4 h-4" />
-              <span>✨ Plan with AI</span>
-            </button>
           </form>
         </div>
       </div>
 
-      {/* SECTION 1: Trending Destinations per specification */}
-      <div className="space-y-5">
+      {/* SECTION 1: Trending Destinations */}
+      <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-xl sm:text-2xl font-black text-navy-900 dark:text-white tracking-tight flex items-center gap-2">
-              <Compass className="w-6 h-6 text-teal-500" /> Trending Destinations
+            <h2 className="text-2xl font-semibold text-charcoal tracking-[-0.9px] flex items-center gap-2">
+              <Compass className="w-5 h-5 opacity-80" /> Trending Destinations
             </h2>
-            <p className="text-xs text-slate-500 dark:text-slate-400">
+            <p className="text-xs text-muted font-normal mt-1">
               Curated global cities with verified cost indices, cultural sights, and multi-city connectivity.
             </p>
           </div>
           <Link
             href="/cities"
-            className="text-xs font-bold text-teal-600 dark:text-teal-400 hover:text-teal-700 flex items-center gap-1 group"
+            className="text-xs font-normal text-charcoal hover:underline flex items-center gap-1 group"
           >
-            Explore all <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+            Explore all <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
           </Link>
         </div>
 
@@ -263,61 +249,39 @@ export default function DashboardPage() {
             return (
               <div
                 key={city.id}
-                className="group bg-white dark:bg-card-dark rounded-card overflow-hidden border border-slate-200/80 dark:border-slate-800 shadow-soft hover:shadow-soft-lg hover:-translate-y-1 transition-all duration-300 flex flex-col"
+                className="group bg-cream rounded-card overflow-hidden border border-light-cream flex flex-col transition-colors"
               >
-                <div className="relative aspect-[16/10] w-full overflow-hidden bg-slate-100 dark:bg-slate-800">
+                <div className="relative aspect-[16/10] w-full overflow-hidden bg-cream border-b border-light-cream">
                   <img
                     src={city.imageUrl}
                     alt={city.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-300"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent" />
-
-                  {/* Badges */}
-                  <div className="absolute top-3 left-3 flex items-center gap-1.5">
-                    <span className="px-2.5 py-1 rounded-full bg-white/90 dark:bg-slate-900/90 backdrop-blur-md text-[10px] font-extrabold text-navy-900 dark:text-white shadow-xs">
-                      {city.country}
-                    </span>
-                    {city.region && (
-                      <span className="px-2 py-0.5 rounded-full bg-slate-900/60 backdrop-blur-md text-[10px] font-bold text-teal-300">
-                        {city.region}
-                      </span>
-                    )}
-                  </div>
-
                   <button
                     type="button"
                     onClick={() => toggleSaveCity(city.id)}
-                    className="absolute top-3 right-3 p-2 rounded-full bg-white/90 dark:bg-slate-900/90 backdrop-blur-md text-slate-700 dark:text-slate-200 hover:text-rose-500 transition-colors shadow-xs"
+                    className="absolute top-3 right-3 p-1.5 rounded-pill bg-cream border border-light-cream text-charcoal shadow-inset-btn opacity-80 active:opacity-100 transition-opacity"
                   >
-                    <Heart className={`w-3.5 h-3.5 ${isSaved ? 'fill-rose-500 text-rose-500' : ''}`} />
+                    <Heart className={`w-3.5 h-3.5 ${isSaved ? 'fill-charcoal text-charcoal' : ''}`} />
                   </button>
-
-                  <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-white">
-                    <span className="text-base font-black tracking-tight">{city.name}</span>
-                    <div className="flex items-center gap-1 text-[11px] font-bold text-amber-300">
-                      <Star className="w-3.5 h-3.5 fill-amber-300 text-amber-300" />
-                      {(4.5 + (city.popularity % 5) * 0.1).toFixed(1)}
-                    </div>
-                  </div>
                 </div>
 
                 <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
-                  <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 leading-relaxed">
-                    {city.description || 'Explore rich heritage, vibrant neighborhoods, and authentic culinary stops.'}
-                  </p>
-
-                  <div className="pt-2 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
-                    <div className="flex items-center gap-1 text-xs font-semibold text-slate-500 dark:text-slate-400">
-                      <span className="text-sunset-500 font-black">
-                        {city.costIndex < 0.8 ? '$$' : city.costIndex < 1.3 ? '$$$' : '$$$$'}
-                      </span>
-                      <span>• Cost Index {city.costIndex}x</span>
+                  <div className="space-y-1">
+                    <div className="flex items-center justify-between">
+                      <h3 className="text-lg font-semibold text-charcoal tracking-tight">{city.name}</h3>
+                      <span className="text-xs font-normal text-muted">{city.country}</span>
                     </div>
+                    <p className="text-xs text-muted font-normal line-clamp-2 leading-relaxed">
+                      {city.description || 'Explore rich heritage, vibrant neighborhoods, and authentic culinary stops.'}
+                    </p>
+                  </div>
 
+                  <div className="pt-3 border-t border-light-cream flex items-center justify-between text-xs font-normal text-muted">
+                    <span>Cost Index {city.costIndex}x</span>
                     <Link
                       href={`/cities?search=${encodeURIComponent(city.name)}`}
-                      className="px-4 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-teal-500 hover:text-white dark:hover:bg-teal-500 text-navy-900 dark:text-slate-200 rounded-xl text-xs font-bold transition-all"
+                      className="px-3 py-1.5 bg-transparent text-charcoal border border-charcoal-40 rounded text-xs font-normal hover:bg-charcoal-4 transition-colors"
                     >
                       Explore
                     </Link>
@@ -329,22 +293,22 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* SECTION 2: Trending Activities per specification */}
-      <div className="space-y-5">
+      {/* SECTION 2: Trending Activities */}
+      <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-xl sm:text-2xl font-black text-navy-900 dark:text-white tracking-tight flex items-center gap-2">
-              <Zap className="w-6 h-6 text-sunset-500" /> Trending Activities & Experiences
+            <h2 className="text-2xl font-semibold text-charcoal tracking-[-0.9px] flex items-center gap-2">
+              <Zap className="w-5 h-5 opacity-80" /> Trending Activities & Experiences
             </h2>
-            <p className="text-xs text-slate-500 dark:text-slate-400">
-              Top-rated guided masterclasses, culinary crawls, and landmark admissions.
+            <p className="text-xs text-muted font-normal mt-1">
+              Top-rated guided tours, culinary crawls, and landmark admissions.
             </p>
           </div>
           <Link
             href="/activities"
-            className="text-xs font-bold text-sunset-500 hover:text-sunset-600 flex items-center gap-1 group"
+            className="text-xs font-normal text-charcoal hover:underline flex items-center gap-1 group"
           >
-            View all <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+            View all <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
           </Link>
         </div>
 
@@ -352,41 +316,40 @@ export default function DashboardPage() {
           {TRENDING_ACTIVITIES.map((act) => (
             <div
               key={act.id}
-              className="bg-white dark:bg-card-dark rounded-card overflow-hidden border border-slate-200/80 dark:border-slate-800 shadow-soft hover:shadow-soft-lg hover:-translate-y-1 transition-all duration-300 flex flex-col"
+              className="bg-cream rounded-card overflow-hidden border border-light-cream flex flex-col"
             >
-              <div className="relative aspect-[4/3] w-full overflow-hidden bg-slate-100 dark:bg-slate-800">
+              <div className="relative aspect-[4/3] w-full overflow-hidden bg-cream border-b border-light-cream">
                 <img
                   src={act.imageUrl}
                   alt={act.name}
-                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                  className="w-full h-full object-cover"
                 />
-                <div className="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-full bg-slate-900/70 backdrop-blur-md text-white text-[10px] font-bold">
+                <div className="absolute top-2.5 left-2.5 px-2 py-0.5 rounded bg-cream border border-light-cream text-[10px] font-normal text-charcoal">
                   {act.type}
                 </div>
-                <div className="absolute bottom-2.5 right-2.5 px-2.5 py-1 rounded-full bg-sunset-500 text-white text-[11px] font-extrabold shadow-sm">
+                <div className="absolute bottom-2.5 right-2.5 px-2 py-0.5 rounded bg-charcoal text-off-white text-[11px] font-normal shadow-inset-btn">
                   {act.avgPrice}
                 </div>
               </div>
 
               <div className="p-4 flex-1 flex flex-col justify-between space-y-3">
-                <div>
-                  <div className="flex items-center gap-1 text-[11px] text-teal-600 dark:text-teal-400 font-bold mb-1">
-                    <MapPin className="w-3 h-3" /> {act.city}
+                <div className="space-y-1">
+                  <div className="flex items-center gap-1 text-[11px] text-muted font-normal">
+                    <MapPin className="w-3 h-3 opacity-70" /> {act.city}
                   </div>
-                  <h3 className="text-xs font-bold text-navy-900 dark:text-white line-clamp-2">
+                  <h3 className="text-xs font-semibold text-charcoal line-clamp-2 leading-snug">
                     {act.name}
                   </h3>
                 </div>
 
-                <div className="pt-2 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
-                  <div className="flex items-center gap-1 font-bold text-amber-500">
-                    <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                <div className="pt-2 border-t border-light-cream flex items-center justify-between text-xs text-muted font-normal">
+                  <div className="flex items-center gap-1 text-charcoal">
+                    <Star className="w-3 h-3 fill-charcoal text-charcoal" />
                     <span>{act.rating}</span>
-                    <span className="text-[10px] text-slate-400 font-normal">({act.reviews})</span>
                   </div>
                   <Link
                     href="/activities"
-                    className="text-teal-600 dark:text-teal-400 font-bold hover:underline"
+                    className="text-charcoal underline font-normal hover:text-muted"
                   >
                     Details
                   </Link>

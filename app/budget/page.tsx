@@ -1,261 +1,241 @@
 'use client';
 
 import React, { useState } from 'react';
-import Link from 'next/link';
 import {
-  PieChart as PieIcon,
-  DollarSign,
+  PieChart as PieChartIcon,
   TrendingUp,
+  DollarSign,
   AlertTriangle,
   Sparkles,
   ArrowRight,
-  CheckCircle2,
-  Building2,
+  ShieldCheck,
+  Check,
+  Hotel,
   Plane,
   Utensils,
   Camera,
   ShoppingBag,
-  HelpCircle,
-  Zap,
+  Layers,
 } from 'lucide-react';
 import {
-  ResponsiveContainer,
   PieChart,
   Pie,
   Cell,
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
+  ResponsiveContainer,
   Tooltip,
-  Legend,
   AreaChart,
   Area,
+  XAxis,
+  YAxis,
 } from 'recharts';
 
-const INITIAL_CATEGORY_DATA = [
-  { name: 'Hotel & Stays', value: 14200, color: '#1E293B', icon: Building2 },
-  { name: 'Transport & Flights', value: 8900, color: '#14B8A6', icon: Plane },
-  { name: 'Food & Dining', value: 6400, color: '#F97316', icon: Utensils },
-  { name: 'Activities & Tours', value: 4100, color: '#8B5CF6', icon: Camera },
-  { name: 'Shopping & Souvenirs', value: 2600, color: '#EC4899', icon: ShoppingBag },
-  { name: 'Misc & Buffer', value: 1800, color: '#64748B', icon: HelpCircle },
+const BUDGET_BREAKDOWN_DATA = [
+  { name: 'Hotel & Stays', value: 950, color: '#1c1c1c' },
+  { name: 'Transport & Rail', value: 480, color: 'rgba(28,28,28,0.75)' },
+  { name: 'Food & Dining', value: 520, color: 'rgba(28,28,28,0.60)' },
+  { name: 'Activities & Tours', value: 340, color: 'rgba(28,28,28,0.45)' },
+  { name: 'Shopping', value: 210, color: 'rgba(28,28,28,0.30)' },
+  { name: 'Misc & Contingency', value: 150, color: 'rgba(28,28,28,0.18)' },
 ];
 
-const DAILY_CUMULATIVE_DATA = [
-  { day: 'Day 1', actual: 4200, target: 4500 },
-  { day: 'Day 2', actual: 8600, target: 9000 },
-  { day: 'Day 3', actual: 14800, target: 13500 },
-  { day: 'Day 4', actual: 19400, target: 18000 },
-  { day: 'Day 5', actual: 24600, target: 22500 },
-  { day: 'Day 6', actual: 31200, target: 27000 },
-  { day: 'Day 7', actual: 38000, target: 34800 },
+const DAILY_EXPENSE_TREND = [
+  { day: 'Day 1', spend: 320, budget: 350 },
+  { day: 'Day 2', spend: 410, budget: 350 },
+  { day: 'Day 3', spend: 280, budget: 350 },
+  { day: 'Day 4', spend: 520, budget: 350 },
+  { day: 'Day 5', spend: 390, budget: 350 },
+  { day: 'Day 6', spend: 310, budget: 350 },
+  { day: 'Day 7', spend: 420, budget: 350 },
 ];
 
-export default function BudgetOverviewPage() {
-  const [categories, setCategories] = useState(INITIAL_CATEGORY_DATA);
-  const [isOptimized, setIsOptimized] = useState(false);
-  const [optimizing, setOptimizing] = useState(false);
-
-  const totalSpent = categories.reduce((sum, c) => sum + c.value, 0);
-  const targetBudget = 34800;
-  const isOverBudget = totalSpent > targetBudget;
-  const overAmount = totalSpent - targetBudget;
-
-  const handleOptimize = () => {
-    setOptimizing(true);
-    setTimeout(() => {
-      setCategories((prev) =>
-        prev.map((c) => {
-          if (c.name === 'Hotel & Stays') return { ...c, value: c.value - 2000 };
-          if (c.name === 'Transport & Flights') return { ...c, value: c.value - 1200 };
-          return c;
-        })
-      );
-      setIsOptimized(true);
-      setOptimizing(false);
-    }, 800);
-  };
+export default function StandaloneBudgetPage() {
+  const [optimized, setOptimized] = useState(false);
+  const totalSpend = 2650;
+  const targetBudget = 2400;
+  const overBudgetAmount = totalSpend - targetBudget;
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-      {/* Top Banner */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl sm:text-3xl font-black text-navy-900 dark:text-white tracking-tight flex items-center gap-2.5">
-            <PieIcon className="w-7 h-7 text-sunset-500" /> Travel Budget Intelligence
-          </h1>
-          <p className="text-xs text-slate-500 dark:text-slate-400">
-            Real-time analytics, categorical expense breakdowns, and AI cost optimization.
-          </p>
-        </div>
-
-        <div className="flex items-center gap-3">
-          <Link
-            href="/ai-planner"
-            className="px-4 py-2 bg-teal-500 hover:bg-teal-600 text-white rounded-xl text-xs font-bold shadow-md shadow-teal-500/20 flex items-center gap-1.5"
-          >
-            <Sparkles className="w-3.5 h-3.5" /> Plan AI Budget
-          </Link>
-        </div>
+      {/* Header */}
+      <div>
+        <h1 className="text-2xl sm:text-3xl font-semibold text-charcoal tracking-[-0.9px] flex items-center gap-2.5">
+          <PieChartIcon className="w-6 h-6 opacity-80" /> Budget Intelligence & Expense Analysis
+        </h1>
+        <p className="text-xs text-muted font-normal mt-1">
+          Automated multi-currency cost tracking, category breakdowns, and AI savings recommendations.
+        </p>
       </div>
 
-      {/* KPI Cards Header */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-        <div className="bg-white dark:bg-card-dark rounded-card p-5 border border-slate-200/80 dark:border-slate-800 shadow-soft space-y-1">
-          <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Total Projected Spend</span>
-          <div className="text-2xl font-black text-navy-900 dark:text-white">₹{totalSpent.toLocaleString()}</div>
-          <p className="text-[11px] text-slate-500">Across 6 travel categories</p>
-        </div>
-
-        <div className="bg-white dark:bg-card-dark rounded-card p-5 border border-slate-200/80 dark:border-slate-800 shadow-soft space-y-1">
-          <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Allocated Target</span>
-          <div className="text-2xl font-black text-teal-600 dark:text-teal-400">₹{targetBudget.toLocaleString()}</div>
-          <p className="text-[11px] text-slate-500">Target budget limit</p>
-        </div>
-
-        <div className={`rounded-card p-5 border shadow-soft space-y-1 ${
-          isOverBudget
-            ? 'bg-rose-50 dark:bg-rose-950/40 border-rose-200 dark:border-rose-800'
-            : 'bg-teal-50 dark:bg-teal-950/40 border-teal-200 dark:border-teal-800'
-        }`}>
-          <span className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Variance Status</span>
-          <div className={`text-2xl font-black ${isOverBudget ? 'text-rose-600 dark:text-rose-400' : 'text-teal-600 dark:text-teal-400'}`}>
-            {isOverBudget ? `+₹${overAmount.toLocaleString()} Over` : 'Within Budget Target'}
+      {/* KPI Cards Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="bg-cream rounded-card p-5 border border-light-cream">
+          <span className="text-[11px] font-normal uppercase tracking-wider text-muted">
+            Total Estimated Spend
+          </span>
+          <div className="text-2xl font-semibold text-charcoal tracking-tight mt-1">
+            ${totalSpend.toLocaleString()}
           </div>
-          <p className="text-[11px] text-slate-500 dark:text-slate-400">
-            {isOverBudget ? 'AI recommendations available' : 'Budget is healthy & balanced'}
-          </p>
+          <span className="text-[11px] text-muted mt-0.5 block">Across 6 expense categories</span>
+        </div>
+
+        <div className="bg-cream rounded-card p-5 border border-light-cream">
+          <span className="text-[11px] font-normal uppercase tracking-wider text-muted">
+            Allocated Trip Budget
+          </span>
+          <div className="text-2xl font-semibold text-charcoal tracking-tight mt-1">
+            ${targetBudget.toLocaleString()}
+          </div>
+          <span className="text-[11px] text-muted mt-0.5 block">Set by user</span>
+        </div>
+
+        <div className="bg-cream rounded-card p-5 border border-light-cream">
+          <span className="text-[11px] font-normal uppercase tracking-wider text-muted">
+            Variance Status
+          </span>
+          <div className="text-2xl font-semibold text-charcoal tracking-tight mt-1">
+            +${overBudgetAmount}
+          </div>
+          <span className="text-[11px] text-muted mt-0.5 block">Over allocated budget</span>
+        </div>
+
+        <div className="bg-cream rounded-card p-5 border border-light-cream">
+          <span className="text-[11px] font-normal uppercase tracking-wider text-muted">
+            Average Daily Cost
+          </span>
+          <div className="text-2xl font-semibold text-charcoal tracking-tight mt-1">
+            ${Math.round(totalSpend / 7)} / day
+          </div>
+          <span className="text-[11px] text-muted mt-0.5 block">For 7 itinerary days</span>
         </div>
       </div>
 
-      {/* AI Suggestion Card per prompt spec */}
-      <div className="relative rounded-card overflow-hidden bg-gradient-to-r from-sunset-500 via-sunset-600 to-teal-700 p-6 sm:p-8 text-white shadow-xl">
-        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div className="space-y-2 max-w-2xl">
-            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/20 backdrop-blur-md text-[10px] font-extrabold uppercase tracking-wider">
-              <Sparkles className="w-3 h-3" /> Globe AI Budget Co-Pilot
-            </div>
-            <h2 className="text-xl sm:text-2xl font-black tracking-tight">
-              {isOptimized
-                ? "🎉 Budget Optimized Successfully!"
-                : "You're ₹3,200 over budget. Switch to a boutique homestay to save ₹2,000."}
-            </h2>
-            <p className="text-xs text-white/90 leading-relaxed">
-              {isOptimized
-                ? "We swapped central commercial hotels for highly-rated private machiyas in Kyoto and bundled regional express train tickets, bringing your total expenditure right on target."
-                : "Our algorithm identified equivalent 4.8★ rated stays in nearby residential districts (saving ₹2,000) and off-peak train transfers (saving ₹1,200)."}
+      {/* AI Suggestion Alert Card: Warm muted palette (no saturated red) */}
+      <div className="bg-cream rounded-card p-5 sm:p-6 border border-charcoal-40 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="flex items-start gap-3">
+          <div className="p-2 rounded bg-charcoal text-off-white shrink-0 shadow-inset-btn">
+            <Sparkles className="w-4 h-4" />
+          </div>
+          <div className="space-y-1">
+            <h3 className="text-sm font-semibold text-charcoal">
+              AI Budget Optimization Available
+            </h3>
+            <p className="text-xs text-muted font-normal leading-relaxed max-w-2xl">
+              You are currently <span className="font-semibold text-charcoal">${overBudgetAmount} over budget</span>.
+              Switching from western hotels to traditional homestays in Kyoto and booking regional rail passes will save approximately <span className="font-semibold text-charcoal">$250</span> without sacrificing convenience.
             </p>
           </div>
-
-          <button
-            type="button"
-            onClick={handleOptimize}
-            disabled={isOptimized || optimizing}
-            className="px-6 py-3 bg-white text-navy-900 hover:bg-slate-100 disabled:bg-white/80 rounded-2xl text-xs font-black shadow-lg hover:scale-105 active:scale-95 transition-all shrink-0 flex items-center gap-2"
-          >
-            {optimizing ? (
-              <>
-                <div className="w-4 h-4 border-2 border-navy-900 border-t-transparent rounded-full animate-spin" />
-                Optimizing Budget...
-              </>
-            ) : isOptimized ? (
-              <>
-                <CheckCircle2 className="w-4 h-4 text-teal-600" /> Optimized
-              </>
-            ) : (
-              <>
-                <Zap className="w-4 h-4 text-sunset-500" /> Optimize Budget
-              </>
-            )}
-          </button>
         </div>
+
+        <button
+          type="button"
+          onClick={() => setOptimized(!optimized)}
+          className="px-4 py-2 bg-charcoal text-off-white rounded shadow-inset-btn text-xs font-normal flex items-center gap-1.5 active:opacity-80 transition-opacity shrink-0"
+        >
+          {optimized ? (
+            <>
+              <Check className="w-3.5 h-3.5" /> Budget Optimized
+            </>
+          ) : (
+            <>
+              <Sparkles className="w-3.5 h-3.5" /> Optimize Budget
+            </>
+          )}
+        </button>
       </div>
 
-      {/* Charts Grid: Recharts Pie & Area Charts */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Category Breakdown (Pie) */}
-        <div className="bg-white dark:bg-card-dark rounded-card p-6 border border-slate-200/80 dark:border-slate-800 shadow-soft space-y-4">
-          <div className="flex items-center justify-between">
-            <h3 className="text-sm font-bold text-navy-900 dark:text-white">Expense Distribution by Category</h3>
-            <span className="text-xs text-slate-400 font-medium">6 Categories</span>
+      {/* Charts Section */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Category Breakdown Donut */}
+        <div className="bg-cream rounded-card p-6 border border-light-cream space-y-4">
+          <div className="flex items-center justify-between pb-3 border-b border-light-cream">
+            <h3 className="text-sm font-semibold text-charcoal">Category Allocation</h3>
+            <span className="text-xs text-muted font-normal">6 Expense Tiers</span>
           </div>
 
           <div className="h-64 w-full">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
-                  data={categories}
-                  dataKey="value"
-                  nameKey="name"
-                  cx="50%"
-                  cy="50%"
+                  data={BUDGET_BREAKDOWN_DATA}
                   innerRadius={55}
                   outerRadius={85}
-                  paddingAngle={4}
+                  paddingAngle={2}
+                  dataKey="value"
                 >
-                  {categories.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
+                  {BUDGET_BREAKDOWN_DATA.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.color} stroke="#f7f4ed" strokeWidth={2} />
                   ))}
                 </Pie>
                 <Tooltip
-                  formatter={(value: any) => [`₹${Number(value).toLocaleString()}`, 'Amount']}
+                  formatter={(value: any) => [`$${value}`, 'Amount']}
+                  contentStyle={{
+                    backgroundColor: '#f7f4ed',
+                    borderRadius: '8px',
+                    borderColor: '#eceae4',
+                    color: '#1c1c1c',
+                    fontSize: '12px',
+                  }}
                 />
               </PieChart>
             </ResponsiveContainer>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2">
-            {categories.map((cat, i) => (
-              <div key={i} className="flex items-center gap-2 text-xs">
-                <span className="w-3 h-3 rounded-md" style={{ backgroundColor: cat.color }} />
-                <div className="truncate">
-                  <div className="font-semibold text-slate-700 dark:text-slate-300 truncate">{cat.name}</div>
-                  <div className="text-[11px] text-slate-400 font-bold">₹{cat.value.toLocaleString()}</div>
+          <div className="grid grid-cols-2 gap-2 pt-2 border-t border-light-cream text-xs text-muted font-normal">
+            {BUDGET_BREAKDOWN_DATA.map((item) => (
+              <div key={item.name} className="flex items-center justify-between p-1.5 rounded bg-charcoal-3">
+                <div className="flex items-center gap-1.5">
+                  <div className="w-2.5 h-2.5 rounded" style={{ backgroundColor: item.color }} />
+                  <span className="truncate">{item.name}</span>
                 </div>
+                <span className="font-semibold text-charcoal">${item.value}</span>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Daily Cumulative Burn (Area Chart) */}
-        <div className="bg-white dark:bg-card-dark rounded-card p-6 border border-slate-200/80 dark:border-slate-800 shadow-soft space-y-4">
-          <div className="flex items-center justify-between">
-            <h3 className="text-sm font-bold text-navy-900 dark:text-white">Cumulative Burn vs. Target</h3>
-            <span className="text-xs text-teal-600 dark:text-teal-400 font-bold">7-Day Trajectory</span>
+        {/* Daily Expense Projection */}
+        <div className="bg-cream rounded-card p-6 border border-light-cream space-y-4">
+          <div className="flex items-center justify-between pb-3 border-b border-light-cream">
+            <h3 className="text-sm font-semibold text-charcoal">Daily Spending Trajectory</h3>
+            <span className="text-xs text-muted font-normal">Spend vs Daily Target</span>
           </div>
 
           <div className="h-64 w-full">
             <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={DAILY_CUMULATIVE_DATA}>
-                <XAxis dataKey="day" tick={{ fontSize: 11 }} />
-                <YAxis tick={{ fontSize: 11 }} tickFormatter={(val) => `₹${val / 1000}k`} />
-                <Tooltip formatter={(val: any) => [`₹${Number(val).toLocaleString()}`]} />
-                <Legend />
-                <Area
-                  type="monotone"
-                  dataKey="actual"
-                  name="Projected Spend"
-                  stroke="#F97316"
-                  fill="#F9731620"
-                  strokeWidth={2.5}
+              <AreaChart data={DAILY_EXPENSE_TREND}>
+                <defs>
+                  <linearGradient id="spendGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#1c1c1c" stopOpacity={0.2} />
+                    <stop offset="95%" stopColor="#1c1c1c" stopOpacity={0.0} />
+                  </linearGradient>
+                </defs>
+                <XAxis dataKey="day" stroke="#5f5f5d" fontSize={11} tickLine={false} />
+                <YAxis stroke="#5f5f5d" fontSize={11} tickLine={false} />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: '#f7f4ed',
+                    borderRadius: '8px',
+                    borderColor: '#eceae4',
+                    color: '#1c1c1c',
+                    fontSize: '12px',
+                  }}
                 />
                 <Area
                   type="monotone"
-                  dataKey="target"
-                  name="Planned Ceiling"
-                  stroke="#14B8A6"
-                  fill="#14B8A610"
-                  strokeWidth={2}
-                  strokeDasharray="4 4"
+                  dataKey="spend"
+                  stroke="#1c1c1c"
+                  strokeWidth={1.5}
+                  fillOpacity={1}
+                  fill="url(#spendGradient)"
                 />
               </AreaChart>
             </ResponsiveContainer>
           </div>
 
-          <p className="text-xs text-slate-500 dark:text-slate-400 text-center pt-2">
-            Spending pace is heaviest on Days 3 & 4 due to bullet train transit and multi-course dining in Kyoto.
-          </p>
+          <div className="p-3 rounded bg-charcoal-3 flex items-center justify-between text-xs text-muted font-normal">
+            <span>Daily Budget Cap: $350</span>
+            <span className="font-semibold text-charcoal">Day 4 Peak: Sightseeing & High-Speed Rail</span>
+          </div>
         </div>
       </div>
     </div>

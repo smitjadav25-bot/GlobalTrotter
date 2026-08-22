@@ -7,7 +7,6 @@ import { useSession, signOut } from 'next-auth/react';
 import {
   Compass,
   MapPin,
-  Calendar,
   Building2,
   Sparkles,
   Plus,
@@ -23,18 +22,13 @@ import {
   Settings,
   Search,
   Bell,
-  Sun,
-  Moon,
   CloudSun,
-  CheckCircle2,
 } from 'lucide-react';
-import { useTheme } from './ThemeProvider';
 
 export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
   const { data: session, status } = useSession();
-  const { theme, toggleTheme } = useTheme();
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
@@ -56,7 +50,6 @@ export default function Navbar() {
     }
   };
 
-  // Close notifications on click outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (notifRef.current && !notifRef.current.contains(event.target as Node)) {
@@ -67,12 +60,11 @@ export default function Navbar() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // Ordered Navigation Links per specification
   const navLinks = [
     { href: '/dashboard', label: 'Home', icon: LayoutDashboard },
     { href: '/cities', label: 'Explore', icon: Building2 },
     { href: '/trips', label: 'My Trips', icon: MapPin },
-    { href: '/ai-planner', label: 'AI Planner', icon: Sparkles, highlight: true },
+    { href: '/ai-planner', label: 'AI Planner', icon: Sparkles },
     { href: '/map', label: 'Explore Map', icon: Map },
     { href: '/budget', label: 'Budget Analysis', icon: PieChart },
     { href: '/community', label: 'Community', icon: Users },
@@ -86,48 +78,34 @@ export default function Navbar() {
   const sampleNotifications = [
     {
       id: 'n1',
-      title: 'AI Itinerary Generated',
+      title: 'Itinerary Blueprint Generated',
       time: '10m ago',
-      desc: 'Your Japan Cultural Odyssey has been optimized for budget efficiency.',
-      read: false,
+      desc: 'Your Japan route has been optimized for transit and pacing.',
     },
     {
       id: 'n2',
-      title: 'Flight Price Drop',
+      title: 'Fare Adjustment Detected',
       time: '2h ago',
-      desc: 'Roundtrip flights to Paris dropped by 18% for October dates.',
-      read: false,
-    },
-    {
-      id: 'n3',
-      title: 'Community Like',
-      time: '1d ago',
-      desc: 'Elena liked your travel photo in Bali rice terraces.',
-      read: true,
+      desc: 'Selected stays in Kyoto decreased by 15% for your dates.',
     },
   ];
 
   return (
-    <header className="sticky top-0 z-40 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800 shadow-xs transition-colors duration-200">
+    <header className="sticky top-0 z-40 bg-cream border-b border-light-cream">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 gap-4">
+        <div className="flex items-center justify-between h-14 gap-4">
           {/* Logo Brand */}
           <div className="flex items-center gap-6">
             <NextLink
               href={isAuthenticated ? '/dashboard' : '/login'}
-              className="flex items-center gap-2.5 group"
+              className="flex items-center gap-2"
             >
-              <div className="w-9 h-9 rounded-2xl bg-gradient-to-tr from-teal-600 to-navy-800 flex items-center justify-center text-white shadow-md shadow-teal-500/20 group-hover:scale-105 transition-transform">
-                <Compass className="w-5 h-5" />
+              <div className="w-7 h-7 rounded bg-charcoal flex items-center justify-center text-off-white shadow-inset-btn">
+                <Compass className="w-4 h-4" />
               </div>
-              <div className="flex items-center gap-1.5">
-                <span className="text-lg font-black tracking-tight text-navy-900 dark:text-white">
-                  Globe<span className="text-teal-500">Trotter</span>
-                </span>
-                <span className="px-1.5 py-0.5 rounded text-[9px] font-extrabold uppercase bg-sunset-50 dark:bg-sunset-950 text-sunset-600 dark:text-sunset-400 border border-sunset-200 dark:border-sunset-800">
-                  AI
-                </span>
-              </div>
+              <span className="text-base font-semibold tracking-tight text-charcoal">
+                GlobeTrotter
+              </span>
             </NextLink>
 
             {/* Desktop Navigation Links */}
@@ -143,15 +121,13 @@ export default function Navbar() {
                     <NextLink
                       key={link.href}
                       href={link.href}
-                      className={`px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-all ${
+                      className={`px-3 py-1.5 rounded text-sm font-normal transition-colors flex items-center gap-1.5 ${
                         isActive
-                          ? 'bg-slate-100 dark:bg-slate-800 text-teal-600 dark:text-teal-400 font-bold'
-                          : link.highlight
-                          ? 'text-sunset-500 hover:bg-sunset-50 dark:hover:bg-sunset-950/40'
-                          : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100/60 dark:hover:bg-slate-800/60'
+                          ? 'bg-charcoal-4 text-charcoal font-semibold'
+                          : 'text-muted hover:text-charcoal hover:bg-charcoal-3'
                       }`}
                     >
-                      <Icon className="w-3.5 h-3.5" />
+                      <Icon className="w-3.5 h-3.5 opacity-70" />
                       {link.label}
                     </NextLink>
                   );
@@ -160,28 +136,28 @@ export default function Navbar() {
             )}
           </div>
 
-          {/* Top Bar Extras: Search, Weather, Notifications, Dark Mode, Auth */}
-          <div className="flex items-center gap-2 sm:gap-3">
+          {/* Top Bar Right Actions */}
+          <div className="flex items-center gap-2.5">
             {/* Search Input Bar (Desktop) */}
             {isAuthenticated && (
               <form
                 onSubmit={handleSearchSubmit}
-                className="hidden lg:flex items-center relative w-48 xl:w-56"
+                className="hidden lg:flex items-center relative w-48"
               >
-                <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                <Search className="w-3.5 h-3.5 text-muted absolute left-2.5 top-1/2 -translate-y-1/2" />
                 <input
                   type="text"
                   placeholder="Search destinations..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-9 pr-3 py-1.5 bg-slate-100 dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500/40 transition-all"
+                  className="w-full pl-8 pr-3 py-1.5 bg-cream text-charcoal border border-light-cream rounded text-xs placeholder:text-muted focus:ring-2 focus:ring-ring-blue focus:outline-none"
                 />
               </form>
             )}
 
             {/* Weather Widget Chip */}
-            <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-[11px] font-semibold text-slate-600 dark:text-slate-300">
-              <CloudSun className="w-3.5 h-3.5 text-sunset-500" />
+            <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 bg-cream border border-light-cream rounded text-xs font-normal text-muted">
+              <CloudSun className="w-3.5 h-3.5 text-charcoal opacity-70" />
               <span>Tokyo 22°C</span>
             </div>
 
@@ -192,35 +168,29 @@ export default function Navbar() {
                   type="button"
                   onClick={() => setNotificationsOpen(!notificationsOpen)}
                   aria-label="Notifications"
-                  className="p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 relative transition-colors"
+                  className="p-1.5 rounded text-muted hover:text-charcoal hover:bg-charcoal-4 relative transition-colors"
                 >
                   <Bell className="w-4 h-4" />
-                  <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-sunset-500 animate-pulse" />
+                  <span className="absolute top-1 right-1 w-1.5 h-1.5 rounded-pill bg-charcoal" />
                 </button>
 
                 {notificationsOpen && (
-                  <div className="absolute right-0 mt-2 w-80 bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800 p-3 z-50 animate-in fade-in zoom-in-95 duration-150">
-                    <div className="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-800 px-1">
-                      <h4 className="text-xs font-bold text-slate-900 dark:text-white">Notifications</h4>
-                      <span className="text-[10px] text-teal-600 dark:text-teal-400 font-semibold cursor-pointer">
-                        Mark all as read
+                  <div className="absolute right-0 mt-2 w-72 bg-cream rounded-card border border-light-cream p-3 z-50">
+                    <div className="flex items-center justify-between pb-2 border-b border-light-cream px-1">
+                      <span className="text-xs font-semibold text-charcoal">Notifications</span>
+                      <span className="text-[11px] text-muted cursor-pointer hover:text-charcoal">
+                        Mark read
                       </span>
                     </div>
-                    <div className="space-y-2 mt-2 max-h-64 overflow-y-auto">
+                    <div className="space-y-1.5 mt-2 max-h-60 overflow-y-auto">
                       {sampleNotifications.map((n) => (
                         <div
                           key={n.id}
-                          className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer text-left"
+                          className="p-2 rounded bg-charcoal-3 hover:bg-charcoal-4 transition-colors cursor-pointer text-left"
                         >
-                          <div className="flex items-center justify-between">
-                            <span className="text-xs font-bold text-slate-800 dark:text-slate-200">
-                              {n.title}
-                            </span>
-                            <span className="text-[10px] text-slate-400">{n.time}</span>
-                          </div>
-                          <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5 line-clamp-2">
-                            {n.desc}
-                          </p>
+                          <div className="text-xs font-semibold text-charcoal">{n.title}</div>
+                          <p className="text-[11px] text-muted mt-0.5 line-clamp-2">{n.desc}</p>
+                          <span className="text-[10px] text-muted mt-1 block">{n.time}</span>
                         </div>
                       ))}
                     </div>
@@ -229,26 +199,12 @@ export default function Navbar() {
               </div>
             )}
 
-            {/* Dark / Light Mode Toggle */}
-            <button
-              type="button"
-              onClick={toggleTheme}
-              aria-label="Toggle Theme"
-              className="p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-            >
-              {theme === 'dark' ? (
-                <Sun className="w-4 h-4 text-amber-400" />
-              ) : (
-                <Moon className="w-4 h-4 text-navy-800" />
-              )}
-            </button>
-
             {/* User Profile & Auth actions */}
             {isAuthenticated ? (
               <div className="flex items-center gap-2">
                 <NextLink
                   href="/trips/new"
-                  className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-sunset-500 hover:bg-sunset-600 text-white rounded-xl text-xs font-bold shadow-md shadow-sunset-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all"
+                  className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-charcoal text-off-white text-xs font-normal rounded shadow-inset-btn active:opacity-80 focus:shadow-focus-soft transition-opacity"
                 >
                   <Plus className="w-3.5 h-3.5" />
                   <span>New Trip</span>
@@ -256,17 +212,17 @@ export default function Navbar() {
 
                 <NextLink
                   href="/profile"
-                  className="flex items-center gap-2 p-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                  className="flex items-center gap-1.5 p-1 rounded hover:bg-charcoal-4 transition-colors"
                   title="View Profile"
                 >
                   {session?.user?.image ? (
                     <img
                       src={session.user.image}
                       alt={session.user.name || 'User'}
-                      className="w-7 h-7 rounded-xl object-cover border border-slate-200 dark:border-slate-700"
+                      className="w-6 h-6 rounded object-cover border border-light-cream"
                     />
                   ) : (
-                    <div className="w-7 h-7 rounded-xl bg-teal-500 text-white flex items-center justify-center font-bold text-xs">
+                    <div className="w-6 h-6 rounded bg-charcoal text-off-white flex items-center justify-center font-normal text-xs">
                       {session?.user?.name ? session.user.name[0].toUpperCase() : 'U'}
                     </div>
                   )}
@@ -274,7 +230,7 @@ export default function Navbar() {
 
                 <button
                   onClick={handleLogout}
-                  className="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 rounded-xl transition-colors"
+                  className="p-1.5 text-muted hover:text-charcoal hover:bg-charcoal-4 rounded transition-colors"
                   title="Sign Out"
                 >
                   <LogOut className="w-4 h-4" />
@@ -284,25 +240,25 @@ export default function Navbar() {
               <div className="flex items-center gap-2">
                 <NextLink
                   href="/login"
-                  className="px-3.5 py-1.5 text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                  className="px-3 py-1.5 text-xs font-normal text-charcoal hover:bg-charcoal-4 rounded transition-colors"
                 >
                   Sign In
                 </NextLink>
                 <NextLink
                   href="/register"
-                  className="px-3.5 py-1.5 text-xs font-bold bg-teal-500 hover:bg-teal-600 text-white rounded-xl shadow-md shadow-teal-500/20 transition-all"
+                  className="px-3.5 py-1.5 text-xs font-normal bg-charcoal text-off-white rounded shadow-inset-btn active:opacity-80 transition-opacity"
                 >
                   Create Account
                 </NextLink>
               </div>
             )}
 
-            {/* Mobile Menu Hamburger (for expanded links on tablets/phones) */}
+            {/* Mobile Menu Hamburger */}
             {isAuthenticated && (
               <button
                 type="button"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="xl:hidden p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
+                className="xl:hidden p-1.5 rounded text-charcoal hover:bg-charcoal-4"
               >
                 {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
               </button>
@@ -311,21 +267,21 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile / Tablet Drawer */}
+      {/* Mobile Drawer */}
       {isAuthenticated && mobileMenuOpen && (
-        <div className="xl:hidden bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-4 pt-2 pb-6 space-y-3 animate-in slide-in-from-top-2 duration-150">
-          <form onSubmit={handleSearchSubmit} className="relative w-full mb-3">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+        <div className="xl:hidden bg-cream border-b border-light-cream px-4 pt-2 pb-4 space-y-2">
+          <form onSubmit={handleSearchSubmit} className="relative w-full mb-2">
+            <Search className="w-3.5 h-3.5 text-muted absolute left-2.5 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               placeholder="Search destinations..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-3 py-2 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white"
+              className="w-full pl-8 pr-3 py-1.5 bg-cream text-charcoal border border-light-cream rounded text-xs focus:ring-2 focus:ring-ring-blue focus:outline-none"
             />
           </form>
 
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 gap-1.5">
             {navLinks.map((link) => {
               const Icon = link.icon;
               const isActive = pathname === link.href;
@@ -334,32 +290,32 @@ export default function Navbar() {
                   key={link.href}
                   href={link.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`flex items-center gap-2 p-2.5 rounded-xl text-xs font-semibold ${
+                  className={`flex items-center gap-2 p-2 rounded text-xs font-normal ${
                     isActive
-                      ? 'bg-teal-50 dark:bg-teal-950/60 text-teal-600 dark:text-teal-400 font-bold'
-                      : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
+                      ? 'bg-charcoal-4 text-charcoal font-semibold'
+                      : 'text-muted hover:text-charcoal hover:bg-charcoal-3'
                   }`}
                 >
-                  <Icon className="w-4 h-4 text-slate-400" />
+                  <Icon className="w-3.5 h-3.5 opacity-70" />
                   {link.label}
                 </NextLink>
               );
             })}
           </div>
 
-          <div className="pt-2 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+          <div className="pt-2 border-t border-light-cream flex items-center justify-between">
             <NextLink
               href="/trips/new"
               onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center gap-1.5 px-4 py-2 bg-sunset-500 text-white rounded-xl text-xs font-bold"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-charcoal text-off-white rounded shadow-inset-btn text-xs font-normal"
             >
               <Plus className="w-3.5 h-3.5" /> New Trip
             </NextLink>
             <button
               onClick={handleLogout}
-              className="flex items-center gap-1.5 px-4 py-2 text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 rounded-xl text-xs font-semibold"
+              className="flex items-center gap-1.5 px-3 py-1.5 text-muted hover:text-charcoal text-xs font-normal"
             >
-              <LogOut className="w-4 h-4" /> Sign Out
+              <LogOut className="w-3.5 h-3.5" /> Sign Out
             </button>
           </div>
         </div>

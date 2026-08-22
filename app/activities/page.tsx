@@ -4,24 +4,19 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import {
   Sparkles,
-  Search,
-  Filter,
-  DollarSign,
   Clock,
   MapPin,
   Plus,
-  ArrowRight,
   CheckCircle2,
   Loader2,
   Camera,
   Utensils,
   Mountain,
   Palmtree,
-  Calendar,
   X,
 } from 'lucide-react';
 import SearchFilterBar from '@/components/SearchFilterBar';
-import { Activity, Trip } from '@/lib/types';
+import { Trip } from '@/lib/types';
 
 export default function ActivitiesPage() {
   const [activities, setActivities] = useState<any[]>([]);
@@ -131,15 +126,15 @@ export default function ActivitiesPage() {
   const getActivityIcon = (type: string) => {
     switch (type) {
       case 'SIGHTSEEING':
-        return <Camera className="w-4 h-4 text-blue-500" />;
+        return <Camera className="w-3.5 h-3.5 text-charcoal opacity-70" />;
       case 'FOOD':
-        return <Utensils className="w-4 h-4 text-amber-500" />;
+        return <Utensils className="w-3.5 h-3.5 text-charcoal opacity-70" />;
       case 'ADVENTURE':
-        return <Mountain className="w-4 h-4 text-emerald-500" />;
+        return <Mountain className="w-3.5 h-3.5 text-charcoal opacity-70" />;
       case 'RELAXATION':
-        return <Palmtree className="w-4 h-4 text-teal-500" />;
+        return <Palmtree className="w-3.5 h-3.5 text-charcoal opacity-70" />;
       default:
-        return <Sparkles className="w-4 h-4 text-coral" />;
+        return <Sparkles className="w-3.5 h-3.5 text-charcoal opacity-70" />;
     }
   };
 
@@ -199,20 +194,20 @@ export default function ActivitiesPage() {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-black text-slate-900 tracking-tight flex items-center gap-2.5">
-            <Sparkles className="w-8 h-8 text-coral" /> Experience Catalog
+          <h1 className="text-2xl sm:text-3xl font-semibold text-charcoal tracking-[-0.9px] flex items-center gap-2.5">
+            <Sparkles className="w-6 h-6 opacity-80" /> Experience Catalog
           </h1>
-          <p className="text-sm text-slate-500 mt-1">
+          <p className="text-xs text-muted font-normal mt-1">
             Discover culinary tastings, sightseeing tours, and wellness activities worldwide.
           </p>
         </div>
       </div>
 
-      {/* Reusable SearchFilterBar */}
+      {/* SearchFilterBar */}
       <SearchFilterBar
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
-        placeholder="Search experiences by keyword or city (e.g. Sushi, Matcha, Louvre, Hike)..."
+        placeholder="Search experiences by keyword or city..."
         filterOptions={typeOptions}
         selectedFilter={selectedType}
         onFilterChange={setSelectedType}
@@ -228,14 +223,14 @@ export default function ActivitiesPage() {
       {/* Activities Grid */}
       {loading ? (
         <div className="min-h-[40vh] flex flex-col items-center justify-center gap-2">
-          <Loader2 className="w-8 h-8 animate-spin text-coral" />
-          <p className="text-xs text-slate-400">Loading experiences...</p>
+          <Loader2 className="w-6 h-6 animate-spin text-charcoal" />
+          <p className="text-xs text-muted">Loading experiences...</p>
         </div>
       ) : filteredActivities.length === 0 ? (
-        <div className="bg-white rounded-3xl p-12 text-center border border-slate-200 shadow-soft">
-          <Sparkles className="w-12 h-12 text-slate-300 mx-auto mb-3" />
-          <h3 className="text-base font-bold text-slate-800">No experiences match your filters</h3>
-          <p className="text-xs text-slate-500 mt-1">Try broadening your search term or cost filters.</p>
+        <div className="bg-cream rounded-card p-12 text-center border border-light-cream">
+          <Sparkles className="w-8 h-8 text-muted mx-auto mb-2 opacity-50" />
+          <h3 className="text-sm font-semibold text-charcoal">No experiences match your filters</h3>
+          <p className="text-xs text-muted mt-0.5">Try broadening your search term or cost filters.</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -244,48 +239,48 @@ export default function ActivitiesPage() {
             return (
               <div
                 key={act.id}
-                className="bg-white rounded-3xl border border-slate-200 p-5 shadow-soft hover:shadow-lg transition-all flex flex-col justify-between space-y-4 group"
+                className="bg-cream rounded-card border border-light-cream p-4 flex flex-col justify-between space-y-3"
               >
-                <div className="space-y-3">
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-center">
+                <div className="space-y-2.5">
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="flex items-center gap-1.5">
+                      <div className="w-6 h-6 rounded bg-charcoal-4 flex items-center justify-center">
                         {getActivityIcon(act.type)}
                       </div>
-                      <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+                      <span className="text-[10px] font-normal text-muted uppercase tracking-wider">
                         {act.type}
                       </span>
                     </div>
-                    <span className="px-2.5 py-1 rounded-full bg-slate-100 text-slate-800 text-xs font-black">
+                    <span className="px-2 py-0.5 rounded bg-charcoal text-off-white text-[11px] font-normal shadow-inset-btn">
                       {act.cost === 0 ? 'FREE' : `$${act.cost}`}
                     </span>
                   </div>
 
                   <div>
-                    <h3 className="text-base font-bold text-slate-900 leading-snug group-hover:text-coral transition-colors">
+                    <h3 className="text-sm font-semibold text-charcoal leading-snug">
                       {act.name}
                     </h3>
-                    <div className="flex items-center gap-1 text-xs font-semibold text-teal-700 mt-1">
-                      <MapPin className="w-3.5 h-3.5" />
+                    <div className="flex items-center gap-1 text-[11px] text-muted mt-0.5">
+                      <MapPin className="w-3 h-3 opacity-70" />
                       {cityName}
                     </div>
                   </div>
 
                   {act.description && (
-                    <p className="text-xs text-slate-500 line-clamp-2 leading-relaxed">
+                    <p className="text-xs text-muted font-normal line-clamp-2 leading-relaxed">
                       {act.description}
                     </p>
                   )}
                 </div>
 
-                <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
-                  <div className="flex items-center gap-1 text-xs text-slate-400 font-medium">
-                    <Clock className="w-3.5 h-3.5" />
+                <div className="pt-2.5 border-t border-light-cream flex items-center justify-between text-xs text-muted font-normal">
+                  <div className="flex items-center gap-1">
+                    <Clock className="w-3 h-3 opacity-70" />
                     {act.durationMinutes} min
                   </div>
                   <button
                     onClick={() => openAddToTripModal(act)}
-                    className="px-3.5 py-2 bg-coral hover:bg-coral-dark text-white rounded-xl text-xs font-bold shadow-xs flex items-center gap-1.5 transition-all"
+                    className="px-3 py-1.5 bg-transparent text-charcoal border border-charcoal-40 rounded text-xs font-normal hover:bg-charcoal-4 flex items-center gap-1.5 transition-colors"
                   >
                     <Plus className="w-3.5 h-3.5" /> Add to Trip
                   </button>
@@ -298,44 +293,44 @@ export default function ActivitiesPage() {
 
       {/* Add Experience to Trip Modal */}
       {selectedActivity && (
-        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full border border-slate-200 shadow-2xl space-y-5 animate-in fade-in zoom-in-95 duration-150">
+        <div className="fixed inset-0 z-50 bg-charcoal-40 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-cream rounded-card p-6 max-w-md w-full border border-light-cream space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-lg font-black text-slate-900">Add to Itinerary</h3>
-                <p className="text-xs text-slate-500 truncate max-w-xs">{selectedActivity.name}</p>
+                <h3 className="text-base font-semibold text-charcoal">Add to Itinerary</h3>
+                <p className="text-xs text-muted font-normal truncate max-w-xs">{selectedActivity.name}</p>
               </div>
               <button
                 onClick={() => setSelectedActivity(null)}
-                className="p-1.5 text-slate-400 hover:text-slate-700 rounded-xl"
+                className="p-1 text-muted hover:text-charcoal rounded"
               >
-                <X className="w-5 h-5" />
+                <X className="w-4 h-4" />
               </button>
             </div>
 
             {addSuccessMsg ? (
-              <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-2xl text-emerald-800 text-xs flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
-                <span className="font-bold">{addSuccessMsg}</span>
+              <div className="p-3 bg-charcoal-4 border border-charcoal-40 rounded text-xs font-normal text-charcoal flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 shrink-0" />
+                <span>{addSuccessMsg}</span>
               </div>
             ) : trips.length === 0 ? (
               <div className="text-center py-4 space-y-3">
-                <p className="text-xs text-slate-600">You need a trip with at least one stop first!</p>
+                <p className="text-xs text-muted font-normal">You need a trip with at least one stop first.</p>
                 <Link
                   href="/trips/new"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-coral text-white rounded-xl text-xs font-bold shadow-md shadow-coral/20"
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-charcoal text-off-white rounded shadow-inset-btn text-xs font-normal"
                 >
                   Create Trip First
                 </Link>
               </div>
             ) : (
-              <form onSubmit={handleAddActivityToStop} className="space-y-4">
+              <form onSubmit={handleAddActivityToStop} className="space-y-3">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">Select Trip</label>
+                  <label className="block text-xs font-normal text-charcoal mb-1">Select Trip</label>
                   <select
                     value={targetTripId}
                     onChange={handleTripSelectChange}
-                    className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-800 focus:ring-2 focus:ring-coral/40"
+                    className="w-full px-3 py-2 bg-cream text-charcoal border border-light-cream rounded text-xs font-normal focus:ring-2 focus:ring-ring-blue"
                     required
                   >
                     {trips.map((t) => (
@@ -347,12 +342,12 @@ export default function ActivitiesPage() {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">Select City Stop</label>
+                  <label className="block text-xs font-normal text-charcoal mb-1">Select City Stop</label>
                   {selectedTripObject?.stops && selectedTripObject.stops.length > 0 ? (
                     <select
                       value={targetStopId}
                       onChange={(e) => setTargetStopId(e.target.value)}
-                      className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-800 focus:ring-2 focus:ring-coral/40"
+                      className="w-full px-3 py-2 bg-cream text-charcoal border border-light-cream rounded text-xs font-normal focus:ring-2 focus:ring-ring-blue"
                       required
                     >
                       {selectedTripObject.stops.map((s) => (
@@ -362,37 +357,37 @@ export default function ActivitiesPage() {
                       ))}
                     </select>
                   ) : (
-                    <div className="p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-800 font-semibold">
+                    <div className="p-2.5 bg-charcoal-4 border border-charcoal-40 rounded text-xs text-charcoal font-normal">
                       This trip doesn't have any stops yet. Please add a stop in Builder first.
                     </div>
                   )}
                 </div>
 
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-2 gap-2.5">
                   <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1">Scheduled Date</label>
+                    <label className="block text-xs font-normal text-charcoal mb-1">Scheduled Date</label>
                     <input
                       type="date"
                       value={scheduledDate}
                       onChange={(e) => setScheduledDate(e.target.value)}
-                      className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:ring-2 focus:ring-coral/40"
+                      className="w-full px-3 py-2 bg-cream text-charcoal border border-light-cream rounded text-xs focus:ring-2 focus:ring-ring-blue"
                       required
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1">Scheduled Time</label>
+                    <label className="block text-xs font-normal text-charcoal mb-1">Scheduled Time</label>
                     <input
                       type="time"
                       value={scheduledTime}
                       onChange={(e) => setScheduledTime(e.target.value)}
-                      className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:ring-2 focus:ring-coral/40"
+                      className="w-full px-3 py-2 bg-cream text-charcoal border border-light-cream rounded text-xs focus:ring-2 focus:ring-ring-blue"
                       required
                     />
                   </div>
                 </div>
 
                 {addErrorMsg && (
-                  <div className="p-3 bg-rose-50 border border-rose-200 rounded-xl text-xs font-semibold text-rose-600">
+                  <div className="p-2.5 bg-charcoal-4 border border-charcoal-40 rounded text-xs font-normal text-charcoal">
                     {addErrorMsg}
                   </div>
                 )}
@@ -401,16 +396,16 @@ export default function ActivitiesPage() {
                   <button
                     type="button"
                     onClick={() => setSelectedActivity(null)}
-                    className="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-xl"
+                    className="px-3 py-1.5 text-xs font-normal text-charcoal border border-charcoal-40 rounded hover:bg-charcoal-4"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
                     disabled={addingActivity || !targetStopId}
-                    className="px-5 py-2.5 bg-coral hover:bg-coral-dark text-white rounded-xl text-xs font-bold shadow-md shadow-coral/20 flex items-center gap-2 disabled:opacity-50"
+                    className="px-4 py-1.5 bg-charcoal text-off-white rounded shadow-inset-btn text-xs font-normal flex items-center gap-1.5 active:opacity-80 disabled:opacity-50"
                   >
-                    {addingActivity ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Confirm Add'}
+                    {addingActivity ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : 'Confirm Add'}
                   </button>
                 </div>
               </form>

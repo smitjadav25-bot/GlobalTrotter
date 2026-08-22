@@ -4,13 +4,9 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import {
   Building2,
-  MapPin,
   Heart,
   Plus,
   ArrowRight,
-  TrendingUp,
-  DollarSign,
-  Calendar,
   CheckCircle2,
   Loader2,
   X,
@@ -163,26 +159,26 @@ export default function CitiesPage() {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-black text-slate-900 tracking-tight flex items-center gap-2.5">
-            <Building2 className="w-8 h-8 text-coral" /> Global Destinations
+          <h1 className="text-2xl sm:text-3xl font-semibold text-charcoal tracking-[-0.9px] flex items-center gap-2.5">
+            <Building2 className="w-6 h-6 opacity-80" /> Global Destinations
           </h1>
-          <p className="text-sm text-slate-500 mt-1">
+          <p className="text-xs text-muted font-normal mt-1">
             Explore curated world cities, compare local cost indices, and add destinations directly into your trips.
           </p>
         </div>
         <Link
           href="/trips/new"
-          className="self-start md:self-auto px-5 py-2.5 bg-coral hover:bg-coral-dark text-white rounded-2xl text-xs font-bold shadow-md shadow-coral/20 flex items-center gap-2"
+          className="self-start md:self-auto px-4 py-2 bg-charcoal text-off-white rounded shadow-inset-btn text-xs font-normal flex items-center gap-2 active:opacity-80 transition-opacity"
         >
-          <Plus className="w-4 h-4" /> Plan Custom Trip
+          <Plus className="w-3.5 h-3.5" /> Plan Custom Trip
         </Link>
       </div>
 
-      {/* Shared SearchFilterBar */}
+      {/* SearchFilterBar */}
       <SearchFilterBar
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
-        placeholder="Search destinations by city or country (e.g. Tokyo, France, Bali)..."
+        placeholder="Search destinations by city or country..."
         filterOptions={regionOptions}
         selectedFilter={selectedRegion}
         onFilterChange={setSelectedRegion}
@@ -195,14 +191,14 @@ export default function CitiesPage() {
       {/* Cities Grid */}
       {loading ? (
         <div className="min-h-[40vh] flex flex-col items-center justify-center gap-2">
-          <Loader2 className="w-8 h-8 animate-spin text-coral" />
-          <p className="text-xs text-slate-400">Loading destinations...</p>
+          <Loader2 className="w-6 h-6 animate-spin text-charcoal" />
+          <p className="text-xs text-muted">Loading destinations...</p>
         </div>
       ) : filteredCities.length === 0 ? (
-        <div className="bg-white rounded-3xl p-12 text-center border border-slate-200 shadow-soft">
-          <Building2 className="w-12 h-12 text-slate-300 mx-auto mb-3" />
-          <h3 className="text-base font-bold text-slate-800">No destinations found</h3>
-          <p className="text-xs text-slate-500 mt-1">Try adjusting your search query or region filter.</p>
+        <div className="bg-cream rounded-card p-12 text-center border border-light-cream">
+          <Building2 className="w-8 h-8 text-muted mx-auto mb-2 opacity-50" />
+          <h3 className="text-sm font-semibold text-charcoal">No destinations found</h3>
+          <p className="text-xs text-muted mt-0.5">Try adjusting your search query or region filter.</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -211,33 +207,31 @@ export default function CitiesPage() {
             return (
               <div
                 key={city.id}
-                className="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-soft hover:shadow-lg transition-all group flex flex-col justify-between"
+                className="bg-cream rounded-card border border-light-cream overflow-hidden flex flex-col justify-between"
               >
                 <div>
-                  <div className="relative h-52 overflow-hidden">
+                  <div className="relative aspect-[16/10] overflow-hidden bg-cream border-b border-light-cream">
                     <img
                       src={city.imageUrl}
                       alt={city.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      className="w-full h-full object-cover"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
-
                     <button
                       onClick={() => toggleSaveCity(city.id)}
                       aria-label="Save City"
-                      className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/80 backdrop-blur-md flex items-center justify-center text-slate-700 hover:text-rose-500 transition-colors shadow-sm"
+                      className="absolute top-3 right-3 p-1.5 rounded-pill bg-cream border border-light-cream text-charcoal shadow-inset-btn opacity-80 active:opacity-100"
                     >
-                      <Heart className={`w-4 h-4 ${isSaved ? 'fill-rose-500 text-rose-500' : ''}`} />
+                      <Heart className={`w-3.5 h-3.5 ${isSaved ? 'fill-charcoal text-charcoal' : ''}`} />
                     </button>
 
-                    <div className="absolute top-3 left-3 px-2 py-0.5 rounded-full bg-slate-900/75 backdrop-blur-md text-[10px] font-bold text-white uppercase tracking-wider">
+                    <div className="absolute top-3 left-3 px-2 py-0.5 rounded bg-cream border border-light-cream text-[10px] font-normal text-charcoal">
                       {(city as any).region || 'Global'}
                     </div>
 
-                    <div className="absolute bottom-3 left-3 right-3 text-white">
+                    <div className="absolute bottom-3 left-3 right-3 text-white drop-shadow-sm">
                       <div className="flex items-center justify-between">
-                        <h3 className="text-xl font-bold">{city.name}</h3>
-                        <span className="text-xs font-semibold px-2 py-0.5 rounded-md bg-white/20 backdrop-blur-sm">
+                        <h3 className="text-base font-semibold">{city.name}</h3>
+                        <span className="text-xs font-normal">
                           ★ {city.popularity}/100
                         </span>
                       </div>
@@ -245,39 +239,34 @@ export default function CitiesPage() {
                     </div>
                   </div>
 
-                  <div className="p-5 space-y-4">
-                    <p className="text-xs text-slate-600 line-clamp-3 leading-relaxed">
+                  <div className="p-4 space-y-3">
+                    <p className="text-xs text-muted font-normal line-clamp-3 leading-relaxed">
                       {city.description}
                     </p>
 
-                    <div className="flex items-center justify-between pt-2 border-t border-slate-100 text-xs">
-                      <div className="text-slate-600">
-                        Cost Rating:{' '}
-                        <span className="font-bold text-teal-700">
-                          {city.costIndex <= 0.8
-                            ? '$ (Budget-Friendly)'
-                            : city.costIndex <= 1.2
-                            ? '$$ (Moderate)'
-                            : '$$$ (Premium)'}
-                        </span>
-                      </div>
-                      <span className="text-[11px] font-semibold text-slate-400">
-                        {city.costIndex}x base
+                    <div className="flex items-center justify-between pt-2 border-t border-light-cream text-xs text-muted font-normal">
+                      <span>Cost Index: {city.costIndex}x base</span>
+                      <span>
+                        {city.costIndex <= 0.8
+                          ? 'Budget'
+                          : city.costIndex <= 1.2
+                          ? 'Moderate'
+                          : 'Premium'}
                       </span>
                     </div>
                   </div>
                 </div>
 
-                <div className="p-5 pt-0 grid grid-cols-2 gap-2 border-t border-slate-100 mt-2">
+                <div className="p-4 pt-0 grid grid-cols-2 gap-2 border-t border-light-cream mt-2">
                   <button
                     onClick={() => openAddToTripModal(city)}
-                    className="py-2.5 px-3 bg-teal-50 hover:bg-teal-100 text-teal-700 font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 transition-colors"
+                    className="py-2 px-3 bg-transparent text-charcoal border border-charcoal-40 rounded text-xs font-normal hover:bg-charcoal-4 flex items-center justify-center gap-1.5 transition-colors"
                   >
                     <Plus className="w-3.5 h-3.5" /> Add to Trip
                   </button>
                   <Link
                     href={`/trips/new?city=${encodeURIComponent(city.name)}`}
-                    className="py-2.5 px-3 bg-coral hover:bg-coral-dark text-white font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 transition-colors shadow-xs"
+                    className="py-2 px-3 bg-charcoal text-off-white rounded shadow-inset-btn text-xs font-normal flex items-center justify-center gap-1.5 active:opacity-80 transition-opacity"
                   >
                     Plan Trip <ArrowRight className="w-3.5 h-3.5" />
                   </Link>
@@ -290,48 +279,48 @@ export default function CitiesPage() {
 
       {/* Add To Trip Modal */}
       {selectedCityForTrip && (
-        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full border border-slate-200 shadow-2xl space-y-5 animate-in fade-in zoom-in-95 duration-150">
+        <div className="fixed inset-0 z-50 bg-charcoal-40 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-cream rounded-card p-6 max-w-md w-full border border-light-cream space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-lg font-black text-slate-900">
+                <h3 className="text-base font-semibold text-charcoal">
                   Add {selectedCityForTrip.name} to Itinerary
                 </h3>
-                <p className="text-xs text-slate-500">Choose which trip to include this stop in</p>
+                <p className="text-xs text-muted font-normal">Choose which trip to include this stop in</p>
               </div>
               <button
                 onClick={() => setSelectedCityForTrip(null)}
-                className="p-1.5 text-slate-400 hover:text-slate-700 rounded-xl"
+                className="p-1 text-muted hover:text-charcoal rounded"
               >
-                <X className="w-5 h-5" />
+                <X className="w-4 h-4" />
               </button>
             </div>
 
             {addSuccessMsg ? (
-              <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-2xl text-emerald-800 text-xs flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
-                <span className="font-bold">{addSuccessMsg}</span>
+              <div className="p-3 bg-charcoal-4 border border-charcoal-40 rounded text-xs font-normal text-charcoal flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 shrink-0" />
+                <span>{addSuccessMsg}</span>
               </div>
             ) : trips.length === 0 ? (
               <div className="text-center py-4 space-y-3">
-                <p className="text-xs text-slate-600">
-                  You don't have any existing trips yet. Create one first!
+                <p className="text-xs text-muted font-normal">
+                  You don't have any existing trips yet. Create one first.
                 </p>
                 <Link
                   href={`/trips/new?city=${encodeURIComponent(selectedCityForTrip.name)}`}
-                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-coral text-white rounded-xl text-xs font-bold shadow-md shadow-coral/20"
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-charcoal text-off-white rounded shadow-inset-btn text-xs font-normal"
                 >
                   Create Trip for {selectedCityForTrip.name}
                 </Link>
               </div>
             ) : (
-              <form onSubmit={handleAddStopToTrip} className="space-y-4">
+              <form onSubmit={handleAddStopToTrip} className="space-y-3">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">Select Trip</label>
+                  <label className="block text-xs font-normal text-charcoal mb-1">Select Trip</label>
                   <select
                     value={targetTripId}
                     onChange={(e) => setTargetTripId(e.target.value)}
-                    className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-800 focus:ring-2 focus:ring-coral/40"
+                    className="w-full px-3 py-2 bg-cream text-charcoal border border-light-cream rounded text-xs font-normal focus:ring-2 focus:ring-ring-blue"
                     required
                   >
                     {trips.map((t) => (
@@ -342,31 +331,31 @@ export default function CitiesPage() {
                   </select>
                 </div>
 
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-2 gap-2.5">
                   <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1">Arrival Date</label>
+                    <label className="block text-xs font-normal text-charcoal mb-1">Arrival Date</label>
                     <input
                       type="date"
                       value={arrivalDate}
                       onChange={(e) => setArrivalDate(e.target.value)}
-                      className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:ring-2 focus:ring-coral/40"
+                      className="w-full px-3 py-2 bg-cream text-charcoal border border-light-cream rounded text-xs focus:ring-2 focus:ring-ring-blue"
                       required
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1">Departure Date</label>
+                    <label className="block text-xs font-normal text-charcoal mb-1">Departure Date</label>
                     <input
                       type="date"
                       value={departureDate}
                       onChange={(e) => setDepartureDate(e.target.value)}
-                      className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:ring-2 focus:ring-coral/40"
+                      className="w-full px-3 py-2 bg-cream text-charcoal border border-light-cream rounded text-xs focus:ring-2 focus:ring-ring-blue"
                       required
                     />
                   </div>
                 </div>
 
                 {addErrorMsg && (
-                  <div className="p-3 bg-rose-50 border border-rose-200 rounded-xl text-xs font-semibold text-rose-600">
+                  <div className="p-2.5 bg-charcoal-4 border border-charcoal-40 rounded text-xs font-normal text-charcoal">
                     {addErrorMsg}
                   </div>
                 )}
@@ -375,16 +364,16 @@ export default function CitiesPage() {
                   <button
                     type="button"
                     onClick={() => setSelectedCityForTrip(null)}
-                    className="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-xl"
+                    className="px-3 py-1.5 text-xs font-normal text-charcoal border border-charcoal-40 rounded hover:bg-charcoal-4"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
                     disabled={addingStop}
-                    className="px-5 py-2.5 bg-coral hover:bg-coral-dark text-white rounded-xl text-xs font-bold shadow-md shadow-coral/20 flex items-center gap-2 disabled:opacity-50"
+                    className="px-4 py-1.5 bg-charcoal text-off-white rounded shadow-inset-btn text-xs font-normal flex items-center gap-1.5 active:opacity-80 disabled:opacity-50"
                   >
-                    {addingStop ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Confirm Add'}
+                    {addingStop ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : 'Confirm Add'}
                   </button>
                 </div>
               </form>

@@ -6,14 +6,12 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import {
-  Compass,
   Calendar,
   DollarSign,
   Globe,
   Lock,
   ArrowLeft,
   Loader2,
-  Sparkles,
   CheckCircle2,
 } from 'lucide-react';
 import Link from 'next/link';
@@ -89,64 +87,64 @@ function NewTripForm() {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-soft space-y-6"
+      className="bg-cream rounded-card p-6 sm:p-8 border border-light-cream space-y-5"
     >
       {/* Trip Name */}
       <div>
-        <label className="block text-sm font-semibold text-slate-800 mb-1.5">
-          Trip Name <span className="text-coral">*</span>
+        <label className="block text-xs font-normal text-charcoal mb-1">
+          Trip Name <span className="text-charcoal">*</span>
         </label>
         <input
           type="text"
-          placeholder="e.g. European Summer 2026, Japan Sakura Tour..."
+          placeholder="e.g. European Circuit, Japan Sakura Expedition..."
           {...register('name')}
-          className={`w-full px-4 py-3 bg-slate-50 border rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-coral/40 transition-all ${
-            errors.name ? 'border-rose-500 bg-rose-50/20' : 'border-slate-200'
+          className={`w-full px-3 py-2 bg-cream text-charcoal border rounded text-xs placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-ring-blue ${
+            errors.name ? 'border-charcoal-40' : 'border-light-cream'
           }`}
         />
         {errors.name && (
-          <p className="text-xs font-semibold text-rose-600 mt-1">{errors.name.message}</p>
+          <p className="text-[11px] font-normal text-charcoal mt-1">{errors.name.message}</p>
         )}
       </div>
 
       {/* Date Range */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-semibold text-slate-800 mb-1.5 flex items-center gap-1.5">
-            <Calendar className="w-4 h-4 text-coral" /> Start Date
+          <label className="block text-xs font-normal text-charcoal mb-1 flex items-center gap-1.5">
+            <Calendar className="w-3.5 h-3.5 opacity-70" /> Start Date
           </label>
           <input
             type="date"
             {...register('startDate')}
-            className={`w-full px-4 py-3 bg-slate-50 border rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-coral/40 ${
-              errors.startDate ? 'border-rose-500' : 'border-slate-200'
+            className={`w-full px-3 py-2 bg-cream text-charcoal border rounded text-xs focus:ring-2 focus:ring-ring-blue ${
+              errors.startDate ? 'border-charcoal-40' : 'border-light-cream'
             }`}
           />
           {errors.startDate && (
-            <p className="text-xs font-semibold text-rose-600 mt-1">{errors.startDate.message}</p>
+            <p className="text-[11px] font-normal text-charcoal mt-1">{errors.startDate.message}</p>
           )}
         </div>
         <div>
-          <label className="block text-sm font-semibold text-slate-800 mb-1.5 flex items-center gap-1.5">
-            <Calendar className="w-4 h-4 text-coral" /> End Date
+          <label className="block text-xs font-normal text-charcoal mb-1 flex items-center gap-1.5">
+            <Calendar className="w-3.5 h-3.5 opacity-70" /> End Date
           </label>
           <input
             type="date"
             {...register('endDate')}
-            className={`w-full px-4 py-3 bg-slate-50 border rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-coral/40 ${
-              errors.endDate ? 'border-rose-500' : 'border-slate-200'
+            className={`w-full px-3 py-2 bg-cream text-charcoal border rounded text-xs focus:ring-2 focus:ring-ring-blue ${
+              errors.endDate ? 'border-charcoal-40' : 'border-light-cream'
             }`}
           />
           {errors.endDate && (
-            <p className="text-xs font-semibold text-rose-600 mt-1">{errors.endDate.message}</p>
+            <p className="text-[11px] font-normal text-charcoal mt-1">{errors.endDate.message}</p>
           )}
         </div>
       </div>
 
       {/* Budget Limit */}
       <div>
-        <label className="block text-sm font-semibold text-slate-800 mb-1.5 flex items-center gap-1.5">
-          <DollarSign className="w-4 h-4 text-teal-600" /> Target Budget Limit ($ Optional)
+        <label className="block text-xs font-normal text-charcoal mb-1 flex items-center gap-1.5">
+          <DollarSign className="w-3.5 h-3.5 opacity-70" /> Target Budget Limit ($ Optional)
         </label>
         <input
           type="number"
@@ -154,23 +152,23 @@ function NewTripForm() {
           step="50"
           placeholder="e.g. 2500"
           {...register('budgetLimit')}
-          className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-coral/40"
+          className="w-full px-3 py-2 bg-cream text-charcoal border border-light-cream rounded text-xs focus:ring-2 focus:ring-ring-blue"
         />
-        <p className="text-xs text-slate-400 mt-1">
-          GlobeTrotter will monitor your activity costs against this target budget limit.
+        <p className="text-[11px] text-muted mt-1">
+          GlobeTrotter monitors activity costs against this limit.
         </p>
       </div>
 
       {/* Description */}
       <div>
-        <label className="block text-sm font-semibold text-slate-800 mb-1.5">
+        <label className="block text-xs font-normal text-charcoal mb-1">
           Description / Overview (Optional)
         </label>
         <textarea
           rows={3}
-          placeholder="What is the goal of this journey? Notes on traveling companions, packing list, goals..."
+          placeholder="Notes on travel companions, packing, goals..."
           {...register('description')}
-          className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-coral/40 resize-none"
+          className="w-full px-3 py-2 bg-cream text-charcoal border border-light-cream rounded text-xs focus:ring-2 focus:ring-ring-blue resize-none"
         />
       </div>
 
@@ -185,19 +183,19 @@ function NewTripForm() {
       />
 
       {/* Public Sharing Toggle */}
-      <div className="p-4 bg-slate-50 border border-slate-200 rounded-2xl flex items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-teal-700 shadow-xs">
-            {isPublicValue ? <Globe className="w-5 h-5" /> : <Lock className="w-5 h-5 text-slate-400" />}
+      <div className="p-3 bg-charcoal-3 border border-light-cream rounded flex items-center justify-between gap-4">
+        <div className="flex items-center gap-2.5">
+          <div className="w-7 h-7 rounded bg-cream border border-light-cream flex items-center justify-center text-charcoal">
+            {isPublicValue ? <Globe className="w-3.5 h-3.5" /> : <Lock className="w-3.5 h-3.5 text-muted" />}
           </div>
           <div>
-            <div className="text-sm font-bold text-slate-900">
+            <div className="text-xs font-semibold text-charcoal">
               {isPublicValue ? 'Public Itinerary' : 'Private Itinerary'}
             </div>
-            <div className="text-xs text-slate-500">
+            <div className="text-[11px] text-muted">
               {isPublicValue
-                ? 'Anyone with your share link can view and clone this itinerary.'
-                : 'Only you can view this itinerary when logged into your account.'}
+                ? 'Anyone with your share link can view this itinerary.'
+                : 'Only you can view this itinerary.'}
             </div>
           </div>
         </div>
@@ -207,36 +205,36 @@ function NewTripForm() {
             {...register('isPublic')}
             className="sr-only peer"
           />
-          <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-coral"></div>
+          <div className="w-9 h-5 bg-light-cream rounded-pill peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-cream after:border after:border-light-cream after:rounded-pill after:h-4 after:w-4 after:transition-all peer-checked:bg-charcoal"></div>
         </label>
       </div>
 
       {submitError && (
-        <div className="p-3 bg-rose-50 border border-rose-200 rounded-xl text-xs font-semibold text-rose-600">
+        <div className="p-2.5 bg-charcoal-4 border border-charcoal-40 rounded text-xs font-normal text-charcoal">
           {submitError}
         </div>
       )}
 
       {/* Submit */}
-      <div className="pt-4 flex items-center justify-end gap-3 border-t border-slate-100">
+      <div className="pt-3 flex items-center justify-end gap-2 border-t border-light-cream">
         <Link
           href="/trips"
-          className="px-5 py-3 text-sm font-semibold text-slate-600 hover:bg-slate-100 rounded-xl transition-colors"
+          className="px-3.5 py-2 text-xs font-normal text-charcoal border border-charcoal-40 hover:bg-charcoal-4 rounded transition-colors"
         >
           Cancel
         </Link>
         <button
           type="submit"
           disabled={isSubmitting}
-          className="px-6 py-3 bg-coral hover:bg-coral-dark text-white rounded-2xl text-sm font-bold shadow-md shadow-coral/25 hover:shadow-lg hover:shadow-coral/30 hover:-translate-y-0.5 active:translate-y-0 transition-all flex items-center gap-2 disabled:opacity-50"
+          className="px-4 py-2 bg-charcoal text-off-white rounded shadow-inset-btn text-xs font-normal flex items-center gap-1.5 active:opacity-80 transition-opacity disabled:opacity-50"
         >
           {isSubmitting ? (
             <>
-              <Loader2 className="w-4 h-4 animate-spin" /> Saving Trip...
+              <Loader2 className="w-3.5 h-3.5 animate-spin" /> Saving Trip...
             </>
           ) : (
             <>
-              <CheckCircle2 className="w-4 h-4" /> Save & Build Itinerary
+              <CheckCircle2 className="w-3.5 h-3.5" /> Save & Build Itinerary
             </>
           )}
         </button>
@@ -247,25 +245,25 @@ function NewTripForm() {
 
 export default function NewTripPage() {
   return (
-    <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-      <div className="mb-6">
+    <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="mb-5">
         <Link
           href="/trips"
-          className="inline-flex items-center gap-1 text-xs font-semibold text-slate-500 hover:text-slate-800 mb-2 transition-colors"
+          className="inline-flex items-center gap-1 text-xs font-normal text-muted hover:text-charcoal mb-1 transition-colors"
         >
           <ArrowLeft className="w-3.5 h-3.5" /> Back to My Trips
         </Link>
-        <h1 className="text-3xl font-black text-slate-900 tracking-tight">Create New Trip</h1>
-        <p className="text-sm text-slate-500 mt-1">
+        <h1 className="text-2xl font-semibold text-charcoal tracking-tight">Create New Trip</h1>
+        <p className="text-xs text-muted font-normal mt-0.5">
           Set up your multi-city adventure and start adding destinations and experiences.
         </p>
       </div>
 
       <Suspense
         fallback={
-          <div className="py-20 text-center flex flex-col items-center justify-center gap-2 bg-white rounded-3xl border border-slate-200">
-            <Loader2 className="w-6 h-6 animate-spin text-coral" />
-            <span className="text-xs text-slate-500">Loading form...</span>
+          <div className="py-20 text-center flex flex-col items-center justify-center gap-2 bg-cream rounded-card border border-light-cream">
+            <Loader2 className="w-6 h-6 animate-spin text-charcoal" />
+            <span className="text-xs text-muted">Loading form...</span>
           </div>
         }
       >

@@ -4,15 +4,10 @@ import {
   Compass,
   MapPin,
   Calendar,
-  DollarSign,
   Plus,
   ArrowRight,
   Sparkles,
-  TrendingUp,
   Star,
-  Globe2,
-  Clock,
-  ShieldCheck,
 } from 'lucide-react';
 import prisma from '@/lib/prisma';
 import { getCurrentUser } from '@/lib/auth';
@@ -23,7 +18,7 @@ export const dynamic = 'force-dynamic';
 export default async function HomePage() {
   const user = await getCurrentUser();
 
-  const [cities, userTrips, allTripsCount] = await Promise.all([
+  const [cities, userTrips] = await Promise.all([
     prisma.city.findMany({
       orderBy: [{ popularity: 'desc' }, { name: 'asc' }],
       take: 8,
@@ -41,7 +36,6 @@ export default async function HomePage() {
           take: 4,
         })
       : [],
-    prisma.trip.count(),
   ]);
 
   const featuredTrip = await prisma.trip.findFirst({
@@ -58,56 +52,53 @@ export default async function HomePage() {
   return (
     <div className="space-y-12 pb-16">
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-coral-50/70 via-sand-50/40 to-slate-50 border-b border-slate-200/60 pt-12 pb-16 lg:pt-16 lg:pb-24">
+      <section className="relative overflow-hidden bg-cream border-b border-light-cream pt-12 pb-16 lg:pt-16 lg:pb-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             <div className="lg:col-span-7 space-y-6">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/90 border border-coral-200 shadow-xs text-xs font-bold text-coral">
+              <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded bg-charcoal text-off-white shadow-inset-btn text-xs font-normal">
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>Zero-Cloud Local Travel Planner</span>
               </div>
 
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-slate-900 tracking-tight leading-[1.1]">
-                Plan Multi-City Adventures{' '}
-                <span className="bg-gradient-to-r from-coral via-rose-500 to-amber-500 bg-clip-text text-transparent">
-                  Effortlessly
-                </span>
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-semibold text-charcoal tracking-[-1.5px] leading-[1.08]">
+                Plan Multi-City Adventures Effortlessly
               </h1>
 
-              <p className="text-base sm:text-lg text-slate-600 max-w-xl leading-relaxed">
+              <p className="text-base sm:text-lg text-muted max-w-xl leading-relaxed font-normal">
                 Organize stops across multiple destinations, schedule custom activities, get live budget breakdowns with charts, and share your dream itinerary with friends.
               </p>
 
               <div className="flex flex-wrap items-center gap-3 pt-2">
                 <Link
                   href="/trips/new"
-                  className="flex items-center gap-2 px-6 py-3.5 bg-coral hover:bg-coral-dark text-white text-base font-bold rounded-2xl shadow-lg shadow-coral/30 hover:shadow-xl hover:shadow-coral/40 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200"
+                  className="flex items-center gap-2 px-5 py-2.5 bg-charcoal text-off-white text-sm font-normal rounded shadow-inset-btn active:opacity-80 transition-opacity"
                 >
-                  <Plus className="w-5 h-5 stroke-[2.5]" />
+                  <Plus className="w-4 h-4" />
                   Create Your Trip
                 </Link>
                 <Link
                   href="/trips"
-                  className="flex items-center gap-2 px-6 py-3.5 bg-white hover:bg-slate-50 text-slate-700 text-base font-bold rounded-2xl border border-slate-200 shadow-xs hover:border-slate-300 transition-all"
+                  className="flex items-center gap-2 px-5 py-2.5 bg-transparent text-charcoal text-sm font-normal rounded border border-charcoal-40 hover:bg-charcoal-4 transition-colors"
                 >
-                  <MapPin className="w-5 h-5 text-coral" />
+                  <MapPin className="w-4 h-4 opacity-70" />
                   View Itineraries
                 </Link>
               </div>
 
               {/* Quick stats pills */}
-              <div className="grid grid-cols-3 gap-4 pt-6 border-t border-slate-200/80 max-w-lg">
+              <div className="grid grid-cols-3 gap-4 pt-6 border-t border-light-cream max-w-lg">
                 <div>
-                  <div className="text-2xl font-black text-slate-900">15+</div>
-                  <div className="text-xs text-slate-500 font-medium">Curated Cities</div>
+                  <div className="text-2xl font-semibold text-charcoal">15+</div>
+                  <div className="text-xs text-muted font-normal">Curated Cities</div>
                 </div>
                 <div>
-                  <div className="text-2xl font-black text-teal-600">35+</div>
-                  <div className="text-xs text-slate-500 font-medium">Experiences</div>
+                  <div className="text-2xl font-semibold text-charcoal">35+</div>
+                  <div className="text-xs text-muted font-normal">Experiences</div>
                 </div>
                 <div>
-                  <div className="text-2xl font-black text-coral">100%</div>
-                  <div className="text-xs text-slate-500 font-medium">Local & Offline</div>
+                  <div className="text-2xl font-semibold text-charcoal">100%</div>
+                  <div className="text-xs text-muted font-normal">Local & Offline</div>
                 </div>
               </div>
             </div>
@@ -115,31 +106,31 @@ export default async function HomePage() {
             {/* Hero Right Visual: Featured Trip Card */}
             <div className="lg:col-span-5">
               {featuredTrip ? (
-                <div className="bg-white rounded-3xl p-5 shadow-soft-lg border border-slate-200/80 hover:shadow-2xl transition-all relative group">
-                  <div className="relative aspect-16/10 rounded-2xl overflow-hidden mb-4 shadow-xs">
+                <div className="bg-cream rounded-card p-5 border border-light-cream relative">
+                  <div className="relative aspect-[16/10] rounded overflow-hidden mb-4 border border-light-cream">
                     <img
                       src={featuredTrip.coverPhotoUrl || 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=1000&q=80'}
                       alt={featuredTrip.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      className="w-full h-full object-cover"
                     />
-                    <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold text-coral shadow-xs">
+                    <div className="absolute top-2.5 right-2.5 bg-charcoal text-off-white px-2.5 py-0.5 rounded text-[10px] font-normal shadow-inset-btn">
                       Featured Itinerary
                     </div>
                   </div>
 
-                  <h3 className="text-xl font-bold text-slate-900 mb-1">{featuredTrip.name}</h3>
-                  <p className="text-xs text-slate-500 line-clamp-2 mb-4">
+                  <h3 className="text-lg font-semibold text-charcoal mb-1">{featuredTrip.name}</h3>
+                  <p className="text-xs text-muted font-normal line-clamp-2 mb-4">
                     {featuredTrip.description}
                   </p>
 
-                  <div className="flex items-center justify-between pt-3 border-t border-slate-100 text-xs">
-                    <div className="flex items-center gap-1.5 text-slate-600 font-semibold">
-                      <MapPin className="w-4 h-4 text-coral" />
+                  <div className="flex items-center justify-between pt-3 border-t border-light-cream text-xs">
+                    <div className="flex items-center gap-1.5 text-muted font-normal">
+                      <MapPin className="w-3.5 h-3.5 opacity-70" />
                       {featuredTrip.stops.map((s) => s.city.name).join(' → ')}
                     </div>
                     <Link
                       href={`/share/${featuredTrip.shareSlug}`}
-                      className="text-coral font-bold flex items-center gap-1 hover:underline"
+                      className="text-charcoal font-semibold flex items-center gap-1 underline"
                     >
                       Explore <ArrowRight className="w-3.5 h-3.5" />
                     </Link>
@@ -155,33 +146,33 @@ export default async function HomePage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="text-2xl font-black text-slate-900">Your Upcoming Trips</h2>
-            <p className="text-xs text-slate-500">Manage and track your active itineraries</p>
+            <h2 className="text-xl sm:text-2xl font-semibold text-charcoal tracking-tight">Your Upcoming Trips</h2>
+            <p className="text-xs text-muted font-normal">Manage and track your active itineraries</p>
           </div>
           <Link
             href="/trips"
-            className="text-sm font-bold text-coral hover:text-coral-dark flex items-center gap-1"
+            className="text-xs font-semibold text-charcoal hover:underline flex items-center gap-1"
           >
-            All Trips ({userTrips.length}) <ArrowRight className="w-4 h-4" />
+            All Trips ({userTrips.length}) <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>
 
         {userTrips.length === 0 ? (
-          <div className="p-8 sm:p-12 text-center rounded-3xl bg-white border border-slate-200/80 shadow-soft space-y-4">
-            <div className="w-14 h-14 mx-auto rounded-2xl bg-coral-50 text-coral flex items-center justify-center">
-              <Compass className="w-8 h-8" />
+          <div className="p-8 sm:p-12 text-center rounded-card bg-cream border border-light-cream space-y-3">
+            <div className="w-12 h-12 mx-auto rounded bg-charcoal text-off-white flex items-center justify-center shadow-inset-btn">
+              <Compass className="w-6 h-6" />
             </div>
             <div>
-              <h3 className="text-lg font-bold text-slate-900">No trips planned yet</h3>
-              <p className="text-xs text-slate-500 max-w-sm mx-auto mt-1">
+              <h3 className="text-base font-semibold text-charcoal">No trips planned yet</h3>
+              <p className="text-xs text-muted max-w-sm mx-auto mt-0.5">
                 Start your journey by creating your first multi-city trip with customizable stops and activities.
               </p>
             </div>
             <Link
               href="/trips/new"
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-coral text-white text-sm font-semibold rounded-xl shadow-md hover:bg-coral-dark"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-charcoal text-off-white text-xs font-normal rounded shadow-inset-btn active:opacity-80"
             >
-              <Plus className="w-4 h-4" /> Plan First Trip
+              <Plus className="w-3.5 h-3.5" /> Plan First Trip
             </Link>
           </div>
         ) : (
@@ -194,60 +185,62 @@ export default async function HomePage() {
               return (
                 <div
                   key={trip.id}
-                  className="bg-white rounded-3xl overflow-hidden border border-slate-200/80 shadow-soft hover:shadow-soft-lg hover:border-coral/40 transition-all flex flex-col group"
+                  className="bg-cream rounded-card overflow-hidden border border-light-cream flex flex-col justify-between"
                 >
-                  <div className="relative aspect-16/9 overflow-hidden">
-                    <img
-                      src={trip.coverPhotoUrl || 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=800&q=80'}
-                      alt={trip.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                    <div className="absolute top-3 left-3 bg-slate-900/80 backdrop-blur-xs text-white text-[11px] font-bold px-2.5 py-1 rounded-lg">
-                      {trip.stops.length} Stops
-                    </div>
-                    {trip.isPublic && (
-                      <div className="absolute top-3 right-3 bg-teal-600/90 text-white text-[10px] font-bold px-2 py-0.5 rounded-md">
-                        Public
+                  <div>
+                    <div className="relative aspect-[16/9] overflow-hidden border-b border-light-cream">
+                      <img
+                        src={trip.coverPhotoUrl || 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=800&q=80'}
+                        alt={trip.name}
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute top-2.5 left-2.5 bg-cream border border-light-cream text-charcoal text-[10px] font-normal px-2 py-0.5 rounded">
+                        {trip.stops.length} Stops
                       </div>
-                    )}
+                      {trip.isPublic && (
+                        <div className="absolute top-2.5 right-2.5 bg-charcoal text-off-white text-[10px] font-normal px-2 py-0.5 rounded shadow-inset-btn">
+                          Public
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="p-4">
+                      <h3 className="text-base font-semibold text-charcoal mb-0.5 truncate">{trip.name}</h3>
+                      <p className="text-xs text-muted font-normal mb-3 truncate">
+                        {citiesVisited || 'No stops added yet'}
+                      </p>
+
+                      <div className="flex items-center justify-between text-xs text-muted font-normal mb-3 pt-2 border-t border-light-cream">
+                        <span className="flex items-center gap-1">
+                          <Calendar className="w-3 h-3 opacity-70" />
+                          {format(new Date(trip.startDate), 'MMM d')} - {format(new Date(trip.endDate), 'MMM d, yyyy')}
+                        </span>
+                        <span className="font-semibold text-charcoal">
+                          ${totalCost.toFixed(0)} est.
+                        </span>
+                      </div>
+                    </div>
                   </div>
 
-                  <div className="p-5 flex-1 flex flex-col">
-                    <h3 className="text-lg font-bold text-slate-900 mb-1 truncate">{trip.name}</h3>
-                    <p className="text-xs text-coral font-semibold mb-3 truncate">
-                      {citiesVisited || 'No stops added yet'}
-                    </p>
-
-                    <div className="flex items-center justify-between text-xs text-slate-500 mb-4 pt-3 border-t border-slate-100">
-                      <span className="flex items-center gap-1 font-medium">
-                        <Calendar className="w-3.5 h-3.5 text-slate-400" />
-                        {format(new Date(trip.startDate), 'MMM d')} - {format(new Date(trip.endDate), 'MMM d, yyyy')}
-                      </span>
-                      <span className="font-bold text-teal-700 bg-teal-50 px-2 py-0.5 rounded-md">
-                        ${totalCost.toFixed(0)} est.
-                      </span>
-                    </div>
-
-                    <div className="grid grid-cols-3 gap-2 mt-auto pt-2">
-                      <Link
-                        href={`/trips/${trip.id}/builder`}
-                        className="text-center py-2 text-xs font-bold text-coral bg-coral-50 hover:bg-coral-100 rounded-xl transition-colors"
-                      >
-                        Builder
-                      </Link>
-                      <Link
-                        href={`/trips/${trip.id}/view`}
-                        className="text-center py-2 text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors"
-                      >
-                        Itinerary
-                      </Link>
-                      <Link
-                        href={`/trips/${trip.id}/budget`}
-                        className="text-center py-2 text-xs font-bold text-teal-700 bg-teal-50 hover:bg-teal-100 rounded-xl transition-colors"
-                      >
-                        Budget
-                      </Link>
-                    </div>
+                  <div className="grid grid-cols-3 gap-1.5 p-4 pt-0 border-t border-light-cream mt-2">
+                    <Link
+                      href={`/trips/${trip.id}/builder`}
+                      className="text-center py-1.5 text-xs font-normal text-charcoal border border-charcoal-40 hover:bg-charcoal-4 rounded transition-colors"
+                    >
+                      Builder
+                    </Link>
+                    <Link
+                      href={`/trips/${trip.id}/view`}
+                      className="text-center py-1.5 text-xs font-normal text-charcoal border border-charcoal-40 hover:bg-charcoal-4 rounded transition-colors"
+                    >
+                      Itinerary
+                    </Link>
+                    <Link
+                      href={`/trips/${trip.id}/budget`}
+                      className="text-center py-1.5 text-xs font-normal text-charcoal border border-charcoal-40 hover:bg-charcoal-4 rounded transition-colors"
+                    >
+                      Budget
+                    </Link>
                   </div>
                 </div>
               );
@@ -260,52 +253,54 @@ export default async function HomePage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="text-2xl font-black text-slate-900">Explore Top Destinations</h2>
-            <p className="text-xs text-slate-500">Popular global hubs with realistic cost index ratings</p>
+            <h2 className="text-xl sm:text-2xl font-semibold text-charcoal tracking-tight">Explore Top Destinations</h2>
+            <p className="text-xs text-muted font-normal">Popular global hubs with realistic cost index ratings</p>
           </div>
           <Link
             href="/trips/new"
-            className="text-sm font-bold text-coral hover:text-coral-dark flex items-center gap-1"
+            className="text-xs font-semibold text-charcoal hover:underline flex items-center gap-1"
           >
-            Plan for these cities <ArrowRight className="w-4 h-4" />
+            Plan for these cities <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
           {cities.map((city) => (
             <div
               key={city.id}
-              className="bg-white rounded-3xl overflow-hidden border border-slate-200/80 shadow-soft hover:shadow-soft-lg hover:-translate-y-1 transition-all duration-200 group flex flex-col"
+              className="bg-cream rounded-card overflow-hidden border border-light-cream flex flex-col justify-between"
             >
-              <div className="relative aspect-4/3 overflow-hidden">
-                <img
-                  src={city.imageUrl}
-                  alt={city.name}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-                <div className="absolute top-2.5 left-2.5 bg-black/60 backdrop-blur-xs text-white text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
-                  <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
-                  {city.popularity}
+              <div>
+                <div className="relative aspect-[4/3] overflow-hidden border-b border-light-cream">
+                  <img
+                    src={city.imageUrl}
+                    alt={city.name}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute top-2.5 left-2.5 bg-cream border border-light-cream text-charcoal text-[10px] font-normal px-2 py-0.5 rounded flex items-center gap-1">
+                    <Star className="w-3 h-3 fill-charcoal text-charcoal opacity-70" />
+                    {city.popularity}
+                  </div>
+                  <div className="absolute bottom-2.5 right-2.5 bg-charcoal text-off-white text-[10px] font-normal px-2 py-0.5 rounded shadow-inset-btn">
+                    {city.costIndex}x Cost Index
+                  </div>
                 </div>
-                <div className="absolute bottom-2.5 right-2.5 bg-white/90 backdrop-blur-xs text-slate-900 text-[10px] font-bold px-2 py-0.5 rounded-md shadow-xs">
-                  {city.costIndex}x Cost Index
-                </div>
-              </div>
 
-              <div className="p-4 flex-1 flex flex-col justify-between">
-                <div>
-                  <h3 className="font-bold text-base text-slate-900 group-hover:text-coral transition-colors">
+                <div className="p-3.5">
+                  <h3 className="font-semibold text-sm text-charcoal">
                     {city.name}
                   </h3>
-                  <p className="text-xs text-slate-500 mb-2">{city.country}</p>
-                  <p className="text-[11px] text-slate-600 line-clamp-2 leading-relaxed">
+                  <p className="text-xs text-muted mb-1.5">{city.country}</p>
+                  <p className="text-[11px] text-muted line-clamp-2 leading-relaxed font-normal">
                     {city.description}
                   </p>
                 </div>
+              </div>
 
+              <div className="p-3.5 pt-0">
                 <Link
                   href={`/trips/new?city=${encodeURIComponent(city.name)}`}
-                  className="mt-3 text-center py-2 bg-slate-50 hover:bg-coral hover:text-white text-coral text-xs font-bold rounded-xl border border-coral-200 hover:border-coral transition-all"
+                  className="block text-center py-1.5 text-xs font-normal text-charcoal border border-charcoal-40 hover:bg-charcoal-4 rounded transition-colors"
                 >
                   Plan Trip Here
                 </Link>

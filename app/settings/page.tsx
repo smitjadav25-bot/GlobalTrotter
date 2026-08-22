@@ -4,15 +4,12 @@ import React, { useState, useEffect } from 'react';
 import { useSession, signOut } from 'next-auth/react';
 import {
   Settings,
-  User,
-  Mail,
   Globe,
   DollarSign,
   Bell,
   Trash2,
   Check,
   Loader2,
-  Camera,
   ShieldAlert,
 } from 'lucide-react';
 import DeleteConfirmModal from '@/components/DeleteConfirmModal';
@@ -109,37 +106,37 @@ export default function SettingsPage() {
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl sm:text-3xl font-black text-navy-900 dark:text-white tracking-tight flex items-center gap-2.5">
-          <Settings className="w-7 h-7 text-teal-500" /> Account Preferences & Settings
+        <h1 className="text-2xl sm:text-3xl font-semibold text-charcoal tracking-[-0.9px] flex items-center gap-2.5">
+          <Settings className="w-6 h-6 opacity-80" /> Account Preferences & Settings
         </h1>
-        <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+        <p className="text-xs text-muted font-normal mt-1">
           Manage your personal details, localization, preferred currency, and security options.
         </p>
       </div>
 
       {savedSuccess && (
-        <div className="p-4 bg-teal-50 dark:bg-teal-950/60 border border-teal-200 dark:border-teal-800 rounded-2xl text-xs font-bold text-teal-800 dark:text-teal-200 flex items-center gap-2 animate-in fade-in">
-          <Check className="w-4 h-4 text-teal-500" /> Preferences successfully saved and synchronized.
+        <div className="p-3 bg-charcoal-4 border border-charcoal-40 rounded text-xs font-normal text-charcoal flex items-center gap-2">
+          <Check className="w-4 h-4" /> Preferences successfully saved and synchronized.
         </div>
       )}
 
       <form onSubmit={handleSave} className="space-y-6">
         {/* Profile Card */}
-        <div className="bg-white dark:bg-card-dark rounded-card p-6 sm:p-8 border border-slate-200/80 dark:border-slate-800 shadow-soft space-y-6">
-          <h2 className="text-sm font-bold uppercase tracking-wider text-slate-400">Profile Information</h2>
+        <div className="bg-cream rounded-card p-6 border border-light-cream space-y-5">
+          <h2 className="text-xs font-semibold uppercase tracking-wider text-muted">Profile Information</h2>
 
-          <div className="flex flex-col sm:flex-row sm:items-center gap-6">
-            <div className="relative w-20 h-20 rounded-2xl overflow-hidden bg-slate-100 dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 shrink-0">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+            <div className="relative w-16 h-16 rounded overflow-hidden bg-cream border border-light-cream shrink-0">
               {avatarUrl ? (
                 <img src={avatarUrl} alt={name} className="w-full h-full object-cover" />
               ) : (
-                <div className="w-full h-full flex items-center justify-center text-slate-400 font-black text-2xl">
+                <div className="w-full h-full flex items-center justify-center text-muted font-semibold text-xl">
                   {name ? name[0].toUpperCase() : 'U'}
                 </div>
               )}
             </div>
-            <div className="flex-1 space-y-1.5">
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300">
+            <div className="flex-1 space-y-1">
+              <label className="block text-xs font-normal text-charcoal">
                 Avatar Image URL
               </label>
               <input
@@ -147,52 +144,52 @@ export default function SettingsPage() {
                 placeholder="https://images.unsplash.com/..."
                 value={avatarUrl}
                 onChange={(e) => setAvatarUrl(e.target.value)}
-                className="w-full px-3.5 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500/40"
+                className="w-full px-3 py-2 bg-cream text-charcoal border border-light-cream rounded text-xs placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-ring-blue"
               />
-              <p className="text-[11px] text-slate-400">Direct HTTPS URL for your personal profile picture.</p>
+              <p className="text-[11px] text-muted">Direct HTTPS URL for your personal profile picture.</p>
             </div>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label className="block text-xs font-normal text-charcoal mb-1">
                 Full Name
               </label>
               <input
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-semibold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500/40"
+                className="w-full px-3 py-2 bg-cream text-charcoal border border-light-cream rounded text-xs focus:outline-none focus:ring-2 focus:ring-ring-blue"
                 required
               />
             </div>
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label className="block text-xs font-normal text-charcoal mb-1">
                 Email Address
               </label>
               <input
                 type="email"
                 value={email}
                 disabled
-                className="w-full px-3.5 py-2.5 bg-slate-100 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-500 dark:text-slate-400 cursor-not-allowed"
+                className="w-full px-3 py-2 bg-charcoal-3 border border-light-cream rounded text-xs text-muted cursor-not-allowed"
               />
             </div>
           </div>
         </div>
 
         {/* Localization & Preferences Card */}
-        <div className="bg-white dark:bg-card-dark rounded-card p-6 sm:p-8 border border-slate-200/80 dark:border-slate-800 shadow-soft space-y-6">
-          <h2 className="text-sm font-bold uppercase tracking-wider text-slate-400">Regional Preferences</h2>
+        <div className="bg-cream rounded-card p-6 border border-light-cream space-y-5">
+          <h2 className="text-xs font-semibold uppercase tracking-wider text-muted">Regional Preferences</h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1 flex items-center gap-1.5">
-                <Globe className="w-3.5 h-3.5 text-teal-500" /> Interface Language
+              <label className="block text-xs font-normal text-charcoal mb-1 flex items-center gap-1.5">
+                <Globe className="w-3.5 h-3.5 opacity-70" /> Interface Language
               </label>
               <select
                 value={language}
                 onChange={(e) => setLanguage(e.target.value)}
-                className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-semibold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500/40"
+                className="w-full px-3 py-2 bg-cream text-charcoal border border-light-cream rounded text-xs font-normal focus:outline-none focus:ring-2 focus:ring-ring-blue"
               >
                 {LANGUAGES.map((lang) => (
                   <option key={lang.code} value={lang.code}>
@@ -203,13 +200,13 @@ export default function SettingsPage() {
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1 flex items-center gap-1.5">
-                <DollarSign className="w-3.5 h-3.5 text-sunset-500" /> Default Currency
+              <label className="block text-xs font-normal text-charcoal mb-1 flex items-center gap-1.5">
+                <DollarSign className="w-3.5 h-3.5 opacity-70" /> Default Currency
               </label>
               <select
                 value={currency}
                 onChange={(e) => setCurrency(e.target.value)}
-                className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-semibold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500/40"
+                className="w-full px-3 py-2 bg-cream text-charcoal border border-light-cream rounded text-xs font-normal focus:outline-none focus:ring-2 focus:ring-ring-blue"
               >
                 {CURRENCIES.map((curr) => (
                   <option key={curr.code} value={curr.code}>
@@ -222,35 +219,35 @@ export default function SettingsPage() {
         </div>
 
         {/* Notifications Toggle Card */}
-        <div className="bg-white dark:bg-card-dark rounded-card p-6 sm:p-8 border border-slate-200/80 dark:border-slate-800 shadow-soft space-y-4">
-          <h2 className="text-sm font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2">
-            <Bell className="w-4 h-4 text-sunset-500" /> Smart Travel Alerts
+        <div className="bg-cream rounded-card p-6 border border-light-cream space-y-4">
+          <h2 className="text-xs font-semibold uppercase tracking-wider text-muted flex items-center gap-2">
+            <Bell className="w-3.5 h-3.5 opacity-70" /> Smart Travel Alerts
           </h2>
 
-          <div className="space-y-3">
-            <label className="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-800 cursor-pointer">
+          <div className="space-y-2">
+            <label className="flex items-center justify-between p-3 rounded bg-charcoal-3 cursor-pointer">
               <div>
-                <div className="text-xs font-bold text-navy-900 dark:text-white">AI Itinerary Updates</div>
-                <div className="text-[11px] text-slate-400">Receive alerts when routes are optimized or schedules shift.</div>
+                <div className="text-xs font-semibold text-charcoal">AI Itinerary Updates</div>
+                <div className="text-[11px] text-muted">Receive alerts when routes are optimized or schedules shift.</div>
               </div>
               <input
                 type="checkbox"
                 checked={emailNotifications}
                 onChange={(e) => setEmailNotifications(e.target.checked)}
-                className="w-4 h-4 accent-teal-500 rounded"
+                className="w-4 h-4 accent-charcoal rounded"
               />
             </label>
 
-            <label className="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-800 cursor-pointer">
+            <label className="flex items-center justify-between p-3 rounded bg-charcoal-3 cursor-pointer">
               <div>
-                <div className="text-xs font-bold text-navy-900 dark:text-white">Flight & Hotel Price Drop Watcher</div>
-                <div className="text-[11px] text-slate-400">Get notified when tracked city stays decrease in cost.</div>
+                <div className="text-xs font-semibold text-charcoal">Flight & Hotel Price Drop Watcher</div>
+                <div className="text-[11px] text-muted">Get notified when tracked city stays decrease in cost.</div>
               </div>
               <input
                 type="checkbox"
                 checked={priceDropAlerts}
                 onChange={(e) => setPriceDropAlerts(e.target.checked)}
-                className="w-4 h-4 accent-teal-500 rounded"
+                className="w-4 h-4 accent-charcoal rounded"
               />
             </label>
           </div>
@@ -261,29 +258,29 @@ export default function SettingsPage() {
           <button
             type="submit"
             disabled={saving}
-            className="px-6 py-2.5 bg-teal-500 hover:bg-teal-600 text-white rounded-xl text-xs font-bold shadow-md shadow-teal-500/20 flex items-center gap-2 disabled:opacity-50 transition-all"
+            className="px-5 py-2.5 bg-charcoal text-off-white rounded shadow-inset-btn text-xs font-normal flex items-center gap-2 active:opacity-80 transition-opacity disabled:opacity-50"
           >
-            {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Check className="w-4 h-4" />}
+            {saving ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Check className="w-3.5 h-3.5" />}
             Save Changes
           </button>
         </div>
       </form>
 
       {/* Danger Zone */}
-      <div className="bg-rose-50/60 dark:bg-rose-950/20 rounded-card p-6 border border-rose-200 dark:border-rose-900/60 space-y-4">
-        <div className="flex items-center justify-between">
+      <div className="bg-cream rounded-card p-6 border border-charcoal-40 space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
-            <h3 className="text-sm font-bold text-rose-800 dark:text-rose-300 flex items-center gap-2">
-              <ShieldAlert className="w-4 h-4" /> Danger Zone
+            <h3 className="text-sm font-semibold text-charcoal flex items-center gap-2">
+              <ShieldAlert className="w-4 h-4 opacity-80" /> Danger Zone
             </h3>
-            <p className="text-xs text-rose-600 dark:text-rose-400 mt-0.5">
+            <p className="text-xs text-muted font-normal mt-0.5">
               Permanently remove your account, saved itineraries, and preferences from SQLite storage.
             </p>
           </div>
           <button
             type="button"
             onClick={() => setShowDeleteModal(true)}
-            className="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold shadow-sm flex items-center gap-1.5 transition-colors"
+            className="self-start sm:self-auto px-3.5 py-1.5 bg-transparent text-charcoal border border-charcoal-40 rounded text-xs font-normal hover:bg-charcoal-4 flex items-center gap-1.5 transition-colors"
           >
             <Trash2 className="w-3.5 h-3.5" /> Delete Account
           </button>

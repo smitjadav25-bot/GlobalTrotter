@@ -5,191 +5,90 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
-    --bg-surface: #F8F9FA;
-    --card-bg: #FFFFFF;
-    --text-primary: #1E293B;
-    --text-secondary: #64748B;
-    --border-color: #E2E8F0;
-  }
-
-  .dark {
-    --bg-surface: #0F172A;
-    --card-bg: #1E293B;
-    --text-primary: #F8FAFC;
-    --text-secondary: #94A3B8;
-    --border-color: #334155;
-  }
-
   body {
-    @apply bg-surface-light dark:bg-surface-dark text-slate-900 dark:text-slate-100 antialiased selection:bg-teal-100 selection:text-teal-900 dark:selection:bg-teal-900 dark:selection:text-teal-100 min-h-screen flex flex-col font-sans transition-colors duration-200;
+    @apply bg-cream text-charcoal font-normal antialiased selection:bg-charcoal-4 selection:text-charcoal min-h-screen flex flex-col;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply text-charcoal font-semibold;
   }
 }
 
-/* Skeleton Loading Shimmer */
-@keyframes shimmer {
-  100% {
-    transform: translateX(100%);
-  }
-}
-
-.skeleton {
-  position: relative;
-  overflow: hidden;
-  background-color: #e2e8f0;
-}
-
-.dark .skeleton {
-  background-color: #334155;
-}
-
-.skeleton::after {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  transform: translateX(-100%);
-  background-image: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0) 0,
-    rgba(255, 255, 255, 0.2) 20%,
-    rgba(255, 255, 255, 0.5) 60%,
-    rgba(255, 255, 255, 0)
-  );
-  animation: shimmer 2s infinite;
-  content: '';
-}
-
-.dark .skeleton::after {
-  background-image: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0) 0,
-    rgba(255, 255, 255, 0.05) 20%,
-    rgba(255, 255, 255, 0.1) 60%,
-    rgba(255, 255, 255, 0)
-  );
-}
-
-/* Custom scrollbars */
+/* Custom scrollbars matching Cream & Charcoal */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f5f9;
-}
-
-.dark ::-webkit-scrollbar-track {
-  background: #0f172a;
+  background: #f7f4ed;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: #eceae4;
   border-radius: 9999px;
 }
 
-.dark ::-webkit-scrollbar-thumb {
-  background: #334155;
-}
-
 ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: rgba(28, 28, 28, 0.4);
 }
 
-.dark ::-webkit-scrollbar-thumb:hover {
-  background: #475569;
-}
-
-/* React Big Calendar Modern overrides */
+/* React Big Calendar Overrides in Warm Cream & Charcoal */
 .rbc-calendar {
-  border-radius: 1.25rem;
+  border-radius: 12px;
   font-family: inherit;
-  background: white;
-  padding: 1rem;
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 4px 20px -4px rgba(0, 0, 0, 0.05);
-}
-
-.dark .rbc-calendar {
-  background: #1e293b;
-  border-color: #334155;
-  color: #f1f5f9;
+  background: #f7f4ed;
+  padding: 16px;
+  border: 1px solid #eceae4;
+  box-shadow: none;
 }
 
 .rbc-header {
-  padding: 0.75rem 0.5rem;
+  padding: 10px 8px;
   font-weight: 600;
-  color: #475569;
-  border-bottom: 1px solid #e2e8f0;
-  font-size: 0.875rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.dark .rbc-header {
-  color: #94a3b8;
-  border-color: #334155;
+  color: #1c1c1c;
+  border-bottom: 1px solid #eceae4;
+  font-size: 0.8125rem;
+  letter-spacing: 0.02em;
 }
 
 .rbc-event {
-  background-color: #14b8a6 !important;
-  border-radius: 0.5rem !important;
+  background-color: #1c1c1c !important;
+  color: #fcfbf8 !important;
+  border-radius: 6px !important;
   padding: 4px 8px !important;
-  font-size: 0.8125rem !important;
-  font-weight: 500 !important;
+  font-size: 0.75rem !important;
+  font-weight: 400 !important;
   border: none !important;
-  box-shadow: 0 2px 4px rgba(20, 184, 166, 0.25) !important;
-  transition: transform 0.15s ease;
-}
-
-.rbc-event:hover {
-  transform: translateY(-1px);
+  box-shadow: rgba(255,255,255,0.2) 0px 0.5px 0px 0px inset, rgba(0,0,0,0.2) 0px 0px 0px 0.5px inset, rgba(0,0,0,0.05) 0px 1px 2px 0px !important;
 }
 
 .rbc-today {
-  background-color: #f0fdfa !important;
-}
-
-.dark .rbc-today {
-  background-color: #134e4a40 !important;
+  background-color: rgba(28, 28, 28, 0.03) !important;
 }
 
 .rbc-off-range-bg {
-  background-color: #f8fafc !important;
-}
-
-.dark .rbc-off-range-bg {
-  background-color: #0f172a80 !important;
+  background-color: rgba(28, 28, 28, 0.015) !important;
 }
 
 .rbc-toolbar button {
-  color: #334155 !important;
-  border: 1px solid #e2e8f0 !important;
-  padding: 0.5rem 1rem !important;
-  border-radius: 0.75rem !important;
-  font-weight: 500 !important;
-  font-size: 0.875rem !important;
-  transition: all 0.15s ease !important;
-}
-
-.dark .rbc-toolbar button {
-  color: #e2e8f0 !important;
-  border-color: #334155 !important;
+  color: #1c1c1c !important;
+  border: 1px solid rgba(28, 28, 28, 0.4) !important;
+  padding: 6px 12px !important;
+  border-radius: 6px !important;
+  font-weight: 400 !important;
+  font-size: 0.8125rem !important;
+  background: transparent !important;
+  transition: opacity 0.15s ease !important;
 }
 
 .rbc-toolbar button:hover {
-  background-color: #f1f5f9 !important;
-  border-color: #cbd5e1 !important;
-}
-
-.dark .rbc-toolbar button:hover {
-  background-color: #334155 !important;
+  background-color: rgba(28, 28, 28, 0.04) !important;
 }
 
 .rbc-toolbar button.rbc-active {
-  background-color: #14b8a6 !important;
-  color: white !important;
-  border-color: #14b8a6 !important;
+  background-color: #1c1c1c !important;
+  color: #fcfbf8 !important;
+  border-color: #1c1c1c !important;
+  box-shadow: rgba(255,255,255,0.2) 0px 0.5px 0px 0px inset, rgba(0,0,0,0.2) 0px 0px 0px 0.5px inset, rgba(0,0,0,0.05) 0px 1px 2px 0px !important;
 }
