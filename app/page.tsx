@@ -89,12 +89,12 @@ export default async function HomePage() {
               {/* Quick stats pills */}
               <div className="grid grid-cols-3 gap-4 pt-6 border-t border-light-cream max-w-lg">
                 <div>
-                  <div className="text-2xl font-semibold text-charcoal">15+</div>
-                  <div className="text-xs text-muted font-normal">Curated Cities</div>
+                  <div className="text-2xl font-semibold text-charcoal">18+</div>
+                  <div className="text-xs text-muted font-normal">Curated Indian Cities</div>
                 </div>
                 <div>
-                  <div className="text-2xl font-semibold text-charcoal">35+</div>
-                  <div className="text-xs text-muted font-normal">Experiences</div>
+                  <div className="text-2xl font-semibold text-charcoal">50+</div>
+                  <div className="text-xs text-muted font-normal">Authentic Experiences</div>
                 </div>
                 <div>
                   <div className="text-2xl font-semibold text-charcoal">100%</div>
@@ -249,12 +249,12 @@ export default async function HomePage() {
         )}
       </section>
 
-      {/* Recommended Global Cities Section */}
+      {/* Recommended India Cities Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="text-xl sm:text-2xl font-semibold text-charcoal tracking-tight">Explore Top Destinations</h2>
-            <p className="text-xs text-muted font-normal">Popular global hubs with realistic cost index ratings</p>
+            <h2 className="text-xl sm:text-2xl font-semibold text-charcoal tracking-tight">Explore Top Destinations in India</h2>
+            <p className="text-xs text-muted font-normal">Curated hubs across North, South, West, East, and Himalayan India</p>
           </div>
           <Link
             href="/trips/new"

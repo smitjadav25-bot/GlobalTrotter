@@ -3,15 +3,10 @@
 import React, { useState } from 'react';
 import {
   MapPin,
-  Filter,
-  Navigation,
   Compass,
   Layers,
-  Star,
-  DollarSign,
   ArrowRight,
   Info,
-  Sparkles,
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -31,63 +26,75 @@ interface MapPlace {
 const SAMPLE_PLACES: MapPlace[] = [
   {
     id: 'p-1',
-    name: 'Senso-ji Ancient Temple',
+    name: 'Taj Mahal Monument',
     category: 'Attraction',
-    city: 'Tokyo, Japan',
-    lat: 35.7148,
-    lng: 139.7967,
-    rating: 4.8,
-    price: 'Free',
-    description: "Tokyo's oldest and most significant Buddhist temple in Asakusa.",
-    imageUrl: 'https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=600&q=80',
+    city: 'Agra, Uttar Pradesh',
+    lat: 27.1751,
+    lng: 78.0421,
+    rating: 4.9,
+    price: '$15',
+    description: 'Iconic white marble mausoleum and UNESCO World Heritage monument on the Yamuna riverbank.',
+    imageUrl: 'https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=600&q=80',
   },
   {
+    name: 'Amber Palace & Sheesh Mahal',
     id: 'p-2',
-    name: 'Eiffel Tower & Champ de Mars',
     category: 'Attraction',
-    city: 'Paris, France',
-    lat: 48.8584,
-    lng: 2.2945,
-    rating: 4.7,
-    price: '$28',
-    description: 'Iconic iron lattice monument with panoramic views over Paris.',
-    imageUrl: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=600&q=80',
+    city: 'Jaipur, Rajasthan',
+    lat: 26.9855,
+    lng: 75.8513,
+    rating: 4.8,
+    price: '$12',
+    description: 'Hilltop fortress blending Rajput and Mughal architecture with stunning mirrored hall.',
+    imageUrl: 'https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=600&q=80',
   },
   {
     id: 'p-3',
-    name: 'Fushimi Inari Torii Shrine',
+    name: 'Gateway of India',
     category: 'Attraction',
-    city: 'Kyoto, Japan',
-    lat: 34.9671,
-    lng: 135.7727,
-    rating: 4.9,
+    city: 'Mumbai, Maharashtra',
+    lat: 18.9220,
+    lng: 72.8347,
+    rating: 4.7,
     price: 'Free',
-    description: 'Mesmerizing path of 10,000 bright vermilion torii gates up sacred Mount Inari.',
-    imageUrl: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=600&q=80',
+    description: '20th-century arch monument overlooking Mumbai Harbour and the Arabian Sea.',
+    imageUrl: 'https://images.unsplash.com/photo-1570168007204-dfb528c6958f?auto=format&fit=crop&w=600&q=80',
   },
   {
     id: 'p-4',
-    name: 'Colosseum Amphitheatre',
-    category: 'Attraction',
-    city: 'Rome, Italy',
-    lat: 41.8902,
-    lng: 12.4922,
-    rating: 4.8,
-    price: '$24',
-    description: 'Flavian Amphitheatre, the largest ancient amphitheater ever built.',
-    imageUrl: 'https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=600&q=80',
+    name: 'Ganga Aarti at Dashashwamedh',
+    category: 'Hidden Gem',
+    city: 'Varanasi, Uttar Pradesh',
+    lat: 25.3076,
+    lng: 83.0107,
+    rating: 4.9,
+    price: 'Free',
+    description: 'Mesmerizing evening prayer ceremony of light, brass lamps, and sacred chanting on the Ganges.',
+    imageUrl: 'https://images.unsplash.com/photo-1561361513-2d000a50f0dc?auto=format&fit=crop&w=600&q=80',
   },
   {
     id: 'p-5',
-    name: 'Tegallalang Rice Terraces',
+    name: 'Alleppey Backwaters Houseboat',
     category: 'Hidden Gem',
-    city: 'Bali, Indonesia',
-    lat: -8.4333,
-    lng: 115.2833,
-    rating: 4.8,
-    price: '$5',
-    description: 'Stepped emerald rice valleys using traditional Balinese subak irrigation.',
-    imageUrl: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=600&q=80',
+    city: 'Kochi & Alleppey, Kerala',
+    lat: 9.4981,
+    lng: 76.3388,
+    rating: 4.9,
+    price: '$50',
+    description: 'Serene palm-fringed canals, traditional kettuvallam houseboats, and fresh Karimeen cuisine.',
+    imageUrl: 'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=600&q=80',
+  },
+  {
+    id: 'p-6',
+    name: 'Pangong Tso High Altitude Lake',
+    category: 'Hidden Gem',
+    city: 'Leh-Ladakh, Ladakh',
+    lat: 33.7595,
+    lng: 78.6674,
+    rating: 4.9,
+    price: '$75',
+    description: 'Color-shifting azure saltwater lake at 14,270 ft nestled in the rugged Himalayas.',
+    imageUrl: 'https://images.unsplash.com/photo-1581793745862-99fde7fa73d2?auto=format&fit=crop&w=600&q=80',
   },
 ];
 
@@ -118,10 +125,10 @@ export default function MapExplorerPage() {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl sm:text-3xl font-semibold text-charcoal tracking-[-0.9px] flex items-center gap-2.5">
-            <Compass className="w-6 h-6 opacity-80" /> Interactive Global Explorer Map
+            <Compass className="w-6 h-6 opacity-80" /> Interactive India Explorer Map
           </h1>
           <p className="text-xs text-muted font-normal mt-1">
-            Pinpoint attractions, curated boutique stays, verified cuisine, and multi-city transit routes.
+            Pinpoint attractions, curated heritage havelis, authentic cuisine, and multi-city travel routes across India.
           </p>
         </div>
       </div>
@@ -154,7 +161,7 @@ export default function MapExplorerPage() {
           <div className="relative z-10 flex items-center justify-between">
             <div className="px-3 py-1.5 bg-cream rounded border border-light-cream text-xs font-normal text-charcoal flex items-center gap-1.5">
               <Layers className="w-3.5 h-3.5 opacity-70" />
-              <span>World Overview Projection</span>
+              <span>India Overview Projection</span>
             </div>
             <div className="px-3 py-1.5 bg-cream rounded border border-light-cream text-xs font-normal text-muted">
               {filteredPlaces.length} Locations Mapped
@@ -190,7 +197,7 @@ export default function MapExplorerPage() {
             <div className="flex items-center gap-1">
               <Info className="w-3.5 h-3.5 opacity-70" /> Select any pin to preview details and add to itinerary
             </div>
-            <span>GPS: 35.6762° N, 139.6503° E</span>
+            <span>GPS: 20.5937° N, 78.9629° E (India)</span>
           </div>
         </div>
 
@@ -224,14 +231,14 @@ export default function MapExplorerPage() {
               {selectedPlace.description}
             </p>
 
-            <div className="p-3 bg-charcoal-3 rounded space-y-1 text-xs font-normal">
+            <div className="p-3 bg-charcoal-4 rounded space-y-1 text-xs font-normal">
               <div className="flex justify-between text-muted">
                 <span>Admission / Cost:</span>
                 <span className="font-semibold text-charcoal">{selectedPlace.price}</span>
               </div>
               <div className="flex justify-between text-muted">
                 <span>Recommended Time:</span>
-                <span className="font-semibold text-charcoal">1.5 - 2 Hours</span>
+                <span className="font-semibold text-charcoal">1.5 - 2.5 Hours</span>
               </div>
             </div>
           </div>

@@ -37,30 +37,30 @@ interface AiPlanResult {
 }
 
 const POPULAR_DESTINATIONS = [
-  'Tokyo & Kyoto, Japan',
-  'Paris & French Riviera, France',
-  'Rome, Florence & Venice, Italy',
-  'Bali & Lombok, Indonesia',
-  'Barcelona & Madrid, Spain',
-  'Zurich & Interlaken, Switzerland',
+  'Golden Triangle: Delhi, Agra & Jaipur',
+  'Royal Rajasthan: Jaipur & Udaipur',
+  'Kerala Backwaters & Kochi Port',
+  'Himalayan Odyssey: Manali & Rishikesh',
+  'Goa Sun, Heritage & Beach Shacks',
+  'Spiritual Kashi: Varanasi & Sarnath',
 ];
 
 const TRAVEL_STYLES = [
   { id: 'balanced', label: 'Balanced Explorer', desc: 'Mix of iconic landmarks and local relaxation' },
-  { id: 'foodie', label: 'Culinary Journey', desc: 'Street food, markets, and regional masterclasses' },
-  { id: 'culture', label: 'Art & Heritage', desc: 'Museums, ancient temples, and historic quarters' },
-  { id: 'budget', label: 'Smart Backpacker', desc: 'Cost-effective stays, walking tours, transit' },
+  { id: 'foodie', label: 'Culinary Journey', desc: 'Street food, royal thalis, and tea masterclasses' },
+  { id: 'culture', label: 'Heritage & Temples', desc: 'UNESCO monuments, ghats, and royal palaces' },
+  { id: 'adventure', label: 'Adventure & Mountains', desc: 'White-water rafting, paragliding, and high treks' },
 ];
 
 const INTEREST_TAGS = [
-  'Historic Shrines',
-  'Night Markets',
-  'Scenic Rail',
-  'Art Galleries',
-  'Mountain Hikes',
-  'Café Crawls',
-  'Architecture',
-  'Hot Springs / Onsens',
+  'Mughal Heritage & Forts',
+  'Street Food Crawls',
+  'Ayurvedic Spas & Yoga',
+  'Ganges Ganga Aarti',
+  'Himalayan Mountain Treks',
+  'Royal Rajput Palaces',
+  'Traditional Craft Bazaars',
+  'Backwater Houseboats',
 ];
 
 export default function AiPlannerPage() {
@@ -77,8 +77,8 @@ export default function AiPlannerPage() {
   const [budgetTier, setBudgetTier] = useState('moderate');
   const [selectedStyle, setSelectedStyle] = useState('balanced');
   const [selectedInterests, setSelectedInterests] = useState<string[]>([
-    'Historic Shrines',
-    'Night Markets',
+    'Mughal Heritage & Forts',
+    'Street Food Crawls',
   ]);
 
   // Generation state
@@ -93,56 +93,75 @@ export default function AiPlannerPage() {
 
   const handleGeneratePlan = async () => {
     setGenerating(true);
-    // Simulate AI synthesis
+    // Simulate AI synthesis with India-rich itineraries
     setTimeout(() => {
-      const isJapan = destination.toLowerCase().includes('japan') || destination.toLowerCase().includes('tokyo');
+      const destLower = destination.toLowerCase();
+      const isKerala = destLower.includes('kerala') || destLower.includes('kochi');
+      const isRajasthan = destLower.includes('rajasthan') || destLower.includes('jaipur') || destLower.includes('udaipur');
+
       const mockResult: AiPlanResult = {
-        title: destination ? `${destination} Discovery Circuit` : 'Grand Multi-City Odyssey',
-        summary: `A personalized ${durationDays}-day itinerary optimized for transit efficiency, authentic cuisine, and iconic attractions.`,
-        estimatedBudget: durationDays * (budgetTier === 'budget' ? 85 : budgetTier === 'luxury' ? 260 : 145) * travelersCount,
+        title: destination ? `${destination} Journey` : 'Incredible India Heritage Circuit',
+        summary: `A personalized ${durationDays}-day India itinerary curated for rich cultural heritage, authentic regional cuisine, and comfortable travel pacing.`,
+        estimatedBudget: durationDays * (budgetTier === 'budget' ? 45 : budgetTier === 'luxury' ? 150 : 80) * travelersCount,
         currency: 'USD',
         days: Array.from({ length: durationDays }).map((_, i) => {
           const dayNum = i + 1;
-          if (isJapan) {
+          if (isRajasthan) {
             if (dayNum <= 3) {
               return {
                 day: dayNum,
-                title: `Tokyo Modern Pulse — Part ${dayNum}`,
-                city: 'Tokyo',
+                title: `Jaipur Pink City Majesty — Day ${dayNum}`,
+                city: 'Jaipur',
                 highlights: [
-                  'Tsukiji Outer Market Culinary Walk',
-                  'Shinjuku Gyoen National Garden',
-                  'Shibuya Sky Sunset Observation Deck',
+                  'Amber Fort & Sheesh Mahal Jeep Excursion',
+                  'Hawa Mahal & City Palace Heritage Photography',
+                  'Chokhi Dhani Royal Rajasthani Thali Dinner',
                 ],
-                stays: 'Boutique Ryokan in Asakusa',
-                foodRecommendation: 'Artisanal Tonkotsu Ramen & Matcha Crepes',
+                stays: 'Heritage Haveli in Old Jaipur',
+                foodRecommendation: 'Authentic Dal Baati Churma & Pyaz Kachori',
               };
             } else {
               return {
                 day: dayNum,
-                title: `Kyoto & Nara Ancient Serenity`,
-                city: 'Kyoto',
+                title: `Udaipur City of Lakes Romance — Day ${dayNum}`,
+                city: 'Udaipur',
                 highlights: [
-                  'Fushimi Inari-taisha 1,000 Torii Gates at dawn',
-                  'Arashiyama Bamboo Grove & Tenryu-ji Zen Garden',
-                  'Gion historic Geisha district evening stroll',
+                  'Lake Pichola Sunset Boat Cruise past Jagmandir',
+                  'Udaipur City Palace & Crystal Gallery Walk',
+                  'Saheliyon Ki Bari Fountains & Gardens',
                 ],
-                stays: 'Machiya Heritage Townhouse in Gion',
-                foodRecommendation: 'Multi-course Kaiseki & Yudofu Hot Pot',
+                stays: 'Lakeside Boutique Resort with Pichola View',
+                foodRecommendation: 'Laal Maas, Gatte ki Sabzi & Saffron Kheer',
               };
             }
           }
+
+          if (isKerala) {
+            return {
+              day: dayNum,
+              title: `Kerala Backwaters & Coastal Serenity — Day ${dayNum}`,
+              city: dayNum <= 3 ? 'Kochi' : 'Alleppey',
+              highlights: [
+                'Fort Kochi Chinese Fishing Nets & Heritage Walk',
+                'Alleppey Houseboat Day Cruise through Palm Canals',
+                'Traditional Kerala Ayurvedic Full-Body Herbal Spa',
+              ],
+              stays: 'Eco Heritage Backwater Villa',
+              foodRecommendation: 'Appam with Coconut Stew & Karimeen Fish Fry',
+            };
+          }
+
           return {
             day: dayNum,
-            title: `City Exploration & Cultural Landmarks — Day ${dayNum}`,
-            city: destination.split(',')[0] || 'Primary Destination',
+            title: `India Cultural Discovery — Day ${dayNum}`,
+            city: destination.split(',')[0] || 'Delhi',
             highlights: [
-              'Morning heritage walking tour with local guide',
-              'Art & Architecture district exploration',
-              'Panoramic sunset terrace dining',
+              'Morning heritage monument guided exploration',
+              'Local artisanal craft market & spice trail',
+              'Evening traditional music or Ganga Aarti ceremony',
             ],
-            stays: 'Centrally Located Design Hotel',
-            foodRecommendation: 'Signature Local Specialties & Artisan Bakery',
+            stays: 'Curated Heritage Stay with Garden Courtyard',
+            foodRecommendation: 'Hot Tandoori Breads, Rich Mughlai Gravies & Claypot Chai',
           };
         }),
       };
@@ -161,7 +180,7 @@ export default function AiPlannerPage() {
           <Sparkles className="w-6 h-6 opacity-80" /> AI Travel Itinerary Planner
         </h1>
         <p className="text-xs text-muted font-normal mt-1">
-          Tell Globe AI where you want to travel, and get a day-by-day itinerary tailored to your style.
+          Tell Globe AI where in India you want to travel, and get a day-by-day itinerary tailored to your style.
         </p>
       </div>
 
@@ -184,9 +203,9 @@ export default function AiPlannerPage() {
       {step === 1 && (
         <div className="bg-cream rounded-card p-6 sm:p-8 border border-light-cream space-y-6">
           <div className="space-y-1">
-            <h2 className="text-base font-semibold text-charcoal">Where would you like to explore?</h2>
+            <h2 className="text-base font-semibold text-charcoal">Where in India would you like to explore?</h2>
             <p className="text-xs text-muted font-normal">
-              Enter one or multiple cities, or select from popular circuits below.
+              Enter destinations, or select from curated popular Indian circuits below.
             </p>
           </div>
 
@@ -194,7 +213,7 @@ export default function AiPlannerPage() {
             <label className="block text-xs font-normal text-charcoal mb-1">Destination Name</label>
             <input
               type="text"
-              placeholder="e.g. Tokyo & Kyoto, Japan or Amalfi Coast, Italy"
+              placeholder="e.g. Jaipur, Agra, Goa, Kerala, Varanasi, or Manali"
               value={destination}
               onChange={(e) => setDestination(e.target.value)}
               className="w-full px-4 py-2.5 bg-cream text-charcoal border border-light-cream rounded text-xs placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-ring-blue"
@@ -202,7 +221,7 @@ export default function AiPlannerPage() {
           </div>
 
           <div className="space-y-2">
-            <label className="block text-xs font-normal text-muted">Or pick a popular circuit:</label>
+            <label className="block text-xs font-normal text-muted">Or pick a popular Indian circuit:</label>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               {POPULAR_DESTINATIONS.map((dest) => (
                 <button
@@ -336,9 +355,9 @@ export default function AiPlannerPage() {
             <label className="block text-xs font-normal text-charcoal">Target Budget Tier</label>
             <div className="grid grid-cols-3 gap-3">
               {[
-                { id: 'budget', label: 'Budget ($)', desc: 'Hostels & local eats' },
-                { id: 'moderate', label: 'Moderate ($$)', desc: 'Boutique hotels & mix' },
-                { id: 'luxury', label: 'Premium ($$$)', desc: 'High-end dining & stays' },
+                { id: 'budget', label: 'Budget ($)', desc: 'Hostels, dhabas & trains' },
+                { id: 'moderate', label: 'Moderate ($$)', desc: 'Boutique havelis & flights' },
+                { id: 'luxury', label: 'Heritage Luxury ($$$)', desc: 'Royal palace hotels & private drivers' },
               ].map((tier) => (
                 <button
                   key={tier.id}
@@ -386,9 +405,9 @@ export default function AiPlannerPage() {
       {step === 4 && (
         <div className="bg-cream rounded-card p-6 sm:p-8 border border-light-cream space-y-6">
           <div className="space-y-1">
-            <h2 className="text-base font-semibold text-charcoal">Specific Interests & Activities</h2>
+            <h2 className="text-base font-semibold text-charcoal">Specific Interests & Experiences</h2>
             <p className="text-xs text-muted font-normal">
-              Select key experience tags to include in your personalized route.
+              Select key experience tags to prioritize in your itinerary.
             </p>
           </div>
 
@@ -505,7 +524,7 @@ export default function AiPlannerPage() {
                       {d.highlights.map((h, idx) => (
                         <li
                           key={idx}
-                          className="p-2 rounded bg-charcoal-3 text-xs text-charcoal font-normal flex items-center gap-1.5"
+                          className="p-2 rounded bg-charcoal-4 text-xs text-charcoal font-normal flex items-center gap-1.5"
                         >
                           <Check className="w-3 h-3 text-muted shrink-0" />
                           <span>{h}</span>

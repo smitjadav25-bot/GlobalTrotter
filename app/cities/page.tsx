@@ -160,10 +160,10 @@ export default function CitiesPage() {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl sm:text-3xl font-semibold text-charcoal tracking-[-0.9px] flex items-center gap-2.5">
-            <Building2 className="w-6 h-6 opacity-80" /> Global Destinations
+            <Building2 className="w-6 h-6 opacity-80" /> India Destinations
           </h1>
           <p className="text-xs text-muted font-normal mt-1">
-            Explore curated world cities, compare local cost indices, and add destinations directly into your trips.
+            Explore curated cities across North, South, West, East, and Himalayan India, compare local cost indices, and add stops into your trips.
           </p>
         </div>
         <Link

@@ -22,10 +22,10 @@ interface Message {
 }
 
 const QUICK_PROMPTS = [
-  'Plan a 5-day budget trip to Tokyo',
-  'Find quiet cafes in Paris',
-  'Keep multi-city trip under $1,500',
-  'Suggest sunset spots in Kyoto',
+  'Plan 5 days in Jaipur & Udaipur',
+  'Best street food spots in Old Delhi',
+  'Golden Triangle budget estimate',
+  'Sunrise timings for Taj Mahal',
 ];
 
 export default function AskGlobeAiModal() {
@@ -36,7 +36,7 @@ export default function AskGlobeAiModal() {
     {
       id: 'm-1',
       sender: 'ai',
-      text: "Hello! I'm Globe AI, your multi-city travel co-pilot. Where are you planning to travel next?",
+      text: "Namaste! I'm Globe AI, your India multi-city travel co-pilot. Where are you planning to travel next?",
       timestamp: 'Just now',
     },
   ]);
@@ -60,14 +60,18 @@ export default function AskGlobeAiModal() {
       let aiResponseText = '';
       let actionLink: { label: string; href: string } | undefined;
 
-      if (query.toLowerCase().includes('tokyo') || query.toLowerCase().includes('japan')) {
-        aiResponseText = `For Tokyo, I recommend Day 1 in Shinjuku, Day 2 in historic Asakusa & Ueno, and Day 3 in Shibuya. Estimated daily budget is ~$110/day.`;
+      const q = query.toLowerCase();
+      if (q.includes('jaipur') || q.includes('rajasthan') || q.includes('udaipur')) {
+        aiResponseText = `For Rajasthan, I recommend Day 1-2 in Jaipur (Amber Fort, Hawa Mahal, Chokhi Dhani) and Day 3-4 in Udaipur (Lake Pichola sunset boat cruise, City Palace). Estimated budget is ~$75-90/day.`;
         actionLink = { label: 'Open in Full AI Planner', href: '/ai-planner' };
-      } else if (query.toLowerCase().includes('budget') || query.toLowerCase().includes('cost')) {
-        aiResponseText = `Tip: Save up to 35% on multi-city travel by booking regional high-speed rail passes and opting for centrally-located boutique homestays.`;
+      } else if (q.includes('delhi') || q.includes('food') || q.includes('agra')) {
+        aiResponseText = `For Old Delhi food crawls, explore Chandni Chowk Paranthe Wali Gali and Karim's kebabs. In Agra, visit Taj Mahal at 6:00 AM for soft morning light and minimal crowds.`;
+        actionLink = { label: 'View Destinations', href: '/cities' };
+      } else if (q.includes('budget') || q.includes('cost')) {
+        aiResponseText = `Tip: Save up to 40% on India travel by booking AC Chair Car trains (Vande Bharat / Shatabdi) between major hubs and choosing boutique heritage havelis.`;
         actionLink = { label: 'View Budget Optimizer', href: '/budget' };
       } else {
-        aiResponseText = `I can assemble a custom day-by-day itinerary with verified stops, duration pacing, and budget breakdown.`;
+        aiResponseText = `I can assemble a custom day-by-day itinerary with verified stops, duration pacing, and budget breakdown across India.`;
         actionLink = { label: 'Launch AI Trip Wizard', href: '/ai-planner' };
       }
 
@@ -113,7 +117,7 @@ export default function AskGlobeAiModal() {
                 </div>
                 <div>
                   <h3 className="text-xs font-semibold text-charcoal">Globe AI Assistant</h3>
-                  <p className="text-[11px] text-muted">Smart travel planning assistant</p>
+                  <p className="text-[11px] text-muted">Smart India travel planning co-pilot</p>
                 </div>
               </div>
               <button
@@ -189,7 +193,7 @@ export default function AskGlobeAiModal() {
             >
               <input
                 type="text"
-                placeholder="Ask about cities, budgets, routes..."
+                placeholder="Ask about Indian cities, budgets, routes..."
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 className="flex-1 px-3 py-2 bg-cream text-charcoal border border-light-cream rounded text-xs placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-ring-blue"

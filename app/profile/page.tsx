@@ -15,6 +15,7 @@ import {
   ArrowRight,
   Shield,
   AlertTriangle,
+  LogOut,
 } from 'lucide-react';
 import ImageUploader from '@/components/ImageUploader';
 import DeleteConfirmModal from '@/components/DeleteConfirmModal';
@@ -27,6 +28,7 @@ export default function ProfilePage() {
   const [saving, setSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isSigningOut, setIsSigningOut] = useState(false);
 
   // Form State
   const [name, setName] = useState('');
@@ -89,6 +91,17 @@ export default function ProfilePage() {
     }
   };
 
+  const handleSignOut = async () => {
+    try {
+      setIsSigningOut(true);
+      await signOut({ callbackUrl: '/login' });
+    } catch (err) {
+      console.error('Sign out error:', err);
+    } finally {
+      setIsSigningOut(false);
+    }
+  };
+
   const handleRemoveSavedCity = async (cityId: string) => {
     try {
       const res = await fetch('/api/profile/saved', {
@@ -131,14 +144,32 @@ export default function ProfilePage() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-      {/* Header */}
-      <div>
-        <h1 className="text-2xl sm:text-3xl font-semibold text-charcoal tracking-[-0.9px] flex items-center gap-2.5">
-          <User className="w-6 h-6 opacity-80" /> Traveler Profile & Preferences
-        </h1>
-        <p className="text-xs text-muted font-normal mt-1">
-          Manage your account information, interface language, and saved destination wishlist.
-        </p>
+      {/* Header with Title & Quick Sign Out Button */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-semibold text-charcoal tracking-[-0.9px] flex items-center gap-2.5">
+            <User className="w-6 h-6 opacity-80" /> Traveler Profile & Preferences
+          </h1>
+          <p className="text-xs text-muted font-normal mt-1">
+            Manage your account information, interface language, and saved destinations.
+          </p>
+        </div>
+
+        {/* Top Sign Out Action */}
+        <button
+          type="button"
+          onClick={handleSignOut}
+          disabled={isSigningOut}
+          className="inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-cream text-charcoal border border-charcoal-40 hover:bg-charcoal-4 rounded text-xs font-normal transition-colors disabled:opacity-50"
+          title="Sign out of your account"
+        >
+          {isSigningOut ? (
+            <Loader2 className="w-3.5 h-3.5 animate-spin" />
+          ) : (
+            <LogOut className="w-3.5 h-3.5 opacity-80" />
+          )}
+          <span>Sign Out</span>
+        </button>
       </div>
 
       {/* Main Profile Form */}
@@ -204,6 +235,7 @@ export default function ProfilePage() {
                 className="w-full pl-9 pr-3 py-2 bg-cream text-charcoal border border-light-cream rounded text-xs font-normal focus:ring-2 focus:ring-ring-blue focus:outline-none"
               >
                 <option value="en">English (US)</option>
+                <option value="hi">हिन्दी (Hindi)</option>
                 <option value="es">Español (Spanish)</option>
                 <option value="fr">Français (French)</option>
                 <option value="ja">日本語 (Japanese)</option>
@@ -224,7 +256,7 @@ export default function ProfilePage() {
             </div>
           )}
 
-          <div className="pt-2 flex items-center justify-end">
+          <div className="pt-2 flex items-center justify-end gap-3">
             <button
               type="submit"
               disabled={saving}
@@ -245,7 +277,7 @@ export default function ProfilePage() {
             </div>
             <div>
               <h2 className="text-sm font-semibold text-charcoal">Saved Wishlist Destinations</h2>
-              <p className="text-xs text-muted">Cities you have bookmarked for future adventures</p>
+              <p className="text-xs text-muted">Indian cities and destinations you bookmarked for future travels</p>
             </div>
           </div>
           <Link
@@ -295,26 +327,47 @@ export default function ProfilePage() {
           </div>
         ) : (
           <div className="p-8 text-center rounded border border-light-cream text-xs text-muted space-y-1.5">
-            <p>You haven't bookmarked any cities yet.</p>
+            <p>You haven't bookmarked any destinations yet.</p>
             <Link
               href="/cities"
               className="inline-flex items-center gap-1 text-charcoal underline"
             >
-              Explore destinations now <ArrowRight className="w-3 h-3" />
+              Explore destinations across India <ArrowRight className="w-3 h-3" />
             </Link>
           </div>
         )}
       </div>
 
-      {/* Danger Zone: Delete Account */}
-      <div className="bg-cream rounded-card p-6 border border-charcoal-40 space-y-4">
+      {/* Account Actions / Sign Out & Danger Zone */}
+      <div className="bg-cream rounded-card p-6 border border-light-cream space-y-5">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-light-cream">
+          <div>
+            <h3 className="text-sm font-semibold text-charcoal flex items-center gap-2">
+              <LogOut className="w-4 h-4 opacity-80" /> Sign Out of Session
+            </h3>
+            <p className="text-xs text-muted font-normal mt-0.5">
+              Securely log out of your GlobeTrotter account on this device.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={handleSignOut}
+            disabled={isSigningOut}
+            className="self-start sm:self-auto px-4 py-2 bg-charcoal text-off-white rounded shadow-inset-btn text-xs font-normal active:opacity-80 transition-opacity flex items-center gap-2"
+          >
+            {isSigningOut ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <LogOut className="w-3.5 h-3.5" />}
+            Sign Out
+          </button>
+        </div>
+
+        {/* Delete Account */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
             <h3 className="text-sm font-semibold text-charcoal flex items-center gap-2">
-              <AlertTriangle className="w-4 h-4 opacity-80" /> Danger Zone
+              <AlertTriangle className="w-4 h-4 opacity-80" /> Delete Account
             </h3>
             <p className="text-xs text-muted font-normal mt-0.5">
-              Permanently delete your account and remove all associated trips, stops, and uploads.
+              Permanently delete your account and all associated itineraries, stops, and saved destinations.
             </p>
           </div>
           <button

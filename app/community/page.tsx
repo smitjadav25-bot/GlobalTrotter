@@ -8,14 +8,9 @@ import {
   Share2,
   Bookmark,
   MapPin,
-  Calendar,
-  Sparkles,
   Plus,
-  Send,
   X,
-  Compass,
 } from 'lucide-react';
-import Link from 'next/link';
 
 interface StoryPost {
   id: string;
@@ -36,36 +31,53 @@ interface StoryPost {
 const INITIAL_STORIES: StoryPost[] = [
   {
     id: 's-1',
-    authorName: 'Kenji Takahashi',
+    authorName: 'Aarav Patel',
     authorAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
-    location: 'Kyoto & Tokyo, Japan',
-    tripDuration: '8 Days',
-    title: 'Autumn in the Zen Gardens & Evening Ramen Trails',
+    location: 'Jaipur & Udaipur, Rajasthan',
+    tripDuration: '7 Days',
+    title: 'Sunrise at Amber Fort & Lakeside Dinners in Udaipur',
     content:
-      'We spent 4 days waking up at 5:30 AM to walk Fushimi Inari before the crowds arrived, followed by matcha in Uji and high-speed Shinkansen to Tokyo.',
+      'We spent 4 days exploring the royal Rajput palaces, taking an early morning jeep safari up to Amber Fort, followed by sunset boat rides on Lake Pichola and authentic Dal Baati Churma at Chokhi Dhani.',
     photos: [
-      'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1615836245337-f5b9b2303f10?auto=format&fit=crop&w=800&q=80',
     ],
-    likes: 142,
-    comments: 18,
+    likes: 184,
+    comments: 24,
     publishedAt: '2 hours ago',
   },
   {
     id: 's-2',
-    authorName: 'Amélie Laurent',
+    authorName: 'Ananya Deshmukh',
     authorAvatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80',
-    location: 'Paris & Nice, France',
+    location: 'Kochi & Alleppey, Kerala',
     tripDuration: '6 Days',
-    title: 'Secret Cafés and Sunset Walks along the Seine',
+    title: 'Peaceful Backwater Houseboats and Ayurvedic Wellness',
     content:
-      'GlobeTrotter helped us sequence our museum reservations to avoid queues completely. The evening boat ride on the Seine remains our favorite highlight.',
+      'GlobeTrotter made scheduling our Alleppey houseboat and Fort Kochi Kathakali evening shows effortless. Drifting past palm canals while savoring fresh Karimeen fish fry was pure bliss.',
     photos: [
-      'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=800&q=80',
     ],
-    likes: 89,
-    comments: 7,
+    likes: 142,
+    comments: 15,
     publishedAt: 'Yesterday',
+  },
+  {
+    id: 's-3',
+    authorName: 'Rohan Sengupta',
+    authorAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80',
+    location: 'Varanasi & Rishikesh',
+    tripDuration: '8 Days',
+    title: 'Spiritual Ganges Aarti and Himalayan River Rafting',
+    content:
+      'From the chanting and glowing brass lamps at Dashashwamedh Ghat in Varanasi to Grade 3+ rapids in Rishikesh, this journey combined spiritual grounding with exhilarating mountain adventure.',
+    photos: [
+      'https://images.unsplash.com/photo-1561361513-2d000a50f0dc?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=800&q=80',
+    ],
+    likes: 215,
+    comments: 31,
+    publishedAt: '3 days ago',
   },
 ];
 
@@ -106,12 +118,12 @@ export default function CommunityPage() {
       id: `s-${Date.now()}`,
       authorName: 'You (Traveler)',
       authorAvatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=200&q=80',
-      location: newLocation || 'Global Route',
+      location: newLocation || 'India Circuit',
       tripDuration: 'Custom Trip',
       title: newTitle,
       content: newContent,
       photos: [
-        'https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=800&q=80',
+        'https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=800&q=80',
       ],
       likes: 1,
       comments: 0,
@@ -135,7 +147,7 @@ export default function CommunityPage() {
             <Users className="w-6 h-6 opacity-80" /> Traveler Community & Stories
           </h1>
           <p className="text-xs text-muted font-normal mt-1">
-            Real itineraries, travel stories, and route recommendations from travelers worldwide.
+            Real itineraries, travel stories, and route recommendations across India.
           </p>
         </div>
         <button
@@ -254,7 +266,7 @@ export default function CommunityPage() {
                 <label className="block text-xs font-normal text-charcoal mb-1">Story Title</label>
                 <input
                   type="text"
-                  placeholder="e.g. 5 Days Exploring Roman Piazzas and Gelato"
+                  placeholder="e.g. 5 Days Exploring Goa Beaches and Old Churches"
                   value={newTitle}
                   onChange={(e) => setNewTitle(e.target.value)}
                   className="w-full px-3 py-2 bg-cream text-charcoal border border-light-cream rounded text-xs focus:ring-2 focus:ring-ring-blue"
@@ -266,7 +278,7 @@ export default function CommunityPage() {
                 <label className="block text-xs font-normal text-charcoal mb-1">Destination Visited</label>
                 <input
                   type="text"
-                  placeholder="e.g. Rome & Florence, Italy"
+                  placeholder="e.g. Goa & Mumbai, India"
                   value={newLocation}
                   onChange={(e) => setNewLocation(e.target.value)}
                   className="w-full px-3 py-2 bg-cream text-charcoal border border-light-cream rounded text-xs focus:ring-2 focus:ring-ring-blue"
@@ -277,10 +289,10 @@ export default function CommunityPage() {
                 <label className="block text-xs font-normal text-charcoal mb-1">Story / Tips</label>
                 <textarea
                   rows={4}
-                  placeholder="Share memorable moments, secret food spots, and pacing tips..."
+                  placeholder="Share memorable moments, secret street food spots, and travel tips..."
                   value={newContent}
                   onChange={(e) => setNewContent(e.target.value)}
-                  className="w-full px-3 py-2 bg-cream text-charcoal border border-light-cream rounded text-xs focus:ring-2 focus:ring-ring-blue"
+                  className="w-full px-3 py-2 bg-cream text-charcoal border border-light-cream rounded text-xs focus:ring-2 focus:ring-ring-blue resize-none"
                   required
                 />
               </div>
