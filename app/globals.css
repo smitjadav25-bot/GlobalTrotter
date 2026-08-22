@@ -5,95 +5,90 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
-    --background: 210 40% 98%;
-    --foreground: 222 47% 11%;
+  body {
+    @apply bg-cream text-charcoal font-normal antialiased selection:bg-charcoal-4 selection:text-charcoal min-h-screen flex flex-col;
   }
 
-  body {
-    @apply bg-slate-50 text-slate-900 antialiased selection:bg-coral-100 selection:text-coral-900 min-h-screen flex flex-col font-sans;
+  h1, h2, h3, h4, h5, h6 {
+    @apply text-charcoal font-semibold;
   }
 }
 
-/* Custom scrollbars */
+/* Custom scrollbars matching Cream & Charcoal */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f5f9;
+  background: #f7f4ed;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: #eceae4;
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: rgba(28, 28, 28, 0.4);
 }
 
-/* React Big Calendar Modern overrides */
+/* React Big Calendar Overrides in Warm Cream & Charcoal */
 .rbc-calendar {
-  border-radius: 1rem;
+  border-radius: 12px;
   font-family: inherit;
-  background: white;
-  padding: 1rem;
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 4px 20px -4px rgba(0, 0, 0, 0.05);
+  background: #f7f4ed;
+  padding: 16px;
+  border: 1px solid #eceae4;
+  box-shadow: none;
 }
 
 .rbc-header {
-  padding: 0.75rem 0.5rem;
+  padding: 10px 8px;
   font-weight: 600;
-  color: #475569;
-  border-bottom: 1px solid #e2e8f0;
-  font-size: 0.875rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  color: #1c1c1c;
+  border-bottom: 1px solid #eceae4;
+  font-size: 0.8125rem;
+  letter-spacing: 0.02em;
 }
 
 .rbc-event {
-  background-color: #ff5a5f !important;
-  border-radius: 0.5rem !important;
+  background-color: #1c1c1c !important;
+  color: #fcfbf8 !important;
+  border-radius: 6px !important;
   padding: 4px 8px !important;
-  font-size: 0.8125rem !important;
-  font-weight: 500 !important;
+  font-size: 0.75rem !important;
+  font-weight: 400 !important;
   border: none !important;
-  box-shadow: 0 2px 4px rgba(255, 90, 95, 0.2) !important;
-  transition: transform 0.15s ease;
-}
-
-.rbc-event:hover {
-  transform: translateY(-1px);
+  box-shadow: rgba(255,255,255,0.2) 0px 0.5px 0px 0px inset, rgba(0,0,0,0.2) 0px 0px 0px 0.5px inset, rgba(0,0,0,0.05) 0px 1px 2px 0px !important;
 }
 
 .rbc-today {
-  background-color: #fff1f2 !important;
+  background-color: rgba(28, 28, 28, 0.03) !important;
 }
 
 .rbc-off-range-bg {
-  background-color: #f8fafc !important;
+  background-color: rgba(28, 28, 28, 0.015) !important;
 }
 
 .rbc-toolbar button {
-  color: #334155 !important;
-  border: 1px solid #e2e8f0 !important;
-  padding: 0.5rem 1rem !important;
-  border-radius: 0.5rem !important;
-  font-weight: 500 !important;
-  font-size: 0.875rem !important;
-  transition: all 0.15s ease !important;
+  color: #1c1c1c !important;
+  border: 1px solid rgba(28, 28, 28, 0.4) !important;
+  padding: 6px 12px !important;
+  border-radius: 6px !important;
+  font-weight: 400 !important;
+  font-size: 0.8125rem !important;
+  background: transparent !important;
+  transition: opacity 0.15s ease !important;
 }
 
 .rbc-toolbar button:hover {
-  background-color: #f1f5f9 !important;
-  border-color: #cbd5e1 !important;
+  background-color: rgba(28, 28, 28, 0.04) !important;
 }
 
 .rbc-toolbar button.rbc-active {
-  background-color: #ff5a5f !important;
-  color: white !important;
-  border-color: #ff5a5f !important;
+  background-color: #1c1c1c !important;
+  color: #fcfbf8 !important;
+  border-color: #1c1c1c !important;
+  box-shadow: rgba(255,255,255,0.2) 0px 0.5px 0px 0px inset, rgba(0,0,0,0.2) 0px 0px 0px 0.5px inset, rgba(0,0,0,0.05) 0px 1px 2px 0px !important;
 }

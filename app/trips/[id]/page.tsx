@@ -9,7 +9,6 @@ import {
   DollarSign,
   Clock,
   ArrowLeft,
-  Share2,
   Sliders,
   PieChart,
   Printer,
@@ -23,7 +22,7 @@ import {
   LayoutGrid,
 } from 'lucide-react';
 import { format } from 'date-fns';
-import { TripDTO, StopDTO, ActivityDTO } from '@/lib/types';
+import { TripDTO, ActivityDTO } from '@/lib/types';
 
 export default function TripOverviewPage() {
   const params = useParams();
@@ -53,23 +52,23 @@ export default function TripOverviewPage() {
   const getActivityIcon = (type: string) => {
     switch (type) {
       case 'SIGHTSEEING':
-        return <Camera className="w-4 h-4 text-blue-500" />;
+        return <Camera className="w-3.5 h-3.5 text-charcoal opacity-70" />;
       case 'FOOD':
-        return <Utensils className="w-4 h-4 text-amber-500" />;
+        return <Utensils className="w-3.5 h-3.5 text-charcoal opacity-70" />;
       case 'ADVENTURE':
-        return <Mountain className="w-4 h-4 text-emerald-500" />;
+        return <Mountain className="w-3.5 h-3.5 text-charcoal opacity-70" />;
       case 'RELAXATION':
-        return <Palmtree className="w-4 h-4 text-teal-500" />;
+        return <Palmtree className="w-3.5 h-3.5 text-charcoal opacity-70" />;
       default:
-        return <Sparkles className="w-4 h-4 text-coral" />;
+        return <Sparkles className="w-3.5 h-3.5 text-charcoal opacity-70" />;
     }
   };
 
   if (loading) {
     return (
-      <div className="max-w-5xl mx-auto px-4 py-20 text-center flex flex-col items-center justify-center gap-3">
-        <Loader2 className="w-8 h-8 text-coral animate-spin" />
-        <p className="text-xs font-semibold text-slate-500">Loading itinerary view...</p>
+      <div className="max-w-5xl mx-auto px-4 py-20 text-center flex flex-col items-center justify-center gap-2">
+        <Loader2 className="w-6 h-6 text-charcoal animate-spin" />
+        <p className="text-xs font-normal text-muted">Loading itinerary view...</p>
       </div>
     );
   }
@@ -77,8 +76,8 @@ export default function TripOverviewPage() {
   if (!trip) {
     return (
       <div className="max-w-xl mx-auto px-4 py-20 text-center">
-        <h2 className="text-xl font-bold text-slate-800">Trip not found</h2>
-        <Link href="/trips" className="mt-4 inline-block px-4 py-2 bg-coral text-white rounded-xl text-xs font-bold">
+        <h2 className="text-lg font-semibold text-charcoal">Trip not found</h2>
+        <Link href="/trips" className="mt-4 inline-block px-4 py-2 bg-charcoal text-off-white rounded shadow-inset-btn text-xs font-normal">
           Back to My Trips
         </Link>
       </div>
@@ -116,57 +115,57 @@ export default function TripOverviewPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 print:hidden">
         <Link
           href="/trips"
-          className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-slate-900 transition-colors"
+          className="inline-flex items-center gap-1.5 text-xs font-normal text-muted hover:text-charcoal transition-colors"
         >
-          <ArrowLeft className="w-4 h-4" /> Back to My Trips
+          <ArrowLeft className="w-3.5 h-3.5" /> Back to My Trips
         </Link>
 
         <div className="flex items-center gap-2">
           {/* View Mode Toggle */}
-          <div className="flex items-center bg-white p-1 rounded-2xl border border-slate-200 shadow-xs">
+          <div className="flex items-center bg-cream p-1 rounded border border-light-cream">
             <button
               onClick={() => setViewMode('grouped')}
-              className={`px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all ${
+              className={`px-3 py-1 rounded text-xs font-normal flex items-center gap-1.5 transition-colors ${
                 viewMode === 'grouped'
-                  ? 'bg-slate-900 text-white shadow-xs'
-                  : 'text-slate-600 hover:text-slate-900'
+                  ? 'bg-charcoal text-off-white shadow-inset-btn font-semibold'
+                  : 'text-muted hover:text-charcoal'
               }`}
             >
-              <LayoutGrid className="w-3.5 h-3.5" /> Group by City
+              <LayoutGrid className="w-3 h-3" /> Group by City
             </button>
             <button
               onClick={() => setViewMode('daywise')}
-              className={`px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all ${
+              className={`px-3 py-1 rounded text-xs font-normal flex items-center gap-1.5 transition-colors ${
                 viewMode === 'daywise'
-                  ? 'bg-slate-900 text-white shadow-xs'
-                  : 'text-slate-600 hover:text-slate-900'
+                  ? 'bg-charcoal text-off-white shadow-inset-btn font-semibold'
+                  : 'text-muted hover:text-charcoal'
               }`}
             >
-              <List className="w-3.5 h-3.5" /> Day-by-Day
+              <List className="w-3 h-3" /> Day-by-Day
             </button>
           </div>
 
           <Link
             href={`/trips/${trip.id}/build`}
-            className="px-3.5 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold shadow-xs transition-colors flex items-center gap-1.5"
+            className="px-3 py-1.5 bg-transparent text-charcoal border border-charcoal-40 hover:bg-charcoal-4 rounded text-xs font-normal flex items-center gap-1.5 transition-colors"
           >
-            <Sliders className="w-3.5 h-3.5 text-coral" /> Builder
+            <Sliders className="w-3.5 h-3.5" /> Builder
           </Link>
           <Link
             href={`/trips/${trip.id}/budget`}
-            className="px-3.5 py-2 bg-coral-50 hover:bg-coral-100 text-coral rounded-xl text-xs font-bold transition-colors flex items-center gap-1.5"
+            className="px-3 py-1.5 bg-transparent text-charcoal border border-charcoal-40 hover:bg-charcoal-4 rounded text-xs font-normal flex items-center gap-1.5 transition-colors"
           >
             <PieChart className="w-3.5 h-3.5" /> Budget
           </Link>
           <Link
             href={`/trips/${trip.id}/calendar`}
-            className="px-3.5 py-2 bg-teal-50 hover:bg-teal-100 text-teal-700 rounded-xl text-xs font-bold transition-colors flex items-center gap-1.5"
+            className="px-3 py-1.5 bg-transparent text-charcoal border border-charcoal-40 hover:bg-charcoal-4 rounded text-xs font-normal flex items-center gap-1.5 transition-colors"
           >
             <CalendarIcon className="w-3.5 h-3.5" /> Calendar
           </Link>
           <button
             onClick={() => window.print()}
-            className="p-2 text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-xl transition-colors"
+            className="p-1.5 text-muted hover:text-charcoal rounded"
             title="Print Itinerary"
           >
             <Printer className="w-4 h-4" />
@@ -175,30 +174,25 @@ export default function TripOverviewPage() {
       </div>
 
       {/* Hero Header */}
-      <div className="relative rounded-3xl overflow-hidden bg-slate-900 text-white p-6 sm:p-10 shadow-soft">
-        <img
-          src={trip.coverPhotoUrl || 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1200&q=80'}
-          alt={trip.name}
-          className="absolute inset-0 w-full h-full object-cover opacity-30"
-        />
+      <div className="relative rounded-card overflow-hidden bg-cream border border-light-cream p-6 sm:p-10">
         <div className="relative z-10 space-y-3 max-w-2xl">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-coral/90 text-white text-[11px] font-bold uppercase tracking-wider">
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded bg-charcoal text-off-white text-[10px] font-normal uppercase tracking-wider shadow-inset-btn">
             Verified Itinerary
           </div>
-          <h1 className="text-3xl sm:text-4xl font-black tracking-tight">{trip.name}</h1>
-          <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">{trip.description}</p>
-          <div className="flex flex-wrap items-center gap-4 text-xs font-semibold text-slate-200 pt-2">
+          <h1 className="text-2xl sm:text-3xl font-semibold text-charcoal tracking-tight">{trip.name}</h1>
+          <p className="text-xs sm:text-sm text-muted leading-relaxed">{trip.description}</p>
+          <div className="flex flex-wrap items-center gap-4 text-xs font-normal text-muted pt-2">
             <span className="flex items-center gap-1.5">
-              <CalendarIcon className="w-4 h-4 text-coral" />
+              <CalendarIcon className="w-3.5 h-3.5 opacity-70" />
               {format(new Date(trip.startDate), 'MMM dd, yyyy')} — {format(new Date(trip.endDate), 'MMM dd, yyyy')}
             </span>
             <span className="flex items-center gap-1.5">
-              <MapPin className="w-4 h-4 text-teal-400" />
+              <MapPin className="w-3.5 h-3.5 opacity-70" />
               {trip.stops?.length || 0} Destination Stops
             </span>
-            <span className="flex items-center gap-1.5">
-              <DollarSign className="w-4 h-4 text-amber-400" />
-              Total Estimated Cost: ${totalCost.toLocaleString()}
+            <span className="flex items-center gap-1.5 text-charcoal font-semibold">
+              <DollarSign className="w-3.5 h-3.5 opacity-70" />
+              Est. Total: ${totalCost.toLocaleString()}
             </span>
           </div>
         </div>
@@ -207,129 +201,129 @@ export default function TripOverviewPage() {
       {/* Content depending on viewMode */}
       {viewMode === 'grouped' ? (
         /* Grouped by City Stops */
-        <div className="space-y-8">
+        <div className="space-y-6">
           {trip.stops && trip.stops.length > 0 ? (
             trip.stops.map((stop, idx) => (
               <div
                 key={stop.id}
-                className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-soft space-y-6"
+                className="bg-cream rounded-card p-6 border border-light-cream space-y-5"
               >
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
-                  <div className="flex items-center gap-4">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-light-cream">
+                  <div className="flex items-center gap-3">
                     <img
                       src={stop.city.imageUrl}
                       alt={stop.city.name}
-                      className="w-16 h-16 rounded-2xl object-cover ring-2 ring-coral/20"
+                      className="w-12 h-12 rounded object-cover border border-light-cream"
                     />
                     <div>
-                      <div className="text-[11px] font-bold text-coral uppercase tracking-wider">
+                      <div className="text-[10px] font-normal text-muted uppercase tracking-wider">
                         Stop #{idx + 1}
                       </div>
-                      <h2 className="text-2xl font-black text-slate-900">
+                      <h2 className="text-lg font-semibold text-charcoal">
                         {stop.city.name}, {stop.city.country}
                       </h2>
-                      <div className="text-xs font-semibold text-slate-500 flex items-center gap-1.5 mt-0.5">
-                        <CalendarIcon className="w-3.5 h-3.5 text-teal-600" />
+                      <div className="text-xs text-muted flex items-center gap-1 mt-0.5">
+                        <CalendarIcon className="w-3 h-3 opacity-70" />
                         {format(new Date(stop.arrivalDate), 'MMM dd')} — {format(new Date(stop.departureDate), 'MMM dd, yyyy')}
                       </div>
                     </div>
                   </div>
 
-                  <span className="px-3 py-1 bg-slate-100 text-slate-700 text-xs font-bold rounded-xl self-start sm:self-auto">
+                  <span className="px-2.5 py-1 bg-charcoal-3 text-charcoal text-xs font-normal rounded">
                     {stop.activities?.length || 0} Experiences
                   </span>
                 </div>
 
                 {stop.activities && stop.activities.length > 0 ? (
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     {stop.activities.map((act) => (
                       <div
                         key={act.id}
-                        className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-2 hover:bg-slate-100/60 transition-colors"
+                        className="p-3.5 rounded bg-charcoal-3 space-y-1.5"
                       >
                         <div className="flex items-start justify-between gap-2">
-                          <div className="flex items-center gap-2">
-                            <div className="w-7 h-7 rounded-xl bg-white border border-slate-200 flex items-center justify-center">
+                          <div className="flex items-center gap-1.5">
+                            <div className="w-6 h-6 rounded bg-cream border border-light-cream flex items-center justify-center">
                               {getActivityIcon(act.type)}
                             </div>
-                            <span className="text-[11px] font-bold text-slate-500 uppercase">
+                            <span className="text-[10px] text-muted uppercase font-normal">
                               {act.type}
                             </span>
                           </div>
-                          <span className="px-2 py-0.5 rounded-full bg-white text-slate-800 text-xs font-black border border-slate-200">
+                          <span className="text-xs font-semibold text-charcoal">
                             {act.cost === 0 ? 'FREE' : `$${act.cost}`}
                           </span>
                         </div>
 
-                        <h4 className="text-sm font-bold text-slate-900">{act.name}</h4>
+                        <h4 className="text-xs font-semibold text-charcoal">{act.name}</h4>
                         {act.description && (
-                          <p className="text-xs text-slate-500 line-clamp-2">{act.description}</p>
+                          <p className="text-xs text-muted line-clamp-2">{act.description}</p>
                         )}
 
-                        <div className="flex items-center justify-between text-[11px] text-slate-400 font-semibold pt-1 border-t border-slate-200/50">
+                        <div className="flex items-center justify-between text-[11px] text-muted pt-1 border-t border-light-cream">
                           <span className="flex items-center gap-1">
-                            <Clock className="w-3 h-3" />
+                            <Clock className="w-3 h-3 opacity-70" />
                             {act.durationMinutes} min
                           </span>
-                          {act.scheduledTime && <span>Scheduled at {act.scheduledTime}</span>}
+                          {act.scheduledTime && <span>Time: {act.scheduledTime}</span>}
                         </div>
                       </div>
                     ))}
                   </div>
                 ) : (
-                  <div className="p-6 rounded-2xl bg-slate-50 border border-dashed border-slate-200 text-center text-xs text-slate-400">
+                  <div className="p-4 text-center text-xs text-muted">
                     No activities scheduled for this stop yet.
                   </div>
                 )}
               </div>
             ))
           ) : (
-            <div className="bg-white rounded-3xl p-12 text-center border border-slate-200 shadow-soft">
-              <p className="text-sm text-slate-500">No destination stops found for this trip.</p>
+            <div className="bg-cream rounded-card p-8 text-center border border-light-cream">
+              <p className="text-xs text-muted">No destination stops found for this trip.</p>
             </div>
           )}
         </div>
       ) : (
         /* Day-by-Day Chronological View */
-        <div className="space-y-6">
+        <div className="space-y-4">
           {sortedDates.map((dateStr, idx) => {
             const dayActs = activitiesByDate[dateStr];
             return (
               <div
                 key={dateStr}
-                className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-soft space-y-4"
+                className="bg-cream rounded-card p-6 border border-light-cream space-y-3"
               >
-                <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-                  <div className="flex items-center gap-2.5">
-                    <div className="w-8 h-8 rounded-xl bg-coral/10 text-coral flex items-center justify-center font-black text-xs">
-                      #{idx + 1}
+                <div className="flex items-center justify-between pb-2 border-b border-light-cream">
+                  <div className="flex items-center gap-2">
+                    <div className="w-6 h-6 rounded bg-charcoal text-off-white text-xs font-normal flex items-center justify-center shadow-inset-btn">
+                      {idx + 1}
                     </div>
                     <div>
-                      <h3 className="text-base font-black text-slate-900">
+                      <h3 className="text-sm font-semibold text-charcoal">
                         {dateStr === 'Unscheduled' ? 'Unscheduled Experiences' : format(new Date(dateStr), 'EEEE, MMMM dd, yyyy')}
                       </h3>
-                      <p className="text-xs text-slate-500">{dayActs.length} scheduled items</p>
+                      <p className="text-[11px] text-muted">{dayActs.length} scheduled items</p>
                     </div>
                   </div>
-                  <span className="text-xs font-bold text-teal-700">
+                  <span className="text-xs font-semibold text-charcoal">
                     Day Total: ${dayActs.reduce((a, b) => a + (b.cost || 0), 0)}
                   </span>
                 </div>
 
-                <div className="space-y-3">
+                <div className="space-y-2">
                   {dayActs.map((act) => (
                     <div
                       key={act.id}
-                      className="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3"
+                      className="p-3 rounded bg-charcoal-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2"
                     >
-                      <div className="flex items-start gap-3">
-                        <div className="w-8 h-8 rounded-xl bg-white border border-slate-200 flex items-center justify-center shrink-0">
+                      <div className="flex items-start gap-2.5">
+                        <div className="w-6 h-6 rounded bg-cream border border-light-cream flex items-center justify-center shrink-0">
                           {getActivityIcon(act.type)}
                         </div>
                         <div>
-                          <div className="text-sm font-bold text-slate-900">{act.name}</div>
-                          <div className="text-xs text-slate-500 flex items-center gap-2 mt-0.5">
-                            <span className="font-semibold text-coral">{act.cityName}</span>
+                          <div className="text-xs font-semibold text-charcoal">{act.name}</div>
+                          <div className="text-[11px] text-muted flex items-center gap-1.5 mt-0.5">
+                            <span>{act.cityName}</span>
                             <span>•</span>
                             <span>{act.durationMinutes} min</span>
                             {act.scheduledTime && (
@@ -341,7 +335,7 @@ export default function TripOverviewPage() {
                           </div>
                         </div>
                       </div>
-                      <div className="text-sm font-black text-slate-900 self-end sm:self-auto">
+                      <div className="text-xs font-semibold text-charcoal self-end sm:self-auto">
                         {act.cost === 0 ? 'FREE' : `$${act.cost}`}
                       </div>
                     </div>

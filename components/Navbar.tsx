@@ -1,13 +1,12 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import NextLink from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useSession, signOut } from 'next-auth/react';
 import {
   Compass,
   MapPin,
-  Calendar,
   Building2,
   Sparkles,
   Plus,
@@ -17,12 +16,24 @@ import {
   X,
   ShieldAlert,
   LayoutDashboard,
+  Map,
+  PieChart,
+  Users,
+  Settings,
+  Search,
+  Bell,
+  CloudSun,
 } from 'lucide-react';
 
 export default function Navbar() {
   const pathname = usePathname();
+  const router = useRouter();
   const { data: session, status } = useSession();
+
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [notificationsOpen, setNotificationsOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const notifRef = useRef<HTMLDivElement>(null);
 
   const isAuthenticated = status === 'authenticated' && !!session?.user;
   const userRole = (session?.user as any)?.role || 'USER';
@@ -31,216 +42,282 @@ export default function Navbar() {
     await signOut({ callbackUrl: '/login' });
   };
 
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      router.push(`/cities?search=${encodeURIComponent(searchQuery.trim())}`);
+      setSearchQuery('');
+    }
+  };
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (notifRef.current && !notifRef.current.contains(event.target as Node)) {
+        setNotificationsOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   const navLinks = [
-    { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+    { href: '/dashboard', label: 'Home', icon: LayoutDashboard },
+    { href: '/cities', label: 'Explore', icon: Building2 },
     { href: '/trips', label: 'My Trips', icon: MapPin },
-    { href: '/cities', label: 'Cities', icon: Building2 },
-    { href: '/activities', label: 'Activities', icon: Sparkles },
+    { href: '/ai-planner', label: 'AI Planner', icon: Sparkles },
+    { href: '/map', label: 'Explore Map', icon: Map },
+    { href: '/budget', label: 'Budget Analysis', icon: PieChart },
+    { href: '/community', label: 'Community', icon: Users },
+    { href: '/profile', label: 'Profile', icon: User },
+    { href: '/settings', label: 'Settings', icon: Settings },
     ...(userRole === 'ADMIN'
       ? [{ href: '/admin', label: 'Admin', icon: ShieldAlert }]
       : []),
   ];
 
+  const sampleNotifications = [
+    {
+      id: 'n1',
+      title: 'Itinerary Blueprint Generated',
+      time: '10m ago',
+      desc: 'Your Japan route has been optimized for transit and pacing.',
+    },
+    {
+      id: 'n2',
+      title: 'Fare Adjustment Detected',
+      time: '2h ago',
+      desc: 'Selected stays in Kyoto decreased by 15% for your dates.',
+    },
+  ];
+
   return (
-    <header className="sticky top-0 z-40 bg-white/85 backdrop-blur-md border-b border-slate-200/80 shadow-xs">
+    <header className="sticky top-0 z-40 bg-cream border-b border-light-cream">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <NextLink href={isAuthenticated ? '/dashboard' : '/login'} className="flex items-center gap-2.5 group">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-coral to-rose-400 flex items-center justify-center text-white shadow-md shadow-coral/20 group-hover:scale-105 transition-transform duration-200">
-              <Compass className="w-6 h-6 animate-pulse" />
-            </div>
-            <div>
-              <span className="text-xl font-black tracking-tight bg-gradient-to-r from-slate-900 via-slate-800 to-coral bg-clip-text text-transparent">
+        <div className="flex items-center justify-between h-14 gap-4">
+          {/* Logo Brand */}
+          <div className="flex items-center gap-6">
+            <NextLink
+              href={isAuthenticated ? '/dashboard' : '/login'}
+              className="flex items-center gap-2"
+            >
+              <div className="w-7 h-7 rounded bg-charcoal flex items-center justify-center text-off-white shadow-inset-btn">
+                <Compass className="w-4 h-4" />
+              </div>
+              <span className="text-base font-semibold tracking-tight text-charcoal">
                 GlobeTrotter
               </span>
-              <span className="hidden sm:inline-block ml-2 text-[10px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded-full bg-coral-50 text-coral-600 border border-coral-200">
-                PRO
-              </span>
+            </NextLink>
+
+            {/* Desktop Navigation Links */}
+            {isAuthenticated && (
+              <nav className="hidden xl:flex items-center gap-1">
+                {navLinks.map((link) => {
+                  const Icon = link.icon;
+                  const isActive =
+                    pathname === link.href ||
+                    (link.href !== '/dashboard' && pathname.startsWith(link.href));
+
+                  return (
+                    <NextLink
+                      key={link.href}
+                      href={link.href}
+                      className={`px-3 py-1.5 rounded text-sm font-normal transition-colors flex items-center gap-1.5 ${
+                        isActive
+                          ? 'bg-charcoal-4 text-charcoal font-semibold'
+                          : 'text-muted hover:text-charcoal hover:bg-charcoal-3'
+                      }`}
+                    >
+                      <Icon className="w-3.5 h-3.5 opacity-70" />
+                      {link.label}
+                    </NextLink>
+                  );
+                })}
+              </nav>
+            )}
+          </div>
+
+          {/* Top Bar Right Actions */}
+          <div className="flex items-center gap-2.5">
+            {/* Search Input Bar (Desktop) */}
+            {isAuthenticated && (
+              <form
+                onSubmit={handleSearchSubmit}
+                className="hidden lg:flex items-center relative w-48"
+              >
+                <Search className="w-3.5 h-3.5 text-muted absolute left-2.5 top-1/2 -translate-y-1/2" />
+                <input
+                  type="text"
+                  placeholder="Search destinations..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-8 pr-3 py-1.5 bg-cream text-charcoal border border-light-cream rounded text-xs placeholder:text-muted focus:ring-2 focus:ring-ring-blue focus:outline-none"
+                />
+              </form>
+            )}
+
+            {/* Weather Widget Chip */}
+            <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 bg-cream border border-light-cream rounded text-xs font-normal text-muted">
+              <CloudSun className="w-3.5 h-3.5 text-charcoal opacity-70" />
+              <span>Tokyo 22°C</span>
             </div>
-          </NextLink>
 
-          {/* Desktop Navigation */}
-          {isAuthenticated && (
-            <nav className="hidden md:flex items-center gap-1">
-              {navLinks.map((link) => {
-                const Icon = link.icon;
-                const isActive = pathname === link.href;
-                return (
-                  <NextLink
-                    key={link.href}
-                    href={link.href}
-                    className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold transition-colors ${
-                      isActive
-                        ? 'bg-coral-50 text-coral-600 font-bold'
-                        : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/70'
-                    }`}
-                  >
-                    <Icon className={`w-4 h-4 ${isActive ? 'text-coral' : 'text-slate-400'}`} />
-                    {link.label}
-                  </NextLink>
-                );
-              })}
-            </nav>
-          )}
+            {/* Notifications Popover */}
+            {isAuthenticated && (
+              <div className="relative" ref={notifRef}>
+                <button
+                  type="button"
+                  onClick={() => setNotificationsOpen(!notificationsOpen)}
+                  aria-label="Notifications"
+                  className="p-1.5 rounded text-muted hover:text-charcoal hover:bg-charcoal-4 relative transition-colors"
+                >
+                  <Bell className="w-4 h-4" />
+                  <span className="absolute top-1 right-1 w-1.5 h-1.5 rounded-pill bg-charcoal" />
+                </button>
 
-          {/* Action Buttons */}
-          <div className="hidden md:flex items-center gap-3">
+                {notificationsOpen && (
+                  <div className="absolute right-0 mt-2 w-72 bg-cream rounded-card border border-light-cream p-3 z-50">
+                    <div className="flex items-center justify-between pb-2 border-b border-light-cream px-1">
+                      <span className="text-xs font-semibold text-charcoal">Notifications</span>
+                      <span className="text-[11px] text-muted cursor-pointer hover:text-charcoal">
+                        Mark read
+                      </span>
+                    </div>
+                    <div className="space-y-1.5 mt-2 max-h-60 overflow-y-auto">
+                      {sampleNotifications.map((n) => (
+                        <div
+                          key={n.id}
+                          className="p-2 rounded bg-charcoal-3 hover:bg-charcoal-4 transition-colors cursor-pointer text-left"
+                        >
+                          <div className="text-xs font-semibold text-charcoal">{n.title}</div>
+                          <p className="text-[11px] text-muted mt-0.5 line-clamp-2">{n.desc}</p>
+                          <span className="text-[10px] text-muted mt-1 block">{n.time}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* User Profile & Auth actions */}
             {isAuthenticated ? (
-              <>
+              <div className="flex items-center gap-2">
                 <NextLink
                   href="/trips/new"
-                  className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-coral hover:bg-coral-dark text-white text-xs font-bold shadow-md shadow-coral/25 hover:shadow-lg hover:shadow-coral/30 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200"
+                  className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-charcoal text-off-white text-xs font-normal rounded shadow-inset-btn active:opacity-80 focus:shadow-focus-soft transition-opacity"
                 >
-                  <Plus className="w-4 h-4 stroke-[2.5]" />
-                  Plan New Trip
+                  <Plus className="w-3.5 h-3.5" />
+                  <span>New Trip</span>
                 </NextLink>
 
-                <div className="flex items-center gap-2 pl-2 border-l border-slate-200">
-                  <NextLink
-                    href="/profile"
-                    className="flex items-center gap-2 group p-1 rounded-xl hover:bg-slate-100 transition-colors"
-                  >
+                <NextLink
+                  href="/profile"
+                  className="flex items-center gap-1.5 p-1 rounded hover:bg-charcoal-4 transition-colors"
+                  title="View Profile"
+                >
+                  {session?.user?.image ? (
                     <img
-                      src={
-                        (session.user as any)?.avatarUrl ||
-                        session.user?.image ||
-                        'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80'
-                      }
-                      alt={session.user?.name || 'User'}
-                      className="w-8 h-8 rounded-full object-cover ring-2 ring-coral/30 group-hover:ring-coral transition-all"
+                      src={session.user.image}
+                      alt={session.user.name || 'User'}
+                      className="w-6 h-6 rounded object-cover border border-light-cream"
                     />
-                    <div className="text-left">
-                      <div className="text-xs font-bold text-slate-800 max-w-[90px] truncate leading-tight">
-                        {session.user?.name || session.user?.email?.split('@')[0]}
-                      </div>
-                      <div className="text-[10px] text-slate-400 capitalize">{userRole.toLowerCase()}</div>
+                  ) : (
+                    <div className="w-6 h-6 rounded bg-charcoal text-off-white flex items-center justify-center font-normal text-xs">
+                      {session?.user?.name ? session.user.name[0].toUpperCase() : 'U'}
                     </div>
-                  </NextLink>
-                  <button
-                    onClick={handleLogout}
-                    title="Logout"
-                    className="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-colors"
-                  >
-                    <LogOut className="w-4 h-4" />
-                  </button>
-                </div>
-              </>
+                  )}
+                </NextLink>
+
+                <button
+                  onClick={handleLogout}
+                  className="p-1.5 text-muted hover:text-charcoal hover:bg-charcoal-4 rounded transition-colors"
+                  title="Sign Out"
+                >
+                  <LogOut className="w-4 h-4" />
+                </button>
+              </div>
             ) : (
               <div className="flex items-center gap-2">
                 <NextLink
                   href="/login"
-                  className="px-3.5 py-2 text-xs font-bold text-slate-600 hover:text-slate-900 rounded-xl hover:bg-slate-100 transition-colors"
+                  className="px-3 py-1.5 text-xs font-normal text-charcoal hover:bg-charcoal-4 rounded transition-colors"
                 >
                   Sign In
                 </NextLink>
                 <NextLink
                   href="/register"
-                  className="px-3.5 py-2 text-xs font-bold text-coral bg-coral-50 hover:bg-coral-100 rounded-xl transition-colors"
+                  className="px-3.5 py-1.5 text-xs font-normal bg-charcoal text-off-white rounded shadow-inset-btn active:opacity-80 transition-opacity"
                 >
                   Create Account
                 </NextLink>
               </div>
             )}
-          </div>
 
-          {/* Mobile menu toggle */}
-          <div className="flex md:hidden items-center gap-2">
+            {/* Mobile Menu Hamburger */}
             {isAuthenticated && (
-              <NextLink
-                href="/trips/new"
-                className="p-2 rounded-xl bg-coral text-white shadow-xs"
+              <button
+                type="button"
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="xl:hidden p-1.5 rounded text-charcoal hover:bg-charcoal-4"
               >
-                <Plus className="w-4 h-4" />
-              </NextLink>
+                {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              </button>
             )}
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100"
-            >
-              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5 text-slate-700" />}
-            </button>
           </div>
         </div>
       </div>
 
       {/* Mobile Drawer */}
-      {mobileMenuOpen && (
-        <div className="md:hidden border-b border-slate-200 bg-white px-4 pt-2 pb-6 space-y-3 shadow-lg">
-          {isAuthenticated ? (
-            <>
-              <div className="flex flex-col space-y-1">
-                {navLinks.map((link) => {
-                  const Icon = link.icon;
-                  const isActive = pathname === link.href;
-                  return (
-                    <NextLink
-                      key={link.href}
-                      href={link.href}
-                      onClick={() => setMobileMenuOpen(false)}
-                      className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold ${
-                        isActive
-                          ? 'bg-coral-50 text-coral-600'
-                          : 'text-slate-700 hover:bg-slate-100'
-                      }`}
-                    >
-                      <Icon className="w-4 h-4" />
-                      {link.label}
-                    </NextLink>
-                  );
-                })}
-                <NextLink
-                  href="/profile"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-100"
-                >
-                  <User className="w-4 h-4" />
-                  Profile & Wishlist
-                </NextLink>
-              </div>
+      {isAuthenticated && mobileMenuOpen && (
+        <div className="xl:hidden bg-cream border-b border-light-cream px-4 pt-2 pb-4 space-y-2">
+          <form onSubmit={handleSearchSubmit} className="relative w-full mb-2">
+            <Search className="w-3.5 h-3.5 text-muted absolute left-2.5 top-1/2 -translate-y-1/2" />
+            <input
+              type="text"
+              placeholder="Search destinations..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-8 pr-3 py-1.5 bg-cream text-charcoal border border-light-cream rounded text-xs focus:ring-2 focus:ring-ring-blue focus:outline-none"
+            />
+          </form>
 
-              <div className="pt-3 border-t border-slate-100 flex items-center justify-between px-3 py-2 bg-slate-50 rounded-2xl">
-                <div className="flex items-center gap-2.5">
-                  <img
-                    src={
-                      (session.user as any)?.avatarUrl ||
-                      session.user?.image ||
-                      'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80'
-                    }
-                    alt=""
-                    className="w-8 h-8 rounded-full object-cover"
-                  />
-                  <div>
-                    <div className="text-xs font-bold text-slate-800">{session.user?.name}</div>
-                    <div className="text-[10px] text-slate-500">{session.user?.email}</div>
-                  </div>
-                </div>
-                <button
-                  onClick={handleLogout}
-                  className="p-2 text-rose-600 hover:bg-rose-50 rounded-xl text-xs font-bold flex items-center gap-1"
+          <div className="grid grid-cols-2 gap-1.5">
+            {navLinks.map((link) => {
+              const Icon = link.icon;
+              const isActive = pathname === link.href;
+              return (
+                <NextLink
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`flex items-center gap-2 p-2 rounded text-xs font-normal ${
+                    isActive
+                      ? 'bg-charcoal-4 text-charcoal font-semibold'
+                      : 'text-muted hover:text-charcoal hover:bg-charcoal-3'
+                  }`}
                 >
-                  <LogOut className="w-4 h-4" />
-                </button>
-              </div>
-            </>
-          ) : (
-            <div className="grid grid-cols-2 gap-2 pt-2">
-              <NextLink
-                href="/login"
-                onClick={() => setMobileMenuOpen(false)}
-                className="text-center py-2.5 text-xs font-bold text-slate-700 bg-slate-100 rounded-xl"
-              >
-                Sign In
-              </NextLink>
-              <NextLink
-                href="/register"
-                onClick={() => setMobileMenuOpen(false)}
-                className="text-center py-2.5 text-xs font-bold text-white bg-coral rounded-xl shadow-xs"
-              >
-                Sign Up
-              </NextLink>
-            </div>
-          )}
+                  <Icon className="w-3.5 h-3.5 opacity-70" />
+                  {link.label}
+                </NextLink>
+              );
+            })}
+          </div>
+
+          <div className="pt-2 border-t border-light-cream flex items-center justify-between">
+            <NextLink
+              href="/trips/new"
+              onClick={() => setMobileMenuOpen(false)}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-charcoal text-off-white rounded shadow-inset-btn text-xs font-normal"
+            >
+              <Plus className="w-3.5 h-3.5" /> New Trip
+            </NextLink>
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-1.5 px-3 py-1.5 text-muted hover:text-charcoal text-xs font-normal"
+            >
+              <LogOut className="w-3.5 h-3.5" /> Sign Out
+            </button>
+          </div>
         </div>
       )}
     </header>

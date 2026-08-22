@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import {
   DndContext,
@@ -28,7 +28,6 @@ import {
   Eye,
   Share2,
   Sliders,
-  Sparkles,
   Loader2,
   Check,
   Globe,
@@ -42,7 +41,6 @@ import DeleteConfirmModal from '@/components/DeleteConfirmModal';
 
 export default function ItineraryBuilderPage() {
   const params = useParams();
-  const router = useRouter();
   const tripId = params.id as string;
 
   const [trip, setTrip] = useState<TripDTO | null>(null);
@@ -171,18 +169,18 @@ export default function ItineraryBuilderPage() {
 
   if (loading) {
     return (
-      <div className="py-32 text-center flex flex-col items-center justify-center gap-3">
-        <Loader2 className="w-8 h-8 animate-spin text-coral" />
-        <span className="text-sm font-semibold text-slate-500">Loading itinerary builder...</span>
+      <div className="py-24 text-center flex flex-col items-center justify-center gap-2">
+        <Loader2 className="w-6 h-6 animate-spin text-charcoal" />
+        <span className="text-xs font-normal text-muted">Loading itinerary builder...</span>
       </div>
     );
   }
 
   if (!trip) {
     return (
-      <div className="max-w-xl mx-auto py-20 text-center space-y-4">
-        <h2 className="text-xl font-bold text-slate-900">Trip not found</h2>
-        <Link href="/trips" className="inline-block text-sm font-semibold text-coral hover:underline">
+      <div className="max-w-xl mx-auto py-20 text-center space-y-3">
+        <h2 className="text-lg font-semibold text-charcoal">Trip not found</h2>
+        <Link href="/trips" className="inline-block text-xs font-normal text-charcoal underline">
           Return to all trips
         </Link>
       </div>
@@ -195,66 +193,62 @@ export default function ItineraryBuilderPage() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
       {/* Top Banner / Trip Navigation */}
-      <div className="relative rounded-3xl overflow-hidden shadow-soft border border-slate-200/90 bg-white">
-        <div className="relative h-48 sm:h-56 overflow-hidden bg-slate-900">
-          <img
-            src={trip.coverPhotoUrl || 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1400&q=80'}
-            alt={trip.name}
-            className="w-full h-full object-cover opacity-65"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
-
-          <div className="absolute top-4 left-4 right-4 flex items-center justify-between">
+      <div className="relative rounded-card overflow-hidden border border-light-cream bg-cream">
+        <div className="p-6 sm:p-8 space-y-4">
+          <div className="flex items-center justify-between">
             <Link
               href="/trips"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-black/40 backdrop-blur-md hover:bg-black/60 text-white rounded-xl text-xs font-semibold transition-colors"
+              className="inline-flex items-center gap-1 text-xs font-normal text-muted hover:text-charcoal transition-colors"
             >
               <ArrowLeft className="w-3.5 h-3.5" /> All Trips
             </Link>
 
             <div className="flex items-center gap-2">
               {saveStatus && (
-                <span className="px-3 py-1 bg-teal-600/90 text-white text-xs font-semibold rounded-lg animate-pulse flex items-center gap-1">
+                <span className="px-2.5 py-0.5 bg-charcoal text-off-white text-xs font-normal rounded shadow-inset-btn flex items-center gap-1">
                   <Check className="w-3 h-3" /> {saveStatus}
                 </span>
               )}
-              <Link
-                href={`/share/${trip.shareSlug}`}
-                className="px-3 py-1.5 bg-white/90 hover:bg-white text-slate-800 rounded-xl text-xs font-bold shadow-xs flex items-center gap-1.5 transition-all"
-              >
-                <Share2 className="w-3.5 h-3.5 text-coral" /> Public Link
-              </Link>
+              {trip.isPublic && (
+                <Link
+                  href={`/share/${trip.shareSlug}`}
+                  target="_blank"
+                  className="px-3 py-1.5 bg-transparent text-charcoal border border-charcoal-40 hover:bg-charcoal-4 rounded text-xs font-normal flex items-center gap-1.5 transition-colors"
+                >
+                  <Share2 className="w-3.5 h-3.5" /> Public Link
+                </Link>
+              )}
             </div>
           </div>
 
-          <div className="absolute bottom-4 left-4 right-4 text-white">
-            <div className="flex items-center gap-2 mb-1">
-              <h1 className="text-2xl sm:text-3xl font-black truncate">{trip.name}</h1>
+          <div className="space-y-2">
+            <div className="flex items-center gap-2">
+              <h1 className="text-2xl sm:text-3xl font-semibold text-charcoal tracking-tight">{trip.name}</h1>
               {trip.isPublic ? (
-                <span className="bg-teal-500/80 text-white text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
+                <span className="bg-charcoal text-off-white text-[10px] font-normal px-2 py-0.5 rounded shadow-inset-btn flex items-center gap-1">
                   <Globe className="w-3 h-3" /> Public
                 </span>
               ) : (
-                <span className="bg-slate-700/80 text-white text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
+                <span className="bg-charcoal-3 text-muted text-[10px] font-normal px-2 py-0.5 rounded flex items-center gap-1">
                   <Lock className="w-3 h-3" /> Private
                 </span>
               )}
             </div>
 
-            <div className="flex items-center gap-3 text-xs text-slate-200 flex-wrap">
+            <div className="flex items-center gap-3 text-xs text-muted flex-wrap font-normal">
               <span className="flex items-center gap-1">
-                <Calendar className="w-3.5 h-3.5 text-coral" />
+                <Calendar className="w-3.5 h-3.5 opacity-70" />
                 {format(new Date(trip.startDate), 'MMM d')} - {format(new Date(trip.endDate), 'MMM d, yyyy')}
               </span>
               <span>•</span>
               <span>{stops.length} Stops</span>
               <span>•</span>
-              <span className="text-emerald-300 font-bold">
-                Total Est: ${totalCost.toFixed(2)}
+              <span className="text-charcoal font-semibold">
+                Est. Total: ${totalCost.toFixed(2)}
               </span>
               {trip.budgetLimit && (
-                <span className="text-slate-300">
-                  (Budget limit: ${trip.budgetLimit})
+                <span className="text-muted">
+                  (Target limit: ${trip.budgetLimit})
                 </span>
               )}
             </div>
@@ -262,30 +256,30 @@ export default function ItineraryBuilderPage() {
         </div>
 
         {/* Action Tabs Submenu */}
-        <div className="flex border-t border-slate-100 px-4 sm:px-6 bg-slate-50/70 overflow-x-auto">
+        <div className="flex border-t border-light-cream px-4 sm:px-6 bg-cream overflow-x-auto">
           <Link
             href={`/trips/${trip.id}/builder`}
-            className="py-3 px-4 text-xs font-bold text-coral border-b-2 border-coral flex items-center gap-1.5 shrink-0"
+            className="py-2.5 px-4 text-xs font-semibold text-charcoal border-b-2 border-charcoal flex items-center gap-1.5 shrink-0"
           >
             <Sliders className="w-3.5 h-3.5" /> Itinerary Builder
           </Link>
           <Link
             href={`/trips/${trip.id}/view`}
-            className="py-3 px-4 text-xs font-semibold text-slate-600 hover:text-slate-900 border-b-2 border-transparent flex items-center gap-1.5 shrink-0"
+            className="py-2.5 px-4 text-xs font-normal text-muted hover:text-charcoal border-b-2 border-transparent flex items-center gap-1.5 shrink-0"
           >
-            <Eye className="w-3.5 h-3.5 text-slate-400" /> Structured View
+            <Eye className="w-3.5 h-3.5" /> Structured View
           </Link>
           <Link
             href={`/trips/${trip.id}/budget`}
-            className="py-3 px-4 text-xs font-semibold text-slate-600 hover:text-slate-900 border-b-2 border-transparent flex items-center gap-1.5 shrink-0"
+            className="py-2.5 px-4 text-xs font-normal text-muted hover:text-charcoal border-b-2 border-transparent flex items-center gap-1.5 shrink-0"
           >
-            <PieChart className="w-3.5 h-3.5 text-slate-400" /> Budget & Charts
+            <PieChart className="w-3.5 h-3.5" /> Budget & Charts
           </Link>
           <Link
             href={`/trips/${trip.id}/calendar`}
-            className="py-3 px-4 text-xs font-semibold text-slate-600 hover:text-slate-900 border-b-2 border-transparent flex items-center gap-1.5 shrink-0"
+            className="py-2.5 px-4 text-xs font-normal text-muted hover:text-charcoal border-b-2 border-transparent flex items-center gap-1.5 shrink-0"
           >
-            <Calendar className="w-3.5 h-3.5 text-slate-400" /> Timeline & Calendar
+            <Calendar className="w-3.5 h-3.5" /> Timeline & Calendar
           </Link>
         </div>
       </div>
@@ -294,8 +288,8 @@ export default function ItineraryBuilderPage() {
       <div className="space-y-6">
         <div className="flex items-center justify-between flex-wrap gap-4">
           <div>
-            <h2 className="text-xl font-bold text-slate-900">Destination Stops & Timeline</h2>
-            <p className="text-xs text-slate-500">
+            <h2 className="text-lg font-semibold text-charcoal tracking-tight">Destination Stops & Timeline</h2>
+            <p className="text-xs text-muted font-normal">
               Drag stops to reorder. Add custom activities and budget items to each stop.
             </p>
           </div>
@@ -303,31 +297,31 @@ export default function ItineraryBuilderPage() {
           <button
             type="button"
             onClick={() => setIsCityModalOpen(true)}
-            className="px-5 py-2.5 bg-coral hover:bg-coral-dark text-white text-xs sm:text-sm font-bold rounded-2xl shadow-md shadow-coral/20 flex items-center gap-2 hover:shadow-lg transition-all"
+            className="px-4 py-2 bg-charcoal text-off-white text-xs font-normal rounded shadow-inset-btn flex items-center gap-1.5 active:opacity-80 transition-opacity shrink-0"
           >
-            <Plus className="w-4 h-4 stroke-[2.5]" />
+            <Plus className="w-3.5 h-3.5" />
             Add Destination Stop
           </button>
         </div>
 
         {/* Sortable DND Container */}
         {stops.length === 0 ? (
-          <div className="p-12 text-center border-2 border-dashed border-slate-300 rounded-3xl bg-white space-y-4">
-            <div className="w-14 h-14 rounded-2xl bg-coral-50 text-coral flex items-center justify-center mx-auto">
-              <MapPin className="w-7 h-7" />
+          <div className="p-12 text-center border border-dashed border-light-cream rounded-card bg-cream space-y-3">
+            <div className="w-12 h-12 rounded bg-charcoal text-off-white flex items-center justify-center mx-auto shadow-inset-btn">
+              <MapPin className="w-6 h-6" />
             </div>
             <div>
-              <h3 className="text-base font-bold text-slate-900">No stops in this itinerary yet</h3>
-              <p className="text-xs text-slate-500 max-w-sm mx-auto mt-1">
+              <h3 className="text-sm font-semibold text-charcoal">No stops in this itinerary yet</h3>
+              <p className="text-xs text-muted max-w-sm mx-auto mt-0.5">
                 Add your first city stop to begin crafting your day-by-day travel plan.
               </p>
             </div>
             <button
               type="button"
               onClick={() => setIsCityModalOpen(true)}
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-coral text-white text-xs font-bold rounded-xl shadow-md hover:bg-coral-dark"
+              className="inline-flex items-center gap-1.5 px-4 py-2 bg-charcoal text-off-white text-xs font-normal rounded shadow-inset-btn active:opacity-80"
             >
-              <Plus className="w-4 h-4" /> Add First Stop
+              <Plus className="w-3.5 h-3.5" /> Add First Stop
             </button>
           </div>
         ) : (
@@ -373,7 +367,7 @@ export default function ItineraryBuilderPage() {
         message="This will remove this stop and all its planned activities from your trip itinerary."
         isLoading={isDeletingStop}
         onConfirm={handleDeleteStopConfirm}
-        onCancel={() => setDeleteStopId(null)}
+        onClose={() => setDeleteStopId(null)}
       />
     </div>
   );

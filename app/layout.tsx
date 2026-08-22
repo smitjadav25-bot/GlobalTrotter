@@ -4,8 +4,10 @@ import './globals.css';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import AuthProvider from '@/components/AuthProvider';
+import AskGlobeAiModal from '@/components/AskGlobeAiModal';
+import MobileBottomNav from '@/components/MobileBottomNav';
 
-const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
+const inter = Inter({ subsets: ['latin'], variable: '--font-sans', weight: ['400', '600'] });
 
 export const metadata: Metadata = {
   title: 'GlobeTrotter — Personalized Multi-City Travel Planning',
@@ -21,11 +23,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={inter.variable}>
-      <body className="min-h-screen flex flex-col bg-slate-50 text-slate-900 font-sans">
+      <body className="min-h-screen flex flex-col bg-cream text-charcoal font-sans pb-16 md:pb-0">
         <AuthProvider>
           <Navbar />
           <main className="flex-1 w-full">{children}</main>
           <Footer />
+          <AskGlobeAiModal />
+          <MobileBottomNav />
         </AuthProvider>
       </body>
     </html>
