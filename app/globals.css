@@ -6,11 +6,18 @@
 
 @layer base {
   body {
-    @apply bg-cream text-charcoal font-normal antialiased selection:bg-charcoal-4 selection:text-charcoal min-h-screen flex flex-col;
+    background-color: #f7f4ed;
+    color: #1c1c1c;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply text-charcoal font-semibold;
+    color: #1c1c1c;
+    font-weight: 600;
   }
 }
 
