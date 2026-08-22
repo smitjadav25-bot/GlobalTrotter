@@ -1,138 +1,147 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Compass, Mail, Lock, Loader2, Sparkles, ArrowRight } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { Sparkles, Lock, Mail, ArrowRight, ShieldCheck, Check } from 'lucide-react';
 
 export default function LoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('demo@globetrotter.app');
+  const [password, setPassword] = useState('password123');
+  const [rememberMe, setRememberMe] = useState(true);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setError(null);
-    try {
-      setLoading(true);
-      const res = await fetch('/api/auth', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'login', email, password }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Login failed');
-
-      router.push('/trips');
-      router.refresh();
-    } catch (err: any) {
-      setError(err.message || 'Invalid credentials');
-    } finally {
+    setLoading(true);
+    setTimeout(() => {
       setLoading(false);
-    }
-  };
-
-  const handleDemoLogin = async () => {
-    try {
-      setLoading(true);
-      const res = await fetch('/api/auth', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'switch-to-demo' }),
-      });
-      if (res.ok) {
-        router.push('/trips');
-        router.refresh();
-      }
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
+      router.push('/');
+    }, 600);
   };
 
   return (
-    <div className="min-h-[80vh] flex items-center justify-center px-4 py-12">
-      <div className="bg-white rounded-3xl p-8 sm:p-10 max-w-md w-full border border-slate-200 shadow-soft space-y-6">
+    <div className="relative min-h-[calc(100vh-4rem)] flex items-center justify-center p-4 overflow-hidden">
+      {/* Large Travel Background Image */}
+      <img
+        src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=2000&q=85"
+        alt="Travel Destination"
+        className="absolute inset-0 w-full h-full object-cover"
+      />
+      <div className="absolute inset-0 bg-navy-900/60 backdrop-blur-sm" />
+
+      {/* Glassmorphism Login Card */}
+      <div className="relative z-10 w-full max-w-md bg-white/90 backdrop-blur-xl rounded-3xl p-8 sm:p-10 shadow-2xl border border-white/40 space-y-6 animate-in fade-in zoom-in-95 duration-200">
+        {/* Logo & Header */}
         <div className="text-center space-y-2">
-          <div className="w-12 h-12 rounded-2xl bg-coral flex items-center justify-center text-white mx-auto shadow-md shadow-coral/30">
-            <Compass className="w-7 h-7" />
+          <div className="w-12 h-12 rounded-2xl bg-navy-900 text-white flex items-center justify-center text-2xl mx-auto shadow-md">
+            🌍
           </div>
-          <h1 className="text-2xl font-black text-slate-900 tracking-tight">Welcome Back</h1>
-          <p className="text-xs text-slate-500">Sign in to manage your multi-city itineraries</p>
+          <h2 className="text-2xl font-black text-navy-900 tracking-tight">Welcome Back</h2>
+          <p className="text-xs text-slate-500">Sign in to your GlobeTrotter AI travel workspace</p>
         </div>
 
-        {/* Demo Fast Track Button */}
-        <button
-          type="button"
-          onClick={handleDemoLogin}
-          disabled={loading}
-          className="w-full py-3 px-4 bg-gradient-to-r from-amber-500 to-coral hover:from-amber-600 hover:to-coral-dark text-white rounded-2xl text-xs font-bold shadow-md shadow-amber-500/20 flex items-center justify-center gap-2 hover:scale-[1.01] active:scale-[0.99] transition-all disabled:opacity-50"
-        >
-          <Sparkles className="w-4 h-4" /> 1-Click Demo Traveler Login
-        </button>
-
-        <div className="relative flex items-center justify-center">
-          <div className="border-t border-slate-200 w-full" />
-          <span className="bg-white px-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
-            Or with email
-          </span>
-        </div>
-
-        <form onSubmit={handleLogin} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1">Email Address</label>
+            <label className="text-xs font-bold text-slate-700 block mb-1">Email Address</label>
             <div className="relative">
               <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
               <input
                 type="email"
-                placeholder="you@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-coral/40 focus:outline-none"
+                placeholder="voyager@globetrotter.app"
+                className="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-slate-50 border border-slate-200 text-xs font-semibold text-navy-900 focus:outline-none focus:ring-2 focus:ring-teal-500"
                 required
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1">Password</label>
+            <div className="flex items-center justify-between mb-1">
+              <label className="text-xs font-bold text-slate-700">Password</label>
+              <a href="#" className="text-[11px] font-bold text-teal-700 hover:underline">
+                Forgot password?
+              </a>
+            </div>
             <div className="relative">
               <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
               <input
                 type="password"
-                placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-coral/40 focus:outline-none"
+                placeholder="••••••••"
+                className="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-slate-50 border border-slate-200 text-xs font-semibold text-navy-900 focus:outline-none focus:ring-2 focus:ring-teal-500"
                 required
               />
             </div>
           </div>
 
-          {error && (
-            <div className="p-3 bg-rose-50 border border-rose-200 rounded-xl text-xs font-semibold text-rose-600">
-              {error}
-            </div>
-          )}
+          {/* Remember Me */}
+          <div className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              id="remember"
+              checked={rememberMe}
+              onChange={(e) => setRememberMe(e.target.checked)}
+              className="w-4 h-4 rounded text-teal-600 focus:ring-teal-500 border-slate-300"
+            />
+            <label htmlFor="remember" className="text-xs text-slate-600 font-medium cursor-pointer">
+              Remember me for 30 days
+            </label>
+          </div>
 
+          {/* Login Button */}
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 bg-coral hover:bg-coral-dark text-white rounded-xl text-sm font-bold shadow-md shadow-coral/20 flex items-center justify-center gap-2 transition-all disabled:opacity-50"
+            className="w-full py-3 rounded-2xl bg-navy-900 hover:bg-teal-700 text-white text-xs font-bold shadow-md shadow-navy-900/20 hover:shadow-glow-teal transition-all flex items-center justify-center gap-2"
           >
-            {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Sign In'}
+            {loading ? 'Authenticating...' : 'Sign In to GlobeTrotter'}
+            <ArrowRight className="w-4 h-4" />
           </button>
         </form>
 
-        <p className="text-center text-xs text-slate-500">
+        {/* Social Logins */}
+        <div className="space-y-3 pt-2">
+          <div className="relative flex py-1 items-center">
+            <div className="flex-grow border-t border-slate-200" />
+            <span className="flex-shrink mx-3 text-[10px] text-slate-400 uppercase font-bold">
+              Or continue with
+            </span>
+            <div className="flex-grow border-t border-slate-200" />
+          </div>
+
+          <div className="grid grid-cols-3 gap-2">
+            <button
+              onClick={() => router.push('/')}
+              className="py-2 px-3 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-xs font-bold text-slate-700 flex items-center justify-center gap-1.5 shadow-xs transition-colors"
+            >
+              <span>Google</span>
+            </button>
+            <button
+              onClick={() => router.push('/')}
+              className="py-2 px-3 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-xs font-bold text-slate-700 flex items-center justify-center gap-1.5 shadow-xs transition-colors"
+            >
+              <span>Apple</span>
+            </button>
+            <button
+              onClick={() => router.push('/')}
+              className="py-2 px-3 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-xs font-bold text-slate-700 flex items-center justify-center gap-1.5 shadow-xs transition-colors"
+            >
+              <span>GitHub</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Register footer */}
+        <div className="text-center pt-2 border-t border-slate-100 text-xs text-slate-500">
           Don't have an account?{' '}
-          <Link href="/signup" className="font-bold text-coral hover:underline">
-            Create an account
+          <Link href="/signup" className="font-bold text-teal-700 hover:underline">
+            Create an Account
           </Link>
-        </p>
+        </div>
       </div>
     </div>
   );
