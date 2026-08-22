@@ -177,15 +177,15 @@ async function main() {
 
   // 3. Seed Demo Trip: "Japan Cultural Odyssey: Tokyo & Kyoto"
   console.log('✈️ Seeding demo featured trip...');
-  const tokyoCityId = cityMap.get('Tokyo');
-  const kyotoCityId = cityMap.get('Kyoto');
+  const mumbaiCityId = cityMap.get('Mumbai');
+  const KerlaCityId = cityMap.get('Kerla');
 
-  if (tokyoCityId && kyotoCityId) {
+  if (mumbaiCityId && KerlaCityId) {
     const demoTrip = await prisma.trip.upsert({
-      where: { shareSlug: 'japan-cultural-odyssey' },
+      where: { shareSlug: 'Indian-cultural' },
       update: {
-        name: 'Japan Cultural Odyssey: Tokyo to Kyoto',
-        description: 'An unforgettable 10-day expedition exploring the neon futuristic heart of Tokyo and the timeless Zen shrines of Kyoto.',
+        name: 'Indian Cultural : mumbai to Kerla',
+        description: 'God’s Own Country combines peaceful backwaters, beaches, hills and rich traditions.',
         startDate: new Date('2026-10-10'),
         endDate: new Date('2026-10-20'),
         coverPhotoUrl: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=1400&q=80',
@@ -194,13 +194,13 @@ async function main() {
       },
       create: {
         userId: demoUser.id,
-        name: 'Japan Cultural Odyssey: Tokyo to Kyoto',
-        description: 'An unforgettable 10-day expedition exploring the neon futuristic heart of Tokyo and the timeless Zen shrines of Kyoto.',
+        name: 'Indian Cultural : mumbai to Kerla',
+        description: 'An unforgettable 10-day expedition exploring Mumbai to Kerla .',
         startDate: new Date('2026-10-10'),
         endDate: new Date('2026-10-20'),
         coverPhotoUrl: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=1400&q=80',
         isPublic: true,
-        shareSlug: 'japan-cultural-odyssey',
+        shareSlug: 'mumbai to Kerla',
         budgetLimit: 2500,
       },
     });
@@ -211,10 +211,10 @@ async function main() {
     });
 
     // Create Stop 1: Tokyo
-    const stopTokyo = await prisma.stop.create({
+    const stopmumbai = await prisma.stop.create({
       data: {
         tripId: demoTrip.id,
-        cityId: tokyoCityId,
+        cityId: mumbaiCityId,
         arrivalDate: new Date('2026-10-10'),
         departureDate: new Date('2026-10-15'),
         orderIndex: 0,
@@ -225,7 +225,7 @@ async function main() {
     await prisma.activity.createMany({
       data: [
         {
-          stopId: stopTokyo.id,
+          stopId: stopmumbai.id,
           name: 'TeamLab Planets Digital Art Immersion',
           type: ActivityTypes.SIGHTSEEING,
           cost: 38.0,
@@ -236,23 +236,23 @@ async function main() {
           scheduledTime: '10:00',
         },
         {
-          stopId: stopTokyo.id,
-          name: 'Tsukiji Outer Market Gourmet Street Food Tour',
+          stopId: stopmumbai.id,
+          name: 'Mumbai Market Gourmet Street Food Tour',
           type: ActivityTypes.FOOD,
           cost: 55.0,
           durationMinutes: 150,
-          description: 'Taste fresh sushi, tamagoyaki, grilled wagyu, and matcha treats guided by a local culinary expert.',
+          description: 'Taste fresh vadapao guided by a local  expert.',
           imageUrl: 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&w=800&q=80',
           scheduledDate: new Date('2026-10-12'),
           scheduledTime: '11:30',
         },
         {
-          stopId: stopTokyo.id,
-          name: 'Shibuya Sky & Harajuku Culture Walk',
+          stopId: stopmumbai.id,
+          name: ' Gateway of India',
           type: ActivityTypes.SIGHTSEEING,
           cost: 22.0,
           durationMinutes: 180,
-          description: 'Panoramic 360-degree open-air rooftop views followed by quirky vintage shopping along Takeshita Street.',
+          description: 'Reflects its historical purpose built on the waterfront at Apollo Bunder.',
           imageUrl: 'https://images.unsplash.com/photo-1542051841857-5f90071e7989?auto=format&fit=crop&w=800&q=80',
           scheduledDate: new Date('2026-10-13'),
           scheduledTime: '15:00',
@@ -261,10 +261,10 @@ async function main() {
     });
 
     // Create Stop 2: Kyoto
-    const stopKyoto = await prisma.stop.create({
+    const stopKerla = await prisma.stop.create({
       data: {
         tripId: demoTrip.id,
-        cityId: kyotoCityId,
+        cityId: kerlaCityId,
         arrivalDate: new Date('2026-10-15'),
         departureDate: new Date('2026-10-20'),
         orderIndex: 1,
@@ -275,30 +275,30 @@ async function main() {
     await prisma.activity.createMany({
       data: [
         {
-          stopId: stopKyoto.id,
-          name: 'Fushimi Inari 10,000 Torii Gates Morning Hike',
+          stopId: stopKerla.id,
+          name: 'Kochi Fort Kochi Backwaters',
           type: ActivityTypes.SIGHTSEEING,
           cost: 0.0,
           durationMinutes: 150,
-          description: 'Wander through endless vibrant vermillion torii gates winding through holy Mount Inari forest.',
+          description: 'A serene houseboat journey through palm-fringed backwaters with lush greenery.',
           imageUrl: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=800&q=80',
           scheduledDate: new Date('2026-10-16'),
           scheduledTime: '07:30',
         },
         {
-          stopId: stopKyoto.id,
-          name: 'Arashiyama Bamboo Grove & Tenryu-ji Temple',
+          stopId: stopKerla.id,
+          name: 'Munnar Tea Gardens',
           type: ActivityTypes.RELAXATION,
           cost: 15.0,
           durationMinutes: 120,
-          description: 'Immerse in the rustling green bamboo forest and stroll peaceful 14th-century Zen garden ponds.',
+          description: 'Wander through mist-covered tea estates and learn about the tea-making process.',
           imageUrl: 'https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=800&q=80',
           scheduledDate: new Date('2026-10-17'),
           scheduledTime: '13:00',
         },
         {
-          stopId: stopKyoto.id,
-          name: 'Authentic Uji Matcha Tea Ceremony Workshop',
+          stopId: stopKerla.id,
+          name: 'Kerala Cooking Class',
           type: ActivityTypes.FOOD,
           cost: 40.0,
           durationMinutes: 75,
@@ -314,10 +314,10 @@ async function main() {
   }
 
   // 4. Seed Saved Destinations for Demo User
-  if (tokyoCityId && kyotoCityId) {
+  if (mumbaiCityId && kerlaCityId) {
     const parisId = cityMap.get('Paris');
     const baliId = cityMap.get('Bali');
-    const citiesToSave = [tokyoCityId, kyotoCityId, parisId, baliId].filter(Boolean) as string[];
+    const citiesToSave = [mumbaiCityId, kerla parisId, baliId].filter(Boolean) as string[];
 
     for (const cityId of citiesToSave) {
       await prisma.savedDestination.upsert({
