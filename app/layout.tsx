@@ -4,6 +4,9 @@ import './globals.css';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import AuthProvider from '@/components/AuthProvider';
+import { ThemeProvider } from '@/components/ThemeProvider';
+import AskGlobeAiModal from '@/components/AskGlobeAiModal';
+import MobileBottomNav from '@/components/MobileBottomNav';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 
@@ -20,12 +23,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={inter.variable}>
-      <body className="min-h-screen flex flex-col bg-slate-50 text-slate-900 font-sans">
+    <html lang="en" className={inter.variable} suppressHydrationWarning>
+      <body className="min-h-screen flex flex-col bg-surface-light dark:bg-surface-dark text-slate-900 dark:text-slate-100 font-sans pb-16 md:pb-0 transition-colors duration-200">
         <AuthProvider>
-          <Navbar />
-          <main className="flex-1 w-full">{children}</main>
-          <Footer />
+          <ThemeProvider>
+            <Navbar />
+            <main className="flex-1 w-full">{children}</main>
+            <Footer />
+            <AskGlobeAiModal />
+            <MobileBottomNav />
+          </ThemeProvider>
         </AuthProvider>
       </body>
     </html>
