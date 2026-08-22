@@ -165,9 +165,7 @@ GlobeTrotter is a personalized, intelligent, and collaborative travel planning p
 - [Project Structure](#project-structure)
 - [Design and Mockups](#design-and-mockups)
 - [Roadmap](#roadmap)
-- [Team](#team)
-- [License](#license)
-
+  
 ---
 
 ## Problem Statement
@@ -325,13 +323,3 @@ Low-fidelity mockups: [Excalidraw board](https://link.excalidraw.com/l/65VNwvy7c
 - [ ] Profile & settings
 - [ ] Stretch: Admin analytics dashboard
 
-## Team
-
-| Name | Role |
-|---|---|
-| _Add name_ | _Add role_ |
-| _Add name_ | _Add role_ |
-
-## License
-
-_Add a license (e.g. MIT) if this project will be open-sourced after the hackathon._
