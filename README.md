@@ -1,4 +1,4 @@
-# 🌍 GlobeTrotter — Personalized Multi-City Travel Planner
+# 🌍 GlobeTrotter — Personalized Multi-City Travel Planner.....
 
 GlobeTrotter is a full-stack personalized multi-city travel planning web application built for hackathons and travelers. It enables users to design custom itineraries across multiple destinations, schedule categorized activities, automatically compute budget distributions with interactive charts, view multi-day timelines on a calendar, and share read-only itineraries with one-click trip cloning.
 
