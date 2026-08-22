@@ -3,6 +3,8 @@ import { z } from 'zod';
 import prisma from '@/lib/prisma';
 import { getCurrentUser } from '@/lib/auth';
 
+export const dynamic = 'force-dynamic';
+
 const activityUpdateSchema = z.object({
   name: z.string().min(1).optional(),
   type: z.string().optional(),
@@ -38,7 +40,7 @@ export async function PUT(
       return NextResponse.json({ error: 'Activity not found' }, { status: 404 });
     }
 
-    if (activity.stop.trip.userId !== user.id) {
+    if (activity.stop && activity.stop.trip.userId !== user.id && user.role !== 'ADMIN') {
       return NextResponse.json({ error: 'Forbidden: You do not own this trip' }, { status: 403 });
     }
 
@@ -100,7 +102,7 @@ export async function DELETE(
       return NextResponse.json({ error: 'Activity not found' }, { status: 404 });
     }
 
-    if (activity.stop.trip.userId !== user.id) {
+    if (activity.stop && activity.stop.trip.userId !== user.id && user.role !== 'ADMIN') {
       return NextResponse.json({ error: 'Forbidden: You do not own this trip' }, { status: 403 });
     }
 

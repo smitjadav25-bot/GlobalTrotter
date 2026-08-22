@@ -9,12 +9,12 @@ export async function GET(request: NextRequest) {
     const type = searchParams.get('type') || '';
     const search = searchParams.get('search') || '';
     const maxCost = searchParams.get('maxCost') ? parseFloat(searchParams.get('maxCost')!) : undefined;
+    const maxDuration = searchParams.get('maxDuration') ? parseInt(searchParams.get('maxDuration')!) : undefined;
     const cityId = searchParams.get('cityId') || '';
 
-    // If cityId is provided, we can find activities associated with stops in that city or return all matching activities
     const activities = await prisma.activity.findMany({
       where: {
-        ...(type ? { type } : {}),
+        ...(type && type !== 'ALL' ? { type } : {}),
         ...(search
           ? {
               OR: [
@@ -24,16 +24,25 @@ export async function GET(request: NextRequest) {
             }
           : {}),
         ...(maxCost !== undefined ? { cost: { lte: maxCost } } : {}),
-        ...(cityId ? { stop: { cityId } } : {}),
+        ...(maxDuration !== undefined ? { durationMinutes: { lte: maxDuration } } : {}),
+        ...(cityId
+          ? {
+              OR: [
+                { cityId },
+                { stop: { cityId } },
+              ],
+            }
+          : {}),
       },
       include: {
+        city: true,
         stop: {
           include: {
             city: true,
           },
         },
       },
-      take: 40,
+      take: 60,
     });
 
     return NextResponse.json({ activities });

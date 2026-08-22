@@ -3,8 +3,12 @@ export interface UserDTO {
   email: string;
   name?: string | null;
   avatarUrl?: string | null;
+  languagePref?: string;
+  role?: string;
   createdAt: string;
 }
+
+export type User = UserDTO;
 
 export interface PhotoDTO {
   id: string;
@@ -17,19 +21,25 @@ export interface PhotoDTO {
   createdAt: string;
 }
 
+export type Photo = PhotoDTO;
+
 export interface CityDTO {
   id: string;
   name: string;
   country: string;
+  region?: string;
   costIndex: number;
   popularity: number;
   imageUrl: string;
   description?: string | null;
 }
 
+export type City = CityDTO;
+
 export interface ActivityDTO {
   id: string;
-  stopId: string;
+  cityId?: string | null;
+  stopId?: string | null;
   name: string;
   type: string; // SIGHTSEEING, FOOD, ADVENTURE, RELAXATION, OTHER
   cost: number;
@@ -38,8 +48,11 @@ export interface ActivityDTO {
   imageUrl?: string | null;
   scheduledDate?: string | null;
   scheduledTime?: string | null;
+  city?: CityDTO | null;
   createdAt: string;
 }
+
+export type Activity = ActivityDTO;
 
 export interface StopDTO {
   id: string;
@@ -52,6 +65,8 @@ export interface StopDTO {
   activities: ActivityDTO[];
   createdAt: string;
 }
+
+export type Stop = StopDTO;
 
 export interface TripDTO {
   id: string;
@@ -69,6 +84,8 @@ export interface TripDTO {
   stops?: StopDTO[];
   user?: UserDTO;
 }
+
+export type Trip = TripDTO;
 
 export interface BudgetBreakdownDTO {
   tripId: string;

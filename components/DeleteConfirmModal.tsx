@@ -7,8 +7,10 @@ interface DeleteConfirmModalProps {
   isOpen: boolean;
   title: string;
   message: string;
-  onConfirm: () => Promise<void>;
-  onCancel: () => void;
+  confirmLabel?: string;
+  onConfirm: () => Promise<void> | void;
+  onClose?: () => void;
+  onCancel?: () => void;
   isLoading?: boolean;
 }
 
@@ -16,11 +18,18 @@ export default function DeleteConfirmModal({
   isOpen,
   title,
   message,
+  confirmLabel = 'Delete Permanently',
   onConfirm,
+  onClose,
   onCancel,
   isLoading = false,
 }: DeleteConfirmModalProps) {
   if (!isOpen) return null;
+
+  const handleDismiss = () => {
+    if (onClose) onClose();
+    else if (onCancel) onCancel();
+  };
 
   return (
     <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
@@ -35,7 +44,7 @@ export default function DeleteConfirmModal({
           <button
             type="button"
             disabled={isLoading}
-            onClick={onCancel}
+            onClick={handleDismiss}
             className="px-4 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-100 rounded-xl"
           >
             Cancel
@@ -47,7 +56,7 @@ export default function DeleteConfirmModal({
             className="px-5 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-sm font-semibold shadow-md shadow-rose-600/20 flex items-center gap-1.5 disabled:opacity-50"
           >
             {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
-            Delete Permanently
+            {confirmLabel}
           </button>
         </div>
       </div>
